@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
+/**
+ * Таблица кредитов
+ */
 @Entity
 @Table(name = "credit")
 public class CreditEntity {

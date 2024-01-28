@@ -1,0 +1,14 @@
+service:
+  description: Credit service
+  version: 1.0
+spring:
+  profiles:
+    active: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

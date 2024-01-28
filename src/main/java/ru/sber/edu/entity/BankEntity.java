@@ -15,7 +15,7 @@ public class BankEntity {
     @Id
     @Column(name = "bank_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer bankId;
+    private Long bankId;
 
     /**
      * Название банка
@@ -26,7 +26,7 @@ public class BankEntity {
     public BankEntity() {
     }
 
-    public Integer getBankId() {
+    public Long getBankId() {
         return bankId;
     }
 
@@ -34,7 +34,7 @@ public class BankEntity {
         return name;
     }
 
-    public void setBankId(Integer bankId) {
+    public void setBankId(Long bankId) {
         this.bankId = bankId;
     }
 

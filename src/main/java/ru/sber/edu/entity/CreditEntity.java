@@ -25,22 +25,22 @@ public class CreditEntity {
 
     @ManyToOne
     @JoinColumn(name = "bank_id")
-    private BankEntity bank;
+    private BankEntity bankId;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "limit")
-    private Float limit;
+    @Column(name = "max_sum")
+    private Float maxSum;
 
     @Column(name = "rate")
     private double rate;
 
-    @Column(name = "from")
-    private LocalDateTime from;
+    @Column(name = "date_from")
+    private LocalDateTime dateFrom;
 
-    @Column(name = "to")
-    private LocalDateTime to;
+    @Column(name = "date_to")
+    private LocalDateTime dateTo;
 
     public CreditEntity() {
     }
@@ -53,28 +53,28 @@ public class CreditEntity {
         return creditId;
     }
 
-    public BankEntity getBank() {
-        return bank;
+    public BankEntity getBankId() {
+        return bankId;
     }
 
     public String getName() {
         return name;
     }
 
-    public Float getLimit() {
-        return limit;
+    public Float getMaxSum() {
+        return maxSum;
     }
 
     public double getRate() {
         return rate;
     }
 
-    public LocalDateTime getFrom() {
-        return from;
+    public LocalDateTime getDateFrom() {
+        return dateFrom;
     }
 
-    public LocalDateTime getTo() {
-        return to;
+    public LocalDateTime getDateTo() {
+        return dateTo;
     }
 
     public void setSqlDate(Date sqlDate) {
@@ -85,27 +85,27 @@ public class CreditEntity {
         this.creditId = creditId;
     }
 
-    public void setBank(BankEntity bank) {
-        this.bank = bank;
+    public void setBank(BankEntity bankId) {
+        this.bankId = bankId;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLimit(Float limit) {
-        this.limit = limit;
+    public void setLimit(Float maxSum) {
+        this.maxSum = maxSum;
     }
 
     public void setRate(double rate) {
         this.rate = rate;
     }
 
-    public void setFrom(LocalDateTime from) {
-        this.from = from;
+    public void setFrom(LocalDateTime dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public void setTo(LocalDateTime to) {
-        this.to = to;
+    public void setTo(LocalDateTime dateTo) {
+        this.dateTo = dateTo;
     }
 }

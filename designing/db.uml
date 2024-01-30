@@ -1,0 +1,96 @@
+@startuml
+allowmixing
+
+object bank
+bank : bank_id(PK) number
+bank : name string
+
+object credit
+credit : credit_id(PK) number
+credit : bank_id(FK) number
+credit : name string
+credit : limit number
+credit : rate number
+credit : from date
+credit : to date
+
+
+object credit_offer
+credit_offer : credit_id(FK) number
+credit_offer : client_id(FK) number
+credit_offer : credit_id, client_id(PK)
+credit_offer : status(FK) string
+
+
+object client
+client : client_id(PK) number
+client : name string
+client : phone string
+client : passport string
+
+
+object favorite_credit
+favorite_credit : client_id(FK) number
+favorite_credit : credit_id(FK) number
+favorite_credit : client_id, credit_id (PK)
+
+
+object credit_offer_status
+credit_offer_status : status(PK) string
+
+object user
+user : user_name(PK) string
+user : password string
+user : role_name(FK) string
+user : create_date date
+user : change_date date
+
+object roles
+roles : role_name(PK) string
+
+
+object authorities
+authorities : role_name(FK) string
+authorities : user_name(FK)  string
+authorities : authority string
+authorities : role_name, user_name(PK)
+
+
+roles " 1 " .. " * " user
+authorities " * " .. " 1 " user
+authorities " * " .. " 1 " roles
+
+bank " 1 " .. " * " credit
+client " 1 " .. " * " favorite_credit
+client " 1 " .. " * " credit_offer
+credit " 1 " .. " * " credit_offer
+credit_offer_status " 1 " .. " * " credit_offer
+
+left to right direction
+actor "Bank" as bu
+rectangle "Bank action" {
+  usecase "Создавать кредит" as bu_create
+  usecase "Просматривать свои кредитные заявки" as bu_watch
+  usecase "Одобрять кредитное предложение" as bu_approve
+}
+bu --> bu_create
+bu --> bu_watch
+bu --> bu_approve
+
+actor "Client" as cu
+rectangle "Client action" {
+  usecase "Поиск" as cu_search
+  usecase "Просматривать кредиты" as cu_watch
+  usecase "Создавать кредитную заявку" as cu_request
+}
+cu --> cu_search
+cu --> cu_watch
+cu --> cu_request
+
+actor "Admin" as admin
+rectangle "Admin action" {
+  usecase "Создавать аккаунт банка" as admin_create
+}
+admin --> admin_create
+
+@enduml

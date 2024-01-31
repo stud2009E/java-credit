@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "credit_offer_status")
 @Data
-public class CreditOfferStatusEntity {
+public class CreditOfferStatus {
 
     @Id
     @Column(length = 2)

@@ -9,17 +9,17 @@ import lombok.Data;
 @Entity
 @Table(name = "authorities")
 @Data
-public class AuthoritiesEntity {
+public class Authorities {
 
     @Id
     @ManyToOne
     @JoinColumn(name = "user_name")
-    public UserEntity user;
+    public User user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "role_name")
-    public RolesEntity role;
+    public Roles role;
 
     public  String authority;
 

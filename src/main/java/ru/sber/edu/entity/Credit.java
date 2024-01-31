@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "credit")
 @Data
-public class CreditEntity {
+public class Credit {
 
     @Basic
     private java.sql.Date sqlDate;
@@ -24,7 +24,7 @@ public class CreditEntity {
 
     @ManyToOne
     @JoinColumn(name = "bank_id")
-    private BankEntity bankId;
+    private Bank bankId;
 
     private String name;
 

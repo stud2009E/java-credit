@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "\"user\"")
 @Data
-public class UserEntity {
+public class User {
 
     @Id
     @Column(length = 16)
@@ -20,7 +20,7 @@ public class UserEntity {
     public String password;
     @ManyToOne
     @JoinColumn(name = "role_name")
-    public RolesEntity role;
+    public Roles role;
     private LocalDateTime createDate;
     private LocalDateTime changeDate;
 }

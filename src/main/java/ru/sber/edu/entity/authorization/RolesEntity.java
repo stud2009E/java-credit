@@ -1,4 +1,4 @@
-package ru.sber.edu.entityAuthorazation;
+package ru.sber.edu.entity.authorization;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

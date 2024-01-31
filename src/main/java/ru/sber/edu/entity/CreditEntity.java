@@ -2,8 +2,6 @@ package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 /**

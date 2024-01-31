@@ -30,5 +30,7 @@ public class CreditOfferEntity {
     /**
      * Одобрено/отклонено
      */
-    private boolean approved;
+    @ManyToOne
+    @JoinColumn(name = "credit_offer_status")
+    private CreditOfferStatusEntity creditOfferStatus;
 }

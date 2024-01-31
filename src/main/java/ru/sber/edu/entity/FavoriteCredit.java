@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "favorite_credit")
 @Data
-public class FavoriteCreditEntity {
+public class FavoriteCredit {
 
     /**
      * Клиент
@@ -17,7 +17,7 @@ public class FavoriteCreditEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private ClientEntity client;
+    private Client client;
 
     /**
      * Кредит
@@ -25,5 +25,5 @@ public class FavoriteCreditEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "credit_id")
-    private CreditEntity credit;
+    private Credit credit;
 }

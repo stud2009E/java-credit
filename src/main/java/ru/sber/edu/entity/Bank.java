@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "bank")
 @Data
-public class BankEntity {
+public class Bank {
 
     /**
      * Ключ

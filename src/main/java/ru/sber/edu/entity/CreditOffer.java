@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "credit_offer")
 @Data
-public class CreditOfferEntity {
+public class CreditOffer {
 
     /**
      * Кредит
@@ -17,7 +17,7 @@ public class CreditOfferEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "credit_id")
-    private CreditEntity credit;
+    private Credit credit;
 
     /**
      * Клиент
@@ -25,12 +25,12 @@ public class CreditOfferEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private ClientEntity client;
+    private Client client;
 
     /**
      * Одобрено/отклонено
      */
     @ManyToOne
     @JoinColumn(name = "credit_offer_status")
-    private CreditOfferStatusEntity creditOfferStatus;
+    private CreditOfferStatus creditOfferStatus;
 }

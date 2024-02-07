@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit portal</title>
+</head>
+<body>
+<h1>Register form</h1>
+<form method="POST" th:if="${isLogged} == false" th:action="@{/register}" id="registerForm" th:object="${registerForm}">
+    <fieldset>
+        <legend>Login data</legend>
+        <label for="username">Username: </label>
+        <input id="username" type="text" name="username" th:value="*{username}"/>
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+        <br/>
+
+        <label for="password">Password: </label>
+        <input id="password" type="password" name="password" th:value="*{password}"/>
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+        <br/>
+
+        <label for="confirm">Confirm password: </label>
+        <input id="confirm" type="password" name="confirm" th:value="*{confirm}"/>
+        <span th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}" class="text-danger"></span>
+        <br/>
+    </fieldset>
+
+    <fieldset>
+        <legend>Personal data</legend>
+        <label for="phone">Phone: </label>
+        <input id="phone" type="text" name="phone" th:value="*{phone}"/>
+        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+        <br/>
+
+        <label for="email">Email: </label>
+        <input id="email" type="email" name="email" th:value="*{email}"/>
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+        <br/>
+
+        <label for="firstName">First name: </label>
+        <input id="firstName" type="text" name="firstName" th:value="*{firstName}"/>
+        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+        <br/>
+
+        <label for="lastName">Last name: </label>
+        <input id="lastName" type="text" name="lastName" th:value="*{lastName}"/>
+        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+        <br/>
+    </fieldset>
+    <input type="submit" value="Register"/>
+</form>
+
+<h1 th:if="${isLogged} == true">You are logged!</h1>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:insert="~{fragments/head :: webjar}">
     <meta charset="UTF-8">
     <title>Home page</title>
 </head>
@@ -9,5 +9,9 @@
 
     <h1 th:if="${isLogged} == true">Logged!</h1>
     <h1 th:if="${isLogged} == false">Hello anonymous!</h1>
+
+    <div class="alert alert-success">
+        <strong>Success!</strong> It is working as we expected.
+    </div>
 </body>
 </html>

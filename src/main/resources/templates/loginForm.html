@@ -6,14 +6,18 @@
 </head>
 <body>
     <div class="container">
+        <header th:insert="~{fragments/header :: header}"></header>
+    </div>
+    <div class="container">
         <h1>Login form</h1>
         <h1 th:if="${isLogged} == true">You are logged!</h1>
         <form th:if="${isLogged} == false" th:action="@{/login}" method="POST">
-            <p th:if="${errorMessage}" th:text="${errorMessage}">Error</p>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}">errorMessage</span>
+            </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Login</label>
-                <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp">
-                <div id="usernameHelp" class="form-text">user login</div>
+                <input type="text" class="form-control" name="username" id="username">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -21,6 +25,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Log in</button>
         </form>
+
+        <div th:insert="~{fragments/footer :: footer}"></div>
     </div>
 </body>
 </html>

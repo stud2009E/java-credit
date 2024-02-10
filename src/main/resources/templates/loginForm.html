@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <title>Login page</title>
 </head>
-<body>
-    <div class="container">
-        <header th:insert="~{fragments/header :: header}"></header>
-    </div>
-    <div class="container">
-        <h1>Login form</h1>
-        <h1 th:if="${isLogged} == true">You are logged!</h1>
-        <form th:if="${isLogged} == false" th:action="@{/login}" method="POST">
-            <div th:if="${errorMessage}" class="alert alert-danger">
-                <span th:text="${errorMessage}">errorMessage</span>
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Login</label>
-                <input type="text" class="form-control" name="username" id="username">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="password">
-            </div>
-            <button type="submit" class="btn btn-primary">Log in</button>
-        </form>
+<body class="d-flex flex-column h-100">
 
-        <div th:insert="~{fragments/footer :: footer}"></div>
-    </div>
+<div class="container" th:insert="~{fragments/header :: header(headerTitle='Credit me')}"></div>
+
+<main class="container">
+    <h1>Login form</h1>
+    <h1 th:if="${isLogged} == true">You are logged!</h1>
+    <form th:if="${isLogged} == false" th:action="@{/login}" method="POST">
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <span th:text="${errorMessage}">errorMessage</span>
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Login</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+</main>
+
+<div class="container" th:insert="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

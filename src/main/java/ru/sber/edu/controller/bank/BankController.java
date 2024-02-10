@@ -40,8 +40,7 @@ public class BankController {
                       @RequestParam(defaultValue = "acs") String order,
                       Model model){
 
-        //Long bankId = userService.getAuthority();
-        Long bankId = 1L;
+        Long bankId = userService.getAuthority();
 
         Page<Credit> credits = creditService.findByBankId(bankId, pageNumber, pageSize, sortBy, order);
 
@@ -61,8 +60,7 @@ public class BankController {
                          @RequestParam() String name,
                          Model model){
 
-        //Long bankId = userService.getAuthority();
-        Long bankId = 1L;
+        Long bankId = userService.getAuthority();
 
         if(!name.isEmpty()){
             Page<Credit> credits = creditService.findByNameAndBankId(name, bankId, pageNumber, pageSize, sortBy, order);

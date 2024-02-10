@@ -1,3 +1,11 @@
+INSERT INTO public.roles
+(role_name)
+VALUES('ADMIN'),
+    ('BANK'),
+    ('CLIENT')
+on conflict do nothing;
+
+
 INSERT INTO public.bank
 (bank_id, "name")
 VALUES(1, 'B1'),
@@ -5,7 +13,8 @@ VALUES(1, 'B1'),
        (3, 'B3'),
        (4, 'B4'),
        (5, 'B5'),
-       (6, 'B6');
+       (6, 'B6')
+on conflict do nothing;
 
 
 INSERT INTO public.credit
@@ -24,4 +33,5 @@ VALUES(100, 11, 1, 1, '2023-01-01', '2023-02-01', 'C1'),
       (200, 12, 1, 12, '2023-01-01', '2023-02-01', 'C12'),
       (200, 12, 1, 13, '2023-01-01', '2023-02-01', 'C13'),
       (200, 12, 2, 14, '2023-01-01', '2023-02-01', 'C14'),
-      (200, 12, 2, 15, '2023-01-01', '2023-02-01', 'C15');
+      (200, 12, 2, 15, '2023-01-01', '2023-02-01', 'C15')
+on conflict do nothing;

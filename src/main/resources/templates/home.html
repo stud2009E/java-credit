@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: webjar}">
     <meta charset="UTF-8">
     <title>Home page</title>
 </head>
 <body>
-    <h1>Home page</h1>
 
-    <h1 th:if="${isLogged} == true">Logged!</h1>
-    <h1 th:if="${isLogged} == false">Hello anonymous!</h1>
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
+</div>
+<div class="container">
+    <div class="container">
+        <div class="alert alert-success">
+            <strong>Success!</strong> It is working as we expected.
+        </div>
+
+        <h1 th:if="${isLogged} == true">Logged!</h1>
+        <h1 th:if="${isLogged} == false">Hello anonymous!</h1>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>
 </body>
 </html>

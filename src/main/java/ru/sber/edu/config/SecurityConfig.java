@@ -37,32 +37,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-                .permitAll());
-
-        /*http
-                //.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
-                );
-
-         */
-        return http.build();
-
-
-
-        /*http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()
-                        //.requestMatchers("/logout", "/register", "/login", "/login-error", "/").permitAll()
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/logout", "/register", "/login", "/login-error", "/", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login")
                         .failureUrl("/login-error"))
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"));
 
         return http.build();
-
-         */
-
     }
 }

@@ -1,24 +1,26 @@
 package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "credit")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Credit {
-
-    @Basic
-    private java.sql.Date sqlDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_id")
-    private Bank bankId;
+    @Column(name = "bank_id")
+    private Long bankId;
 
     private String name;
 
@@ -26,8 +28,10 @@ public class Credit {
 
     private double rate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateFrom;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateTo;
 
 }

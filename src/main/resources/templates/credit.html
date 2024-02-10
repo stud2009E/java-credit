@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Credit</h1>
-    <form method="POST" th:object="${credit}">
+    <form method="POST" th:object="${credit}" >
         <fieldset>
         <legend>Credit data</legend>
         <label for="creditId">Id: </label>
@@ -30,7 +30,7 @@
         <br/>
 
         <label for="dateTo">Date to: </label>
-        <input id="dateTo" type="" name="dateTo" th:value="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}" disabled></input>
+        <input id="dateTo" type="date" name="dateTo" th:value="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}" disabled></input>
         <br/>
         </fieldset>
         <input type="submit" value="Edit"/>

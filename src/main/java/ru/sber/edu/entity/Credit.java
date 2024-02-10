@@ -1,6 +1,7 @@
 package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,18 +20,24 @@ public class Credit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
+    @NotBlank
     @Column(name = "bank_id")
     private Long bankId;
 
+    @NotBlank
     private String name;
 
-    private Float maxSum;
+    @NotBlank
+    private double maxSum;
 
+    @NotBlank
     private double rate;
 
+    @NotBlank
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateFrom;
 
+    @NotBlank
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateTo;
 

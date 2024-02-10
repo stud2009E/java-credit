@@ -1,15 +1,21 @@
 package ru.sber.edu.controller.bank;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -81,6 +87,7 @@ public class BankController {
         }
 
         model.addAttribute("credit", credit.get());
+        model.addAttribute("disable", true);
 
         return "credit";
     }
@@ -99,4 +106,28 @@ public class BankController {
 
         return "credit";
     }
+
+    @GetMapping(value = "/credit/create")
+    public String creditCreate(Model model){
+        Credit credit = new Credit();
+
+        credit.setDateFrom(LocalDateTime.now());
+        credit.setDateTo(LocalDateTime.now());
+
+        model.addAttribute("credit", credit);
+        return "creditCreate";
+    }
+
+    @PostMapping(value = "/credit/create")
+    public String saveCreate(@Valid Credit credit,
+                             Model model){
+
+        Long bankId = userService.getAuthority();
+        bankId = 1L;
+
+        Credit newCredit = creditService.createCredit(credit, bankId);
+
+        return "redirect:/bank/credit/"+newCredit.getCreditId();
+    }
+
 }

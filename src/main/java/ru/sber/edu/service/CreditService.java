@@ -37,13 +37,10 @@ public class CreditService {
         return creditRepository.findByBankIdAndNameContainingIgnoreCase(bankId, name, paging);
     }
 
-    public void createCredit(Credit credit){
+    public Credit createCredit(Credit credit, Long bankId){
 
-        Optional<Bank> bank = bankRepository.findById(credit.getBankId());
-        if (bank.isEmpty()){
-            throw new NullPointerException("There is no bank "+credit.getBankId());
-        }
-        creditRepository.saveAndFlush(credit);
+        credit.setBankId(bankId);
+        return creditRepository.saveAndFlush(credit);
     }
     public Optional<Credit> findById(Long creditId){
         return creditRepository.findById(creditId);

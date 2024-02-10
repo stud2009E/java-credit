@@ -33,7 +33,7 @@
 
                     <div class="col-12">
                         <label for="confirm" class="form-label">Confirm password</label>
-                        <input type="password" class="form-control" name="password" id="confirm" th:value="*{confirm}">
+                        <input type="password" class="form-control" name="confirm" id="confirm" th:value="*{confirm}">
                         <span th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}" class="text-danger"></span>
                     </div>
 

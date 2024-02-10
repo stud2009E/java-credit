@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All credit offers</title>
+</head>
+<body>
+  <h1>All credit offers</h1>
+  <form method="get" th:action="@{search}">
+  <input name="name" placeholder="Find by name" size="50" th:value="${name}" type="text">
+      <button class="btn btn-info" type="submit">Search</button>
+      <button class="btn btn-info" type="submit">Reset</button>
+  </form>
+
+  <fieldset>
+      <legend>List of credit offers</legend>
+      <table border="1">
+          <thead>
+          <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Sum</th>
+              <th scope="col">Rate</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="credit: ${credits}">
+              <td th:text="${credit.creditId}"></td>
+              <td>
+                  <a th:href="@{'/bank/credit/' + ${credit.creditId}}"th:text="${credit.name}"></a>
+              </td>
+              <td th:text="${credit.maxSum}"></td>
+              <td th:text="${credit.rate}"></td>
+              <td th:text="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></td>
+              <td th:text="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}"></td>
+          </tr>
+          </tbody>
+      </table>
+
+      <nav aria-label="Page navigation" th:if="${credits.totalPages - 1 gt 0}">
+          <ul class="pagination justify-content-end">
+              <li class="page-item" th:classappend="${credits.number eq 0} ? 'disabled'">
+                  <a class="page-link" tabindex="-1" aria-disabled="true" th:href="
+            @{/bank/credit/all
+            (page=${credits.number lt 2 ? 1 : credits.number}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Previous</a>
+              </li>
+
+              <li class="page-item" th:classappend="${credits.number + 1 eq credits.totalPages} ? 'disabled'">
+                  <a class="page-link" th:href="@{/bank/credit/all
+            (page=${credits.number + 2}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Next</a>
+              </li>
+
+          </ul>
+      </nav>
+
+    </fieldset>
+</body>
+</html>

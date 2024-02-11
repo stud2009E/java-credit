@@ -42,7 +42,7 @@ public class UserService {
         Auth auth = new Auth();
         auth.setUserId(savedUser.getUserId());
         auth.setRoleName(Role.RoleType.CLIENT);
-        auth.setAuthority(String.valueOf(client.getClientId()));
+        auth.setAuthValue(String.valueOf(client.getClientId()));
 
         authRepository.save(auth);
     }
@@ -89,7 +89,7 @@ public class UserService {
     }
 
     public long getAuthority(){
-        return Long.parseLong(Objects.requireNonNull(getAuth()).getAuthority());
+        return Long.parseLong(Objects.requireNonNull(getAuth()).getAuthValue());
     }
 
 

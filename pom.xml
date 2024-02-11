@@ -23,7 +23,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <bootstrap.version>5.2.0</bootstrap.version>
         <jquery.version>3.6.1</jquery.version>
-        <extras.java8time>3.0.4.RELEASE</extras.java8time>
+        <thymeleaf.extras.java8time>3.0.4.RELEASE</thymeleaf.extras.java8time>
+        <thymeleaf.extras.springsecurity6>3.1.2.RELEASE</thymeleaf.extras.springsecurity6>
     </properties>
 
     <dependencies>
@@ -100,7 +101,13 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
-            <version>${extras.java8time}</version>
+            <version>${thymeleaf.extras.java8time}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+            <version>${thymeleaf.extras.springsecurity6}</version>
         </dependency>
 
     </dependencies>

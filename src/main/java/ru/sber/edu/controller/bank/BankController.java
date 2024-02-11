@@ -1,16 +1,17 @@
 package ru.sber.edu.controller.bank;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
-
-import java.util.Optional;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/bank")
@@ -21,21 +22,26 @@ public class BankController {
     @Autowired
     private UserService userService;
 
-    private Bank bank;
+    private final Bank bank;
 
     public BankController(CreditService creditService) {
         this.creditService = creditService;
+
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
+        bank = creditService.findBankById(bankId);
+
     }
 
     @GetMapping(value = "credit/all")
-    public String all(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+    public String credits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                       @RequestParam(value = "size", defaultValue = "10") int pageSize,
                       @RequestParam(defaultValue = "creditId") String sortBy,
                       @RequestParam(defaultValue = "acs") String order,
                       Model model){
 
-        Long bankId = userService.getAuthority();
-
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
         Page<Credit> credits = creditService.findByBankId(bankId, pageNumber, pageSize, sortBy, order);
 
         model.addAttribute("pageSize", pageSize);
@@ -54,7 +60,8 @@ public class BankController {
                          @RequestParam() String name,
                          Model model){
 
-        Long bankId = userService.getAuthority();
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
 
         if(!name.isEmpty()){
             Page<Credit> credits = creditService.findByNameAndBankId(name, bankId, pageNumber, pageSize, sortBy, order);
@@ -72,29 +79,131 @@ public class BankController {
     public String showCredit(@PathVariable("creditId") Long creditId,
                              Model model){
 
-        Optional<Credit> credit = creditService.findById(creditId);
+        Credit credit = creditService.findById(creditId);
 
-        if (credit.isEmpty()){
-            return null;
-        }
+        model.addAttribute("credit", credit);
+        model.addAttribute("action", "/bank/credit/edit");
 
-        model.addAttribute("credit", credit.get());
-
-        return "credit";
+        return "creditShow";
     }
 
-    @PostMapping(value = "credit/{creditId}")
-    public String editCredit(@PathVariable("creditId") Long creditId,
+    @PostMapping(value = "/credit/edit")
+    public String editCredit(Credit credit,
                              Model model){
 
-        Optional<Credit> credit = creditService.findById(creditId);
+        model.addAttribute("credit", credit);
 
-        if (credit.isEmpty()){
-            return null;
+        return "redirect:/bank/credit/edit/"+credit.getCreditId();
+    }
+
+    @GetMapping(value = "/credit/edit/{creditId}")
+    public String creditEdit(@PathVariable("creditId") Long creditId,
+                             Model model){
+
+        Credit credit = creditService.findById(creditId);
+
+        model.addAttribute("mode", "edit");
+        model.addAttribute("credit", credit);
+
+        return "creditEdit";
+
+    }
+
+    @PostMapping(value = "/credit/edit/{creditId}")
+    public String saveCredit(@Valid Credit credit,
+                             Errors errors,
+                             Model model){
+
+        if (errors.hasErrors()){
+            model.addAttribute("mode", "edit");
+            return "creditEdit";
         }
 
-        model.addAttribute("credit", credit.get());
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
 
-        return "credit";
+        credit = creditService.saveCredit(credit);
+
+        return "redirect:/bank/credit/"+credit.getCreditId();
+
     }
+
+    @GetMapping(value = "/credit/create")
+    public String creditCreate(Model model){
+        Credit credit = new Credit();
+
+        credit.setBankId(1L);
+        credit.setDateFrom(LocalDate.now());
+        credit.setDateTo(LocalDate.now());
+
+        model.addAttribute("credit", credit);
+        return "creditCreate";
+    }
+
+    @PostMapping(value = "/credit/create")
+    public String saveCreate(@Valid Credit credit,
+                             Errors errors,
+                             Model model){
+
+        if (errors.hasErrors()){
+            return "creditCreate";
+        }
+
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
+
+        Credit newCredit = creditService.createCredit(credit, bankId);
+
+        return "redirect:/bank/credit/"+newCredit.getCreditId();
+    }
+
+    @GetMapping(value = "/profile")
+    public String profile(Model model){
+
+        model.addAttribute("bank", bank);
+        return "bankProfile";
+    }
+
+    @GetMapping(value = "client/all")
+    public String clients(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                      @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                      @RequestParam(defaultValue = "creditId") String sortBy,
+                      @RequestParam(defaultValue = "acs") String order,
+                      Model model){
+
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
+        Page<Credit> credits = creditService.findByBankId(bankId, pageNumber, pageSize, sortBy, order);
+
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("order", order);
+        model.addAttribute("credits", credits);
+
+        return "credits";
+    }
+
+    @RequestMapping(path = {"client/all"})
+    public String clients(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                         @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                         @RequestParam(defaultValue = "creditId") String sortBy,
+                         @RequestParam(defaultValue = "asc") String order,
+                         @RequestParam() String name,
+                         Model model){
+
+        //Long bankId = userService.getAuthority();
+        Long bankId = 1L;
+
+        if(!name.isEmpty()){
+            Page<Credit> credits = creditService.findByNameAndBankId(name, bankId, pageNumber, pageSize, sortBy, order);
+            model.addAttribute("pageSize", pageSize);
+            model.addAttribute("sortBy", sortBy);
+            model.addAttribute("order", order);
+            model.addAttribute("credits", credits);
+            return "credits";
+        }else{
+            return "redirect:/bank/credit/all";
+        }
+    }
+
 }

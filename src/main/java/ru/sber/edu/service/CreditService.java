@@ -64,6 +64,7 @@ public class CreditService {
         return bankService.findById(bankId);
     }
 
-
-
+    public Page<Credit> findAll(Pageable pageable){
+        return creditRepository.findAll(pageable);
+    }
 }

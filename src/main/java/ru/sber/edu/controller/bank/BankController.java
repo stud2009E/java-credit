@@ -52,7 +52,7 @@ public class BankController {
         return "credits";
     }
 
-    @RequestMapping(path = {"credit/search"})
+    @GetMapping(path = {"credit/search"})
     public String search(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
                          @RequestParam(defaultValue = "creditId") String sortBy,

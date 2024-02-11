@@ -1,18 +1,17 @@
 package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Credit {
 
     @Id
@@ -22,16 +21,20 @@ public class Credit {
     @Column(name = "bank_id")
     private Long bankId;
 
+    @NotBlank
     private String name;
 
-    private Float maxSum;
+    @NotNull
+    private Double maxSum;
 
-    private double rate;
+    @NotNull
+    private Double rate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateFrom;
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateFrom;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateTo;
-
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateTo;
 }

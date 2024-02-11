@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>All credit offers</title>
@@ -34,7 +34,7 @@
               <td th:text="${credit.maxSum}"></td>
               <td th:text="${credit.rate}"></td>
               <td th:text="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></td>
-              <td th:text="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}"></td>
+              <td th:text="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></td>
           </tr>
           </tbody>
       </table>

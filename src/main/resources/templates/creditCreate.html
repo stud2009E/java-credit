@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Credit</title>
+</head>
+<body>
+<h1>Create</h1>
+<form method="POST" th:object="${credit}" th:action="@{/bank/credit/create}" id="createForm">
+  <fieldset>
+    <legend>Credit data</legend>
+
+    <label for="name" class="form-label">Name: </label>
+    <input id="name" class="form-control" type="text" name="name" th:value="*{name}" ></input>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+    <br/>
+
+    <label for="maxSum" class="form-label">Max sum: </label>
+    <input id="maxSum" class="form-control" type="number" step="0.01" name="maxSum" th:value="*{maxSum}"></input>
+    <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
+    <br/>
+
+    <label for="rate" class="form-label">Rate: </label>
+    <input id="rate" type="number" step="0.01" name="rate" th:value="*{rate}"></input>
+    <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
+    <br/>
+
+    <label for="dateFrom" class="form-label">Date from: </label>
+    <input id="dateFrom" class="form-control" type="date" name="dateFrom" th:value="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></input>
+    <br/>
+
+    <label for="dateTo" class="form-label">Date to: </label>
+    <input id="dateTo" class="form-control" type="date" name="dateTo" th:value="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}"></input>
+    <br/>
+  </fieldset>
+  <input type="submit" value="Create"/>
+</form>
+</body>
+</html>

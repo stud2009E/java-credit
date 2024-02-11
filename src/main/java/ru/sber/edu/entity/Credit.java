@@ -7,6 +7,8 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "credit")
@@ -37,4 +39,9 @@ public class Credit {
     @NotNull
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
+
+
+    public static List<String> getColumns(){
+        return Arrays.asList("creditId", "bankId", "name", "maxSum", "rate", "dateFrom", "dateTo");
+    }
 }

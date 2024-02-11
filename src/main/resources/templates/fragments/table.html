@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table th:fragment="table" class="table table-hover">
+    <thead class="table-light">
+    <tr class="headings">
+        <th scope="col" th:each="header: ${headers}" class="column-title" th:text="${header}"/>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="even pointer" th:each="row: ${rows}">
+        <td th:each="header: ${headers}" th:text="${row.get(header)}"/>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -21,6 +21,9 @@ public class CreditService {
     @Autowired
     private BankRepository bankRepository;
 
+    @Autowired
+    BankService bankService;
+
     public Page<Credit> findByBankId(Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
@@ -42,7 +45,25 @@ public class CreditService {
         credit.setBankId(bankId);
         return creditRepository.saveAndFlush(credit);
     }
-    public Optional<Credit> findById(Long creditId){
-        return creditRepository.findById(creditId);
+    public Credit findById(Long creditId) throws NullPointerException{
+
+        Optional<Credit> credit = creditRepository.findById(creditId);
+        if (credit.isEmpty()){
+            throw new NullPointerException("There is no credit with ID " + creditId);
+        }
+
+        return  credit.get();
+
     };
+
+    public Credit saveCredit(Credit credit){
+        return creditRepository.saveAndFlush(credit);
+    }
+
+    public Bank findBankById(Long bankId) throws NullPointerException{
+        return bankService.findById(bankId);
+    }
+
+
+
 }

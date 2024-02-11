@@ -2,43 +2,39 @@ package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Credit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
-    @NotBlank
     @Column(name = "bank_id")
     private Long bankId;
 
     @NotBlank
     private String name;
 
-    @NotBlank
-    private double maxSum;
+    @NotNull
+    private Double maxSum;
 
-    @NotBlank
-    private double rate;
+    @NotNull
+    private Double rate;
 
-    @NotBlank
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateFrom;
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateFrom;
 
-    @NotBlank
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateTo;
-
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateTo;
 }

@@ -1,27 +1,23 @@
 package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.sber.edu.entity.auth.User;
 
-/**
- * Таблица избранных кредитов
- */
 @Entity
 @Table(name = "favorite_credit")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FavoriteCredit {
 
-    /**
-     * Клиент
-     */
     @Id
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    /**
-     * Кредит
-     */
     @Id
     @ManyToOne
     @JoinColumn(name = "credit_id")

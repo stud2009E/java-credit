@@ -2,8 +2,7 @@ package ru.sber.edu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.sber.edu.entity.BankEntity;
-import ru.sber.edu.entity.ClientEntity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 public class App {

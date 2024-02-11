@@ -1,0 +1,45 @@
+@startuml
+
+object client
+
+object profile{
+URL = "client/profile"
+Данные клиента
+1)Отображение/редактирование данных слиента
+}
+
+object credits{
+URL = "client/credit/all"
+Список всех кредитов клиента
+1)Переход к кредиту
+2)Фильтрация списка
+3)Сортировка списка
+}
+
+object credit{
+URL = "client/credit/{id}"
+Данные одного кредита
+1)Просмотр данных кредита
+}
+
+object credit_offer_all{
+URL = "client/reditoffer/all"
+Список всех кредитных предложений
+1)Переход к кредитному предложению
+2)Фильтрация
+3)Сортировка
+}
+
+object credit_offer{
+URL = "client/reditoffer/{id}"
+Данные кредитного предложения
+1)Сделать заявку
+}
+
+credit <|-- client
+credits <|-- client
+credit_offer <|-- client
+credit_offer_all <|-- client
+profile <|-- client
+
+@enduml

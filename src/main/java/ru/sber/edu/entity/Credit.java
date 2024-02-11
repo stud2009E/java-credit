@@ -1,39 +1,47 @@
 package ru.sber.edu.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * Таблица кредитов
- */
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Table(name = "credit")
 @Data
+@NoArgsConstructor
 public class Credit {
 
-    @Basic
-    private java.sql.Date sqlDate;
-
-    /**
-     * Ключ
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_id")
-    private Bank bankId;
+    @Column(name = "bank_id")
+    private Long bankId;
 
+    @NotBlank
     private String name;
 
-    private Float maxSum;
+    @NotNull
+    private Double maxSum;
 
-    private double rate;
+    @NotNull
+    private Double rate;
 
-    private LocalDateTime dateFrom;
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateFrom;
 
-    private LocalDateTime dateTo;
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateTo;
 
+
+    public static List<String> getColumns(){
+        return Arrays.asList("creditId", "bankId", "name", "maxSum", "rate", "dateFrom", "dateTo");
+    }
 }

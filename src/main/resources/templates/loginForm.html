@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head :: webjar(title='Login')}">
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<div class="container" th:insert="~{fragments/header :: header(headerTitle='Credit me')}"></div>
+
+<main class="container">
+    <div class="row g-4 align-items-center justify-content-center">
+        <div class="col-md-6 col-lg-8">
+
+            <h1 th:if="${isLogged} == true">You are logged!</h1>
+
+            <form th:if="${isLogged} == false" th:action="@{/login}" method="POST">
+                <div class="row g-3">
+                    <div th:if="${errorMessage}" class="alert alert-danger">
+                        <span th:text="${errorMessage}">errorMessage</span>
+                    </div>
+                    <div class="col-12">
+                        <label for="username" class="form-label">Login</label>
+                        <input type="text" class="form-control" name="username" id="username">
+                    </div>
+                    <div class="col-12">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                    </div>
+
+                    <input type="submit" class="btn btn-primary col-6" value="Log in" />
+
+                    <div class="col-6 text-center">
+                        <a href="/register">Register</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div class="container" th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

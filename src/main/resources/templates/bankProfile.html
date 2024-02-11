@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank</title>
+</head>
+<body>
+<h1>Bank</h1>
+<form th:object="${bank}" id="bankForm">
+    <fieldset>
+        <legend>Bank data</legend>
+
+        <label for="bankId" class="form-label">Name: </label>
+        <input id="bankId" class="form-control" type="number" name="bankId" th:value="*{bankId}" disabled></input>
+        <br/>
+
+        <label for="name" class="form-label">Max sum: </label>
+        <input id="name" class="form-control" type="text" name="name" th:value="*{name}" disabled></input>
+        <br/>
+    </fieldset>
+</form>
+</body>
+</html>

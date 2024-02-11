@@ -29,8 +29,6 @@ public class BankController {
 
         //Long bankId = userService.getAuthority();
         Long bankId = 1L;
-//        bank = creditService.findBankById(bankId);
-
         bank = new Bank();
     }
 

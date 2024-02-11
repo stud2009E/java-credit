@@ -1,23 +1,37 @@
 package ru.sber.edu.entity.auth;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "authorities")
 @Data
-@IdClass(AuthId.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Auth implements GrantedAuthority {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "auth_id")
+    private long authId;
+
     @Column(name = "user_id")
-    public long userId;
+    private long userId;
 
-    @Id
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role_name")
-    public Role.RoleType roleName;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_name")
+    private Role role;
 
-    public String authority;
+    /**
+     * Thymeleaf security works with authorities.
+     * We use them as roles in ui templates.
+     * @return role name
+     */
+    @Override
+    public String getAuthority(){
+        return role.getRoleName().toString();
+    }
 }

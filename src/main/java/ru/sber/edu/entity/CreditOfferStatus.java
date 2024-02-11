@@ -1,9 +1,6 @@
 package ru.sber.edu.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,10 +8,16 @@ import lombok.Data;
 @Data
 public class CreditOfferStatus {
 
-    @Id
-    @Column(length = 2)
-    public String creditOfferStatus;
 
-    public String creditOfferStatusName;
+    @Id
+    @Column(name = "status_name")
+    @Enumerated(EnumType.STRING)
+    public StatusType statusName;
+
+    public enum StatusType{
+        REQUEST,
+        APPROVE,
+        REJECT
+    }
 
 }

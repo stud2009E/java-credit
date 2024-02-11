@@ -20,20 +20,20 @@
 
                     <div class="col-12">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" id="username" th:value="*{username}">
+                        <input type="text" class="form-control" name="username" id="username" required th:value="*{username}">
                         <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
                     </div>
 
 
                     <div class="col-12">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" th:value="*{password}">
+                        <input type="password" class="form-control" name="password" id="password" required th:value="*{password}">
                         <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
                     </div>
 
                     <div class="col-12">
                         <label for="confirm" class="form-label">Confirm password</label>
-                        <input type="password" class="form-control" name="confirm" id="confirm" th:value="*{confirm}">
+                        <input type="password" class="form-control" name="confirm" id="confirm" required th:value="*{confirm}">
                         <span th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}" class="text-danger"></span>
                     </div>
 
@@ -42,25 +42,25 @@
 
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" name="firstName" id="firstName" th:value="*{firstName}">
+                        <input type="text" class="form-control" name="firstName" id="firstName" required th:value="*{firstName}">
                         <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-6">
                         <label for="lastName" class="form-label">First name</label>
-                        <input type="text" class="form-control" name="lastName" id="lastName" th:value="*{lastName}">
+                        <input type="text" class="form-control" name="lastName" id="lastName" required th:value="*{lastName}">
                         <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
                     </div>
 
                     <div class="col-12">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" name="phone" id="phone" th:value="*{phone}">
-                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+                        <input type="text" class="form-control" name="phone" id="phone" required th:value="*{phone}">
+                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="text-danger"></span>
                     </div>
 
                     <div class="col-12">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" th:value="*{email}">
+                        <input type="email" class="form-control" name="email" id="email" required th:value="*{email}">
                         <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
                     </div>
 

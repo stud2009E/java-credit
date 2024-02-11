@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>header</title>
 </head>
 <body>
-
     <header th:fragment="header" class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-            <span class="fs-4" th:text="${headerTitle}">headerTitle</span>
+            <span class="fs-4 ps-2" th:text="${headerTitle}">headerTitle</span>
         </a>
 
-        <ul class="nav nav-pills">
+        <ul sec:authorize="isAuthenticated() == false" class="nav nav-pills">
             <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+        </ul>
+
+        <ul sec:authorize="hasAuthority('CLIENT')" class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="/client/credits" class="nav-link">Credits</a></li>
+            <li class="nav-item"><a href="/client/offers" class="nav-link">Offers</a></li>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    User
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/client/profile">Profile</a></li>
+                    <li><a class="dropdown-item" href="/client/favorites">Favorites</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </ul>
+
+        <ul sec:authorize="hasAuthority('BANK')" class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="/bank/credits" class="nav-link">Credits</a></li>
+            <li class="nav-item"><a href="/bank/requests" class="nav-link">Requests</a></li>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    User
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/bank/profile">Profile</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </ul>
+
+        <ul sec:authorize="hasAuthority('ADMIN')" class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="/banks" class="nav-link">Banks</a></li>
+            <li class="nav-item"><a href="/clients" class="nav-link">Clients</a></li>
+            <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
         </ul>
     </header>
 </body>

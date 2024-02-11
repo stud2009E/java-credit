@@ -3,22 +3,21 @@ package ru.sber.edu.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import ru.sber.edu.auth.RegisterForm;
-import ru.sber.edu.entity.Client;
 import ru.sber.edu.entity.auth.Auth;
 import ru.sber.edu.entity.auth.Role;
 import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.repository.AuthRepository;
-import ru.sber.edu.repository.ClientRepository;
 import ru.sber.edu.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 
 @Service
@@ -26,23 +25,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
     private AuthRepository authRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void saveClient(RegisterForm form) {
-        Client client = clientRepository.save(new Client());
-
         User user = userFromForm(form);
         User savedUser = userRepository.save(user);
 
         Auth auth = new Auth();
         auth.setUserId(savedUser.getUserId());
-        auth.setRoleName(Role.RoleType.CLIENT);
-        auth.setAuthority(String.valueOf(client.getClientId()));
+        auth.setRole(new Role(Role.RoleType.CLIENT));
 
         authRepository.save(auth);
     }
@@ -74,40 +68,27 @@ public class UserService {
             errors.rejectValue("confirm", "confirm", "Password fields are not equal");
         }
 
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             return;
         }
 
         User user = userRepository.findByUsername(form.getUsername());
-        if (Objects.nonNull(user)){
+        if (Objects.nonNull(user)) {
             errors.rejectValue("username", "username", "Username is busy");
         }
     }
 
-    public Role.RoleType getRole(){
-        return Objects.requireNonNull(getAuth()).getRoleName();
+    public Collection<? extends GrantedAuthority> getRole() {
+        return getAuthentication().getAuthorities();
     }
 
-    public long getAuthority(){
-        return Long.parseLong(Objects.requireNonNull(getAuth()).getAuthority());
-    }
-
-
-    public boolean isLogged(){
+    public boolean isLogged() {
         Authentication auth = getAuthentication();
         return auth != null && !(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated();
     }
 
 
-    private Authentication getAuthentication(){
+    private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    private Auth getAuth(){
-        List<Auth> list = (List<Auth>) getAuthentication().getAuthorities().stream().toList();
-        if (list.isEmpty()){
-            return null;
-        }
-        return list.get(0);
     }
 }

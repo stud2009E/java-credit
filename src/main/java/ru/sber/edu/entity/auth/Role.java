@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table(name = "roles")
 @Data
@@ -15,14 +13,9 @@ import java.util.List;
 public class Role {
 
     @Id
-    @Column(name = "role_name",length = 10)
+    @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
     private RoleType roleName;
-
-
-    @OneToMany
-    @JoinColumn(name = "role_name")
-    private List<Auth> authorities;
 
     public enum RoleType{
         ADMIN,

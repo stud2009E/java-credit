@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.sber.edu.ui.table.FieldType;
+import ru.sber.edu.ui.table.TableColumn;
+import ru.sber.edu.ui.table.UiColumn;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -41,7 +44,14 @@ public class Credit {
     private LocalDate dateTo;
 
 
-    public static List<String> getColumns(){
-        return Arrays.asList("creditId", "bankId", "name", "maxSum", "rate", "dateFrom", "dateTo");
+    public static List<UiColumn> getColumns(){
+        return Arrays.asList(
+                new TableColumn("creditId", "Credit"),
+                new TableColumn("bankId", "Bank"),
+                new TableColumn("name", "Name"),
+                new TableColumn("maxSum", "Maximum"),
+                new TableColumn("rate", "Rate"),
+                new TableColumn("dateFrom", "From", FieldType.DATE),
+                new TableColumn("dateTo", "To", FieldType.DATE));
     }
 }

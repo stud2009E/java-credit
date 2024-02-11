@@ -9,12 +9,17 @@
 <table th:fragment="table" class="table table-hover">
     <thead class="table-light">
     <tr class="headings">
-        <th scope="col" th:each="header: ${headers}" class="column-title" th:text="${header}"/>
+        <th scope="col" th:each="header: ${headers}" class="column-title" th:text="${header.getTitle()}"/>
     </tr>
     </thead>
     <tbody>
     <tr class="even pointer" th:each="row: ${rows}">
-        <td th:each="header: ${headers}" th:text="${row.get(header)}"/>
+        <th:block th:each="header: ${headers}">
+            <th:block th:switch="${header.getType()}" th:with="fieldValue=${row.get(header.getField())}">
+                <td th:case="DATE" th:text="${#dates.format(fieldValue, 'yyyy-MM-dd')}"></td>
+                <td th:case="TEXT" th:text="${fieldValue}"></td>
+            </th:block>
+        </th:block>
     </tr>
     </tbody>
 </table>

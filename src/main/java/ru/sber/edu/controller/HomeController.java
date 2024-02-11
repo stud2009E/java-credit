@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
+import ru.sber.edu.ui.table.UiColumn;
 
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class HomeController {
 
         Page<Credit> page = creditService.findAll(pageable);
 
-        List<String> headers = Credit.getColumns();
+        List<UiColumn> headers = Credit.getColumns();
 
         List<Map<String, Object>> rows = page.stream().map(
                 credit -> mapper.convertValue(credit, new TypeReference<Map<String, Object>>() {})

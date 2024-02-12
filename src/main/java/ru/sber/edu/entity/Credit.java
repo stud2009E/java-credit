@@ -3,8 +3,13 @@ package ru.sber.edu.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.sber.edu.ui.table.TableColumn;
+import ru.sber.edu.ui.table.UiColumn;
+import ru.sber.edu.ui.table.UiColumnList;
+import ru.sber.edu.ui.table.UiFieldType;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -14,7 +19,7 @@ import java.util.List;
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-public class Credit {
+public class Credit implements UiColumnList{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -41,7 +46,14 @@ public class Credit {
     private LocalDate dateTo;
 
 
-    public static List<String> getColumns(){
-        return Arrays.asList("creditId", "bankId", "name", "maxSum", "rate", "dateFrom", "dateTo");
+    public static List<UiColumn> getColumns() {
+        return Arrays.asList(
+            new TableColumn("creditId", "Credit"),
+            new TableColumn("bankId", "Bank"),
+            new TableColumn("credit--NameLinkToCard", "Name", UiFieldType.CUSTOM),
+            new TableColumn("maxSum", "Maximum"),
+            new TableColumn("rate", "Rate"),
+            new TableColumn("dateFrom", "From", UiFieldType.DATE),
+            new TableColumn("dateTo", "To", UiFieldType.DATE));
     }
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <td th:fragment="cells(field, row, header)">
+
+        <!-- ru/sber/edu/entity/Credit.java     -->
+        <th:block if="${field} == 'credit--NameLinkToCard'">
+            <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+
+
+
+    </td>
+</body>
+</html>

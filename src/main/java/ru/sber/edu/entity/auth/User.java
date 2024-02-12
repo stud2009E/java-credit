@@ -21,7 +21,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long userId;
+    private Long userId;
 
     @Column(name = "user_name", unique = true)
     private String username;

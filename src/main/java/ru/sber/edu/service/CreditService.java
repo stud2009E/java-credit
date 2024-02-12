@@ -53,8 +53,7 @@ public class CreditService {
         }
 
         return  credit.get();
-
-    };
+    }
 
     public Credit saveCredit(Credit credit){
         return creditRepository.saveAndFlush(credit);
@@ -63,7 +62,4 @@ public class CreditService {
     public Bank findBankById(Long bankId) throws NullPointerException{
         return bankService.findById(bankId);
     }
-
-
-
 }

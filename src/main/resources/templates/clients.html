@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All clients</title>
+</head>
+<body>
+<h1>All clients</h1>
+<form method="get" th:action="@{search}">
+    <input name="name" placeholder="Find by name" size="50" th:value="${first_name}" type="text">
+    <button class="btn btn-info" type="submit">Search</button>
+    <button class="btn btn-info" type="submit">Reset</button>
+</form>
+
+<fieldset>
+    <legend>List of credit offers</legend>
+    <table border="1">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client: ${clients}">
+            <td th:href="@{'/bank/client/' + ${client.getUserId()}}" th:text="${client.getUserId()}"></td>
+            <td th:text="${client.getFirstName()}"></td>
+            <td th:text="${client.getLastName()}"></td>
+            <td th:text="${client.phone}"></td>
+            <td th:text="${client.email}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation" th:if="${clients.totalPages - 1 gt 0}">
+        <ul class="pagination justify-content-end">
+            <li class="page-item" th:classappend="${clients.number eq 0} ? 'disabled'">
+                <a class="page-link" tabindex="-1" aria-disabled="true" th:href="
+            @{/bank/client/all
+            (page=${clients.number lt 2 ? 1 : client.number}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Previous</a>
+            </li>
+
+            <li class="page-item" th:classappend="${clients.number + 1 eq clients.totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/bank/credit/all
+            (page=${clients.number + 2}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+</fieldset>
+</body>
+</html>

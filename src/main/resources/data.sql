@@ -7,7 +7,7 @@ on conflict do nothing;
 
 INSERT INTO public.bank
 (bank_id, "name")
-VALUES(1, 'Альфа БАнк'),
+VALUES(1, 'Альфа Банк'),
        (2, 'Сбер'),
        (3, 'ВТБ'),
        (4, 'РосБанк'),
@@ -86,17 +86,24 @@ VALUES(200000, 10, 1, 1, '2023-01-01', '2023-02-01', 'Семейный'),
       (3400000, 13.3, 3, 63, '2023-01-01', '2023-02-01', 'Строительный')
 on conflict do nothing;
 
-
 INSERT INTO public.users
-(user_id, "name")
-VALUES(1, 'Альфа БАнк'),
-       (2, 'Сбер'),
-       (3, 'ВТБ'),
-       (4, 'РосБанк'),
-       (5, 'ПриоБанк'),
-       (6, 'СПБ'),
-       (7, 'СовКомБанк'),
-       (8, 'Русский Стандарт'),
-       (9, 'Газпром Банк'),
-       (10, 'Московский Банк')
+(user_id, last_name, first_name, phone, email)
+VALUES(1, 'Олег', 'Иванов', '+79007501112', 'oleg@yandex'),
+       (2, 'Ирина', 'Петрова', '+79007501112', 'irina@yandex'),
+       (3, 'Александр', 'Рыбкин', '+79007501112', 'alex@yandex'),
+       (4, 'Глеб', 'Пушкин', '+79007501112', 'gleb@yandex'),
+       (5, 'Ольга', 'Чайка', '+79007501112', 'olfga@yandex')
 on conflict do nothing;
+
+
+INSERT INTO public.bank_user
+(user_id, bank_id)
+VALUES(1, 1),
+       (2, 1),
+       (3, 1),
+       (4, 2),
+       (5, 2)
+on conflict do nothing;
+
+
+

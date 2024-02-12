@@ -16,6 +16,8 @@ import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 import ru.sber.edu.ui.table.UiColumn;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,6 @@ public class HomeController {
 
         Sort sorting = Sort.by(sortBy);
         sorting = order.equals("acs") ? sorting.ascending() : sorting.descending();
-
         Pageable pageable = PageRequest.of(--pageNumber, pageSize, sorting );
 
         Page<Credit> page = creditService.findAll(pageable);
@@ -48,13 +49,31 @@ public class HomeController {
         List<UiColumn> headers = Credit.getColumns();
 
         List<Map<String, Object>> rows = page.stream().map(
-                credit -> mapper.convertValue(credit, new TypeReference<Map<String, Object>>() {})
+                credit -> {
+                    try {
+                        return convertUsingReflection(credit);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         ).toList();
 
         model.addAttribute("headers", headers);
         model.addAttribute("rows", rows);
 
         return "home";
+    }
+
+    private Map<String, Object> convertUsingReflection(Object object) throws IllegalAccessException {
+        Map<String, Object> map = new HashMap<>();
+        Field[] fields = object.getClass().getDeclaredFields();
+
+        for (Field field: fields) {
+            field.setAccessible(true);
+            map.put(field.getName(), field.get(object));
+        }
+
+        return map;
     }
 
 }

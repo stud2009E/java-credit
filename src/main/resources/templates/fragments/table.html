@@ -16,8 +16,8 @@
     <tr class="even pointer" th:each="row: ${rows}">
         <th:block th:each="header: ${headers}">
             <th:block th:switch="${header.getType()}" th:with="fieldValue=${row.get(header.getField())}">
-                <td th:case="DATE" th:text="${#dates.format(fieldValue, 'yyyy-MM-dd')}"></td>
-                <td th:case="TEXT" th:text="${fieldValue}"></td>
+                <td th:case="DATE" th:text="${#temporals.format(fieldValue, 'yyyy-MM-dd')}"></td>
+                <td th:case="*" th:text="${fieldValue}"></td>
             </th:block>
         </th:block>
     </tr>

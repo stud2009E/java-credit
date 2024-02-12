@@ -41,20 +41,13 @@ public class CreditService {
     }
 
     public Credit createCredit(Credit credit, Long bankId){
-
         credit.setBankId(bankId);
         return creditRepository.saveAndFlush(credit);
     }
-    public Credit findById(Long creditId) throws NullPointerException{
 
-        Optional<Credit> credit = creditRepository.findById(creditId);
-        if (credit.isEmpty()){
-            throw new NullPointerException("There is no credit with ID " + creditId);
-        }
-
-        return  credit.get();
-
-    };
+    public Optional<Credit> findById(Long creditId){
+        return creditRepository.findById(creditId);
+    }
 
     public Credit saveCredit(Credit credit){
         return creditRepository.saveAndFlush(credit);

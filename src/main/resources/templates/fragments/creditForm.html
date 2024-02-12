@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>creditForm</title>
@@ -12,31 +13,22 @@
 
     <div class="row g-3">
         <h4 class="mb-3">Credit</h4>
-        <!--        <label for="creditId">Id: </label>-->
-        <!--        <input id="creditId" type="number" name="creditId" th:value="${credit.creditId}" readonly></input>-->
-        <!--        <br/>-->
 
-        <!--        <label for="name" class="form-label">Name: </label>-->
-        <!--        <input id="name" class="form-control" type="text" name="name" th:value="*{name}"-->
-        <!--               th:readonly="${mode != 'edit'}"></input>-->
-        <!--        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>-->
-        <!--        <br/>-->
+        <div class="col-12">
+            <input type="hidden" id="creditId" class="form-control" name="creditId" th:value="*{creditId}" readonly/>
+            <input type="hidden" class="form-control" name="bankId" id="bankId" required th:value="*{bankId}" readonly/>
+        </div>
+
+
         <div class="col-12">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" name="name" id="name" required th:value="*{name}"/>
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
         </div>
 
-
-        <div class="col-12" th:hidden="true">
-            <label for="bankId" class="form-label">BankId</label>
-            <input type="text" class="form-control" name="name" id="bankId" required th:value="*{bankId}"/>
-        </div>
-
-
         <div class="col-12">
             <label for="maxSum" class="form-label">Maximum</label>
-            <input type="number" class="form-control" name="name" id="maxSum" required th:readonly="${mode != 'edit'}"
+            <input type="number" class="form-control" name="maxSum" id="maxSum" required th:readonly="${mode != 'edit'}"
                    th:value="*{maxSum}"/>
             <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
         </div>
@@ -44,7 +36,7 @@
 
         <div class="col-12">
             <label for="rate" class="form-label">Rate</label>
-            <input type="number" class="form-control" name="name" id="rate" required th:readonly="${mode != 'edit'}"
+            <input type="number" class="form-control" name="rate" id="rate" required th:readonly="${mode != 'edit'}"
                    th:value="*{rate}"/>
             <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
         </div>
@@ -52,7 +44,7 @@
 
         <div class="col-12">
             <label for="dateFrom" class="form-label">Date from</label>
-            <input type="date" class="form-control" name="name" id="dateFrom" required th:readonly="${mode != 'edit'}"
+            <input type="date" class="form-control" name="dateFrom" id="dateFrom" required th:readonly="${mode != 'edit'}"
                    th:value="*{dateFrom}"/>
             <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
         </div>
@@ -60,7 +52,7 @@
 
         <div class="col-12">
             <label for="dateTo" class="form-label">Date to</label>
-            <input type="date" class="form-control" name="name" id="dateTo" required th:readonly="${mode != 'edit'}"
+            <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode != 'edit'}"
                    th:value="*{dateTo}"/>
             <span th:if="${#fields.hasErrors('dateTo')}" th:errors="*{dateTo}" class="text-danger"></span>
         </div>

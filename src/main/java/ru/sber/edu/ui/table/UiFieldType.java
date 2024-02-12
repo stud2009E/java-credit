@@ -1,11 +1,9 @@
 package ru.sber.edu.ui.table;
 
-public enum FieldType {
-
+public enum UiFieldType {
     TEXT,
 
     DATE,
 
-    DATETIME
-
+    CUSTOM
 }

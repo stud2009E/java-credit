@@ -15,9 +15,12 @@
     <tbody>
     <tr class="even pointer" th:each="row: ${rows}">
         <th:block th:each="header: ${headers}">
-            <th:block th:switch="${header.getType()}" th:with="fieldValue=${row.get(header.getField())}">
-                <td th:case="DATE" th:text="${#temporals.format(fieldValue, 'yyyy-MM-dd')}"></td>
-                <td th:case="*" th:text="${fieldValue}"></td>
+            <th:block th:with="fieldValue=${row.get(header.getField())}">
+                <td th:if="${header.getType()} == 'TEXT'" th:text="${fieldValue}"></td>
+                <td th:if="${header.getType()} == 'DATE'" th:text="${#temporals.format(fieldValue, 'yyyy-MM-dd')}"></td>
+                <th:block th:if="${header.getType()} == 'CUSTOM'">
+                    <td th:replace="~{fragments/customTableCell :: cells (field=${header.getField()}, row=${row}, header=${header}) }"></td>
+                </th:block>
             </th:block>
         </th:block>
     </tr>

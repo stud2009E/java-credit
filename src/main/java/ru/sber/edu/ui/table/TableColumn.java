@@ -10,18 +10,18 @@ public class TableColumn implements UiColumn{
 
     String title;
 
-    FieldType type;
+    UiFieldType type;
 
     public TableColumn(String field){
         this.field = field;
         this.title = field;
-        this.type = FieldType.TEXT;
+        this.type = UiFieldType.TEXT;
     }
 
     public TableColumn(String field, String title){
         this.field = field;
         this.title = title;
-        this.type = FieldType.TEXT;
+        this.type = UiFieldType.TEXT;
     }
 
     public String getType(){

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: webjar(title='Credit')}">
+    <meta charset="UTF-8">
+    <title>Credit</title>
+</head>
+<body>
+
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
+
+    <main class="container">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-md-6 col-lg-8">
+
+                <th:block th:object="${credit}">
+                    <form th:replace="~{fragments/creditForm :: creditForm(action='/credit/request', credit=${credit}, mode=${mode})}"></form>
+                </th:block>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</div>
+</body>
+</html>

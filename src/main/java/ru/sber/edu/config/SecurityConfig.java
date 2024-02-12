@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.sber.edu.entity.auth.Role;
 import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.repository.UserRepository;
 
@@ -38,7 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/logout", "/register", "/login", "/login-error", "/", "/webjars/**").permitAll()
+                        .requestMatchers("/logout", "/register", "/login", "/login-error", "/credit/*","/", "/webjars/**").permitAll()
+                        .requestMatchers("/credit/request").hasAuthority(Role.RoleType.CLIENT.toString())
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login")
                         .failureUrl("/login-error"))

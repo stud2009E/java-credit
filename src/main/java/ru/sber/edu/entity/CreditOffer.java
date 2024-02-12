@@ -9,6 +9,15 @@ import ru.sber.edu.entity.auth.User;
 @Table(name = "credit_offer")
 @Data
 @NoArgsConstructor
+@IdClass(CreditOffer.class)
+@NamedEntityGraph(
+        name = "credit_offer-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("credit"),
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("status_name")
+        }
+)
 public class CreditOffer {
 
     @Id

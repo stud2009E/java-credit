@@ -87,23 +87,41 @@ VALUES(200000, 10, 1, 1, '2023-01-01', '2023-02-01', 'Семейный'),
 on conflict do nothing;
 
 INSERT INTO public.users
-(user_id, last_name, first_name, phone, email)
-VALUES(1, 'Олег', 'Иванов', '+79007501112', 'oleg@yandex'),
-       (2, 'Ирина', 'Петрова', '+79007501112', 'irina@yandex'),
-       (3, 'Александр', 'Рыбкин', '+79007501112', 'alex@yandex'),
-       (4, 'Глеб', 'Пушкин', '+79007501112', 'gleb@yandex'),
-       (5, 'Ольга', 'Чайка', '+79007501112', 'olfga@yandex')
+(create_date,change_date,enabled,credentials_non_expired,account_non_locked, account_non_expired, user_id, last_name, first_name, phone, email, user_name, password)
+VALUES('2023-01-01','2023-01-01',true,true,true,true, 1, 'Олег', 'Иванов', '+79007501112', 'oleg@yandex', 'admin1','$2a$10$jFlS0m.6NdDSJC/j0MQpo.6MWQC5GXXyZukUBRqtU/tB8YvZ88IKq'),
+       ('2023-01-03','2023-01-03',true,true,true,true, 2, 'Ирина', 'Петрова', '+79306501113', 'irina@yandex','client1','$2a$10$.YxHA0bQnhlFkHF7Xt3t0.PeC7FvcN7vg250bY68ejeKMkQtwIWHK'),
+       ('2023-02-01','2023-02-01',true,true,true,true, 3, 'Иван', 'Лебедев', '+79164153467', 'irina@yandex','client2','$2a$10$xUOJbKotAzgRJ/Rl5ZUGHOIe4HONfY1R6GRbN36TkwS/m57GavStq'),
+       ('2023-01-10','2023-01-10',true,true,true,true, 4, 'Александр', 'Рыбкин', '+79604503119', 'alex@yandex','bank1','$2a$10$df/fONh/EQnBYd5.pGabTOdMJ9TeKHMc1R9.q9kLQ3OkfkzbNnLyW'),
+       ('2022-09-07','2022-09-07',true,true,true,true, 5, 'Глеб', 'Пушкин', '+79207601121', 'gleb@yandex','bank2','$2a$10$zpI5RbruRMp8TZMMpYGmkeM6x.Lcn8Xivg6p/QuC0n.U.uiUcWa1e')
 on conflict do nothing;
 
+INSERT INTO public.authorities
+(auth_id, user_id, role_name)
+VALUES(1, 1,'ADMIN'),
+       (2, 2,'CLIENT'),
+       (3, 3,'CLIENT'),
+       (4, 4,'BANK'),
+       (5, 5,'BANK')
+on conflict do nothing;
 
 INSERT INTO public.bank_user
 (user_id, bank_id)
-VALUES(1, 1),
-       (2, 1),
-       (3, 1),
-       (4, 2),
-       (5, 2)
+VALUES(2, 1),
+       (3, 1)
 on conflict do nothing;
 
+INSERT INTO public.credit_offer_status
+(status_name)
+VALUES('REQUEST'),
+       ('APPROVE'),
+       ('REJECT')
+on conflict do nothing;
 
+INSERT INTO public.credit_offer
+(user_id, credit_id, status_name)
+VALUES(2, 1, 'REQUEST'),
+       (2, 11, 'REQUEST'),
+       (3, 21, 'REQUEST'),
+       (3, 31, 'REQUEST')
+on conflict do nothing;
 

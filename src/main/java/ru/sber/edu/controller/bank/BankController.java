@@ -3,17 +3,22 @@ package ru.sber.edu.controller.bank;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.projection.ClientOfBank;
 import ru.sber.edu.service.BankService;
+import ru.sber.edu.service.CreditOfferService;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bank")
@@ -27,23 +32,27 @@ public class BankController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CreditOfferService creditOfferService;
+
     private final Bank bank;
 
     public BankController(CreditService creditService) {
         this.creditService = creditService;
 
-        //Long bankId = 1L;
-        //bank = creditService.findBankById(bankId);
+        Long bankId = 1L;
+        //Long bank = creditService.findBankById(bankId);
 
         bank = new Bank();
-        bank.setBankId(1L);
+        bank.setBankId(bankId);
+
     }
 
     @GetMapping(value = "/credit/all")
     public String credits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-                      @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                      @RequestParam(defaultValue = "creditId") String sortBy,
-                      @RequestParam(defaultValue = "acs") String order,
+                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                          @RequestParam(defaultValue = "creditId") String sortBy,
+                          @RequestParam(defaultValue = "acs") String order,
                       Model model){
 
         Page<Credit> credits = creditService.findByBankId(bank.getBankId(), pageNumber, pageSize, sortBy, order);
@@ -196,5 +205,18 @@ public class BankController {
     }
 
     */
+
+    @GetMapping(value = "/creditOffers")
+    public String creditOffer(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                              @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                              @RequestParam(defaultValue = "user_id") String sortBy,
+                              @RequestParam(defaultValue = "acs") String order,
+                              Model model){
+
+        List<CreditOffer> offers = creditOfferService.findAllByBank(bank.getBankId());
+
+        return null;
+
+    }
 
 }

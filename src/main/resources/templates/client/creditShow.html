@@ -17,6 +17,26 @@
                     <span th:text="${errorMessage}">errorMessage</span>
                 </div>
 
+                <div class="row">
+                    <h3 class="col text-start">Credit</h3>
+
+                    <th:block sec:authorize="hasAuthority('CLIENT')">
+                        <form class="col text-end" th:if="${isFavorite} == false" th:action="@{/favorites/add}"
+                              th:object="${credit}" method="post">
+                            <input type="hidden" name="creditId" th:value="*{creditId}">
+                            <input type="submit" class="btn btn-success" value="Add to favorites">
+                        </form>
+
+                        <form class="col text-end" th:if="${isFavorite} == true" th:action="@{/favorites/remove}"
+                              th:object="${credit}" method="post">
+                            <input type="hidden" name="creditId" th:value="*{creditId}">
+                            <input type="submit" class="btn btn-danger" value="Remove from favorites">
+                        </form>
+                    </th:block>
+                </div>
+
+
+
                 <th:block th:if="${credit}" th:object="${credit}">
                     <form th:replace="~{fragments/creditForm :: creditForm(action='/credit/request', credit=${credit}, mode=${mode})}"></form>
                 </th:block>

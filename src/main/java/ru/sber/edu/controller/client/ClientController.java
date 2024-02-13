@@ -7,12 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.entity.FavoriteCredit;
+import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -25,14 +27,18 @@ public class ClientController {
     private CreditService creditService;
 
     @GetMapping(value = "/credit/{creditId}")
-    public String credit(@PathVariable(name = "creditId") Long creditId, Model model){
+    public String credit(@PathVariable(name = "creditId") Long creditId, Model model) {
 
-        Optional<Credit> optional = creditService.findById(creditId);
+        Optional<Credit> optionalCredit = creditService.findById(creditId);
 
-        if (optional.isEmpty()){
+        if (optionalCredit.isEmpty()) {
             model.addAttribute("errorMessage", "This loan does not exist");
-        }else {
-            model.addAttribute("credit", optional.get());
+        } else {
+            User user = userService.getUser();
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+
+            model.addAttribute("isFavorite", !favorites.isEmpty());
+            model.addAttribute("credit", optionalCredit.get());
         }
 
         return "/client/creditShow";
@@ -41,10 +47,10 @@ public class ClientController {
 
     @PostMapping(value = "/credit/request")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String creditRequest(Credit credit, Model model){
-        try{
+    public String creditRequest(Credit credit, Model model) {
+        try {
             creditService.createCreditOffer(credit);
-        }catch (CreditBaseException e) {
+        } catch (CreditBaseException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/client/creditShow";
         }
@@ -52,9 +58,42 @@ public class ClientController {
         return "redirect:/";
     }
 
+    @PostMapping(value = "/favorites/add")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String addToFavorites(Credit credit, Model model) {
+        Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
+        User user = userService.getUser();
+
+        if (optionalCredit.isPresent()) {
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+            if (favorites.isEmpty()) {
+                creditService.addFavoriteCredit(new FavoriteCredit(user, optionalCredit.get()));
+            }
+        }
+
+        return "redirect:/credit/" + credit.getCreditId();
+    }
+
+    @PostMapping(value = "/favorites/remove")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String removeFromFavorites(Credit credit, Model model) {
+        Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
+        User user = userService.getUser();
+
+        if (optionalCredit.isPresent()) {
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+            if (!favorites.isEmpty()) {
+                creditService.removeFavoriteCredit(new FavoriteCredit(user, optionalCredit.get()));
+            }
+        }
+
+        return "redirect:/credit/" + credit.getCreditId();
+    }
+
+
     @GetMapping(value = "/profile")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String profile(Model model){
+    public String profile(Model model) {
 
         return "/client/profile";
     }
@@ -62,7 +101,7 @@ public class ClientController {
 
     @GetMapping(value = "/favorites")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String favorites(Model model){
+    public String favorites(Model model) {
 
         return "/client/favorites";
     }
@@ -70,14 +109,14 @@ public class ClientController {
 
     @GetMapping(value = "/my/requests")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String myRequests(Model model){
+    public String myRequests(Model model) {
 
         return "/client/myRequests";
     }
 
     @GetMapping(value = "/my/credits")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String myCredits(Model model){
+    public String myCredits(Model model) {
 
         return "/client/myCredits";
     }

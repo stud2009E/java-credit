@@ -5,17 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-import ru.sber.edu.entity.Bank;
-import ru.sber.edu.entity.Credit;
-import ru.sber.edu.entity.CreditOffer;
-import ru.sber.edu.entity.CreditOfferStatus;
+import ru.sber.edu.entity.*;
 import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.exception.CreditBaseException;
-import ru.sber.edu.repository.BankRepository;
+import ru.sber.edu.repository.CreditFavoriteRepository;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.CreditRepository;
 
@@ -26,13 +21,13 @@ import java.util.Optional;
 public class CreditService {
 
     @Autowired
+    private CreditFavoriteRepository creditFavoriteRepository;
+
+    @Autowired
     private CreditOfferRepository creditOfferRepository;
 
     @Autowired
     private CreditRepository creditRepository;
-
-    @Autowired
-    private BankRepository bankRepository;
 
     @Autowired
     private BankService bankService;
@@ -109,5 +104,18 @@ public class CreditService {
         creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REQUEST));
 
         return creditOfferRepository.save(creditOffer);
+    }
+
+
+    public FavoriteCredit addFavoriteCredit(FavoriteCredit favoriteCredit){
+        return creditFavoriteRepository.save(favoriteCredit);
+    }
+
+    public void removeFavoriteCredit(FavoriteCredit favoriteCredit){
+        creditFavoriteRepository.delete(favoriteCredit);
+    }
+
+    public List<FavoriteCredit> findFavoriteCredit(User user, Credit credit){
+        return creditFavoriteRepository.findByUserAndCredit(user, credit);
     }
 }

@@ -11,15 +11,16 @@ import ru.sber.edu.entity.auth.User;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(FavoriteCredit.class)
 public class FavoriteCredit {
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "credit_id")
     private Credit credit;
 }

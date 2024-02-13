@@ -38,52 +38,63 @@ public class CreditService {
     @Autowired
     private UserService userService;
 
-    public Page<Credit> findByBankId(Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+
+    public Page<Credit> findByBank(Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBankId(bankId, paging);
+        return creditRepository.findByBank(bank, paging);
     }
 
-    public Page<Credit> findByNameAndBankId(String name, Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+
+    public Page<Credit> findByNameAndBankId(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBankIdAndNameContainingIgnoreCase(bankId, name, paging);
+        return creditRepository.findByBankAndNameContainingIgnoreCase(bank, name, paging);
     }
 
-    public Credit createCredit(Credit credit, Long bankId){
-        credit.setBankId(bankId);
+
+    public Credit createCredit(Credit credit, Long bankId) {
+        Bank bank = new Bank();
+        bank.setBankId(bankId);
+
+        credit.setBank(bank);
         return creditRepository.saveAndFlush(credit);
     }
 
-    public Optional<Credit> findById(Long creditId){
+
+    public Optional<Credit> findById(Long creditId) {
         return creditRepository.findById(creditId);
     }
 
-    public Credit saveCredit(Credit credit){
+
+    public Credit saveCredit(Credit credit) {
         return creditRepository.saveAndFlush(credit);
     }
 
-    public Optional<Bank> findBankById(Long bankId){
+
+    public Optional<Bank> findBankById(Long bankId) {
         return bankService.findById(bankId);
     }
 
-    public Page<Credit> findAll(Pageable pageable){
+
+    public Page<Credit> findAll(Pageable pageable) {
         return creditRepository.findAll(pageable);
     }
 
+
     @Transactional
-    public CreditOffer createCreditOffer(Credit credit){
+    public CreditOffer createCreditOffer(Credit credit) {
         Optional<Credit> creditOptional = findById(credit.getCreditId());
 
-        if (creditOptional.isEmpty()){
+        if (creditOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find credit");
         }
-        Optional<Bank> bankOptional = findBankById(credit.getBankId());
-        if (bankOptional.isEmpty()){
+        Optional<Bank> bankOptional = findBankById(credit.getBank().getBankId());
+        if (bankOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
         }
 

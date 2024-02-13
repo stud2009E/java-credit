@@ -22,7 +22,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long userId;
+    private Long userId;
 
     @Column(name = "user_name", unique = true)
     private String username;
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime changeDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<Auth> authorities;
 

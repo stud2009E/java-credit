@@ -25,8 +25,9 @@ public class Credit implements UiColumnList{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
-    @Column(name = "bank_id")
-    private Long bankId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "bank_id")
+    private Bank bank;
 
     @NotBlank
     private String name;

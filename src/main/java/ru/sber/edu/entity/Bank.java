@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sber.edu.entity.auth.User;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class Bank {
     private Long bankId;
 
     private String name;
+
+    @OneToMany
+    @JoinColumn(name = "bank_id")
+    private List<BankUser> users;
 
     @OneToMany
     @JoinColumn(name = "bank_id")

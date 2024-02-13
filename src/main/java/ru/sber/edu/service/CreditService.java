@@ -24,25 +24,28 @@ public class CreditService {
     @Autowired
     BankService bankService;
 
-    public Page<Credit> findByBankId(Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+    public Page<Credit> findByBank(Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBankId(bankId, paging);
+        return creditRepository.findByBank(bank, paging);
     }
 
-    public Page<Credit> findByNameAndBankId(String name, Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+    public Page<Credit> findByNameAndBankId(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBankIdAndNameContainingIgnoreCase(bankId, name, paging);
+        return creditRepository.findByBankAndNameContainingIgnoreCase(bank, name, paging);
     }
 
     public Credit createCredit(Credit credit, Long bankId){
 
-        credit.setBankId(bankId);
+        Bank bank = new Bank();
+        bank.setBankId(bankId);
+
+        credit.setBank(bank);
         return creditRepository.saveAndFlush(credit);
     }
     public Credit findById(Long creditId) throws NullPointerException{

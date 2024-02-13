@@ -55,7 +55,7 @@ public class BankController {
                           @RequestParam(defaultValue = "acs") String order,
                       Model model){
 
-        Page<Credit> credits = creditService.findByBankId(bank.getBankId(), pageNumber, pageSize, sortBy, order);
+        Page<Credit> credits = creditService.findByBank(bank, pageNumber, pageSize, sortBy, order);
 
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("sortBy", sortBy);
@@ -74,7 +74,7 @@ public class BankController {
                          Model model){
 
         if(!name.isEmpty()){
-            Page<Credit> credits = creditService.findByNameAndBankId(name, bank.getBankId(), pageNumber, pageSize, sortBy, order);
+            Page<Credit> credits = creditService.findByNameAndBankId(name, bank, pageNumber, pageSize, sortBy, order);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("sortBy", sortBy);
             model.addAttribute("order", order);
@@ -139,7 +139,7 @@ public class BankController {
     public String creditCreate(Model model){
         Credit credit = new Credit();
 
-        credit.setBankId(bank.getBankId());
+        credit.setBank(bank);
         credit.setDateFrom(LocalDate.now());
         credit.setDateTo(LocalDate.now());
 
@@ -213,10 +213,9 @@ public class BankController {
                               @RequestParam(defaultValue = "acs") String order,
                               Model model){
 
-        List<CreditOffer> offers = creditOfferService.findAllByBank(bank.getBankId());
+        List<CreditOffer> offers = creditOfferService.findAllByBank(bank);
 
         return null;
 
     }
-
 }

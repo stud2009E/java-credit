@@ -13,10 +13,11 @@ import ru.sber.edu.entity.auth.User;
 @NamedEntityGraph(
         name = "credit_offer-entity-graph",
         attributeNodes = {
-                @NamedAttributeNode("credit"),
+                @NamedAttributeNode(value = "credit", subgraph = "subgraph-bank"),
                 @NamedAttributeNode("user"),
-                @NamedAttributeNode("status_name")
-        }
+                @NamedAttributeNode("creditOfferStatus"), },
+        subgraphs = { @NamedSubgraph(name = "subgraph-bank",
+                                     attributeNodes = {@NamedAttributeNode(value = "bank")}) }
 )
 public class CreditOffer {
 

@@ -22,8 +22,7 @@
         <br/>
 
         <label for="bankId" class="form-label" th:hidden="true">bankId: </label>
-        <input id="bankId" class="form-control" type="text" name="bankId" th:value="*{bankId}" th:hidden="true"></input>
-        <span th:if="${#fields.hasErrors('bankId')}" th:errors="*{bankId}" class="text-danger"></span>
+        <input id="bankId" class="form-control" type="text" name="bankId" th:value="${credit.getBank().getBankId()}" th:hidden="true"></input>
         <br/>
 
         <label for="maxSum">Max sum: </label>

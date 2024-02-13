@@ -1,5 +1,6 @@
 package ru.sber.edu.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,6 @@ import java.util.List;
 
 @Repository
 public interface CreditOfferRepository extends JpaRepository<CreditOffer, CreditOffer> {
-    List<CreditOffer> findAllByCreditIn(List<Credit> credits);
+    @EntityGraph(value = "credit_offer-entity-graph")
+   List<CreditOffer> findAllByBank(Bank bank);
 }

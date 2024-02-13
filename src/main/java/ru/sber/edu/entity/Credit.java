@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.sber.edu.entity.auth.User;
 
 import java.time.LocalDate;
 
@@ -18,8 +19,11 @@ public class Credit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long creditId;
 
-    @Column(name = "bank_id")
-    private Long bankId;
+    @ManyToOne
+    @JoinColumn(name = "bank_id")
+    private Bank bank;
+    //@Column(name = "bank_id")
+    //private Long bankId;
 
     @NotBlank
     private String name;

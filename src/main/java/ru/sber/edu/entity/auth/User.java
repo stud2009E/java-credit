@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.sber.edu.entity.CreditOffer;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -34,9 +35,14 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime changeDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<Auth> authorities;
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<CreditOffer> creditOffers ;
 
     @Email
     @NotBlank

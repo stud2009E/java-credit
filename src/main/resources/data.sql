@@ -124,4 +124,3 @@ VALUES(2, 1, 'REQUEST'),
        (3, 21, 'REQUEST'),
        (3, 31, 'REQUEST')
 on conflict do nothing;
-

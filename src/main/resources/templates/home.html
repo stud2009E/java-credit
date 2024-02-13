@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: webjar}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: webjar(title='Home')}">
     <meta charset="UTF-8">
     <title>Home page</title>
 </head>
@@ -8,12 +8,10 @@
 
 <div class="container">
     <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
-</div>
-<div class="container">
 
+    <table th:replace="~{fragments/table :: table}"></table>
 
-
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 </div>
 </body>
 </html>

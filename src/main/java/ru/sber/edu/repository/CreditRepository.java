@@ -17,6 +17,4 @@ public interface CreditRepository extends JpaRepository<Credit, Long> {
     //List<Credit> findByBankId(Long bankId);
     Page<Credit> findByBankAndNameContainingIgnoreCase(Bank bank, String name, Pageable pageable);
 
-
-
 }

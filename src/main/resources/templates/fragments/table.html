@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table th:fragment="table" class="table table-hover">
+    <thead class="table-light">
+    <tr class="headings">
+        <th scope="col" th:each="header: ${headers}" class="column-title" th:text="${header.getTitle()}"/>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="even pointer" th:each="row: ${rows}">
+        <th:block th:each="header: ${headers}">
+            <th:block th:with="fieldValue=${row.get(header.getField())}">
+                <td th:if="${header.getType()} == 'TEXT'" th:text="${fieldValue}"></td>
+                <td th:if="${header.getType()} == 'DATE'" th:text="${#temporals.format(fieldValue, 'yyyy-MM-dd')}"></td>
+                <th:block th:if="${header.getType()} == 'CUSTOM'">
+                    <td th:replace="~{fragments/customTableCell :: cells (field=${header.getField()}, row=${row}, header=${header}) }"></td>
+                </th:block>
+            </th:block>
+        </th:block>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -37,7 +37,7 @@ public class RegisterController {
 
         model.addAttribute("isLogged", userService.isLogged());
 
-        userService.checkClientData(form, errors);
+        userService.checkRegisterData(form, errors);
         if (errors.hasErrors()) {
             return "registerForm";
         }

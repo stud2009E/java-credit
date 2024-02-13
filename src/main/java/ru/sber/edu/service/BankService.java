@@ -13,15 +13,8 @@ public class BankService {
     @Autowired
     private BankRepository bankRepository;
 
-    public Bank findById(Long bankId) throws NullPointerException{
-
-        Optional<Bank> bank = bankRepository.findById(bankId);
-
-        if (bank.isEmpty()){
-            throw new NullPointerException("There is no bank with ID " + bankId);
-        }
-
-        return bank.get();
+    public Optional<Bank> findById(Long bankId){
+        return bankRepository.findById(bankId);
     }
 
 }

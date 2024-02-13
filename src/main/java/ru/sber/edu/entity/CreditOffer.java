@@ -9,6 +9,7 @@ import ru.sber.edu.entity.auth.User;
 @Table(name = "credit_offer")
 @Data
 @NoArgsConstructor
+@IdClass(CreditOffer.class)
 public class CreditOffer {
 
     @Id

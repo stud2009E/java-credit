@@ -49,7 +49,6 @@ public class Credit implements UiColumnList{
     public static List<UiColumn> getColumns() {
         return Arrays.asList(
             new TableColumn("creditId", "Credit"),
-            new TableColumn("bankId", "Bank"),
             new TableColumn("credit--NameLinkToCard", "Name", UiFieldType.CUSTOM),
             new TableColumn("maxSum", "Maximum"),
             new TableColumn("rate", "Rate"),

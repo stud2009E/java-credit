@@ -12,6 +12,7 @@ import ru.sber.edu.entity.Credit;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bank")
@@ -22,6 +23,7 @@ public class BankController {
     @Autowired
     private UserService userService;
 
+    //TODO remove
     private final Bank bank;
 
     public BankController(CreditService creditService) {
@@ -40,6 +42,7 @@ public class BankController {
                       Model model){
 
         //Long bankId = userService.getAuthority();
+        //TODO remove
         Long bankId = 1L;
         Page<Credit> credits = creditService.findByBankId(bankId, pageNumber, pageSize, sortBy, order);
 
@@ -74,63 +77,59 @@ public class BankController {
         }
     }
 
+
     @GetMapping(value = "credit/{creditId}")
-    public String showCredit(@PathVariable("creditId") Long creditId,
-                             Model model){
+    public String showCredit(@PathVariable("creditId") Long creditId, Model model){
 
-        Credit credit = creditService.findById(creditId);
+        Optional<Credit> creditOptional = creditService.findById(creditId);
 
-        model.addAttribute("credit", credit);
+        creditOptional.ifPresent(credit -> model.addAttribute("credit", credit));
         model.addAttribute("action", "/bank/credit/edit");
 
         return "creditShow";
     }
 
-    @PostMapping(value = "/credit/edit")
-    public String editCredit(Credit credit,
-                             Model model){
 
+    @PostMapping(value = "/credit/edit")
+    public String editCredit(Credit credit, Model model){
         model.addAttribute("credit", credit);
 
         return "redirect:/bank/credit/edit/"+credit.getCreditId();
     }
 
+
     @GetMapping(value = "/credit/edit/{creditId}")
-    public String creditEdit(@PathVariable("creditId") Long creditId,
-                             Model model){
+    public String creditEdit(@PathVariable("creditId") Long creditId, Model model){
+        Optional<Credit> creditOptional = creditService.findById(creditId);
 
-        Credit credit = creditService.findById(creditId);
-
+        creditOptional.ifPresent(credit -> model.addAttribute("credit", credit));
         model.addAttribute("mode", "edit");
-        model.addAttribute("credit", credit);
 
         return "creditEdit";
-
     }
 
-    @PostMapping(value = "/credit/edit/{creditId}")
-    public String saveCredit(@Valid Credit credit,
-                             Errors errors,
-                             Model model){
 
+    @PostMapping(value = "/credit/edit/{creditId}")
+    public String saveCredit(@Valid Credit credit, Errors errors, Model model){
         if (errors.hasErrors()){
             model.addAttribute("mode", "edit");
             return "creditEdit";
         }
 
         //Long bankId = userService.getAuthority();
+        //TODO
         Long bankId = 1L;
-
         credit = creditService.saveCredit(credit);
 
-        return "redirect:/bank/credit/"+credit.getCreditId();
-
+        return "redirect:/bank/credit/" + credit.getCreditId();
     }
+
 
     @GetMapping(value = "/credit/create")
     public String creditCreate(Model model){
         Credit credit = new Credit();
 
+        //TODO
         credit.setBankId(1L);
         credit.setDateFrom(LocalDate.now());
         credit.setDateTo(LocalDate.now());
@@ -139,15 +138,15 @@ public class BankController {
         return "creditCreate";
     }
 
+
     @PostMapping(value = "/credit/create")
-    public String saveCreate(@Valid Credit credit,
-                             Errors errors,
-                             Model model){
+    public String saveCreate(@Valid Credit credit, Errors errors, Model model){
 
         if (errors.hasErrors()){
             return "creditCreate";
         }
 
+        //TODO
         //Long bankId = userService.getAuthority();
         Long bankId = 1L;
 

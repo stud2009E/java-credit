@@ -78,10 +78,10 @@ public class CreditService {
     @Transactional
     public CreditOffer createCreditOffer(Credit credit){
         Optional<Credit> creditOptional = findById(credit.getCreditId());
-
         if (creditOptional.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find credit");
         }
+
         Optional<Bank> bankOptional = findBankById(credit.getBankId());
         if (bankOptional.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");

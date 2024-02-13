@@ -63,7 +63,7 @@ public class UserService {
         return user;
     }
 
-    public void checkClientData(RegisterForm form, Errors errors) {
+    public void checkRegisterData(RegisterForm form, Errors errors) {
         if (!form.getPassword().equals(form.getConfirm())) {
             errors.rejectValue("confirm", "confirm", "Password fields are not equal");
         }
@@ -78,9 +78,11 @@ public class UserService {
         }
     }
 
+
     public Collection<? extends GrantedAuthority> getRole() {
         return getAuthentication().getAuthorities();
     }
+
 
     public boolean isLogged() {
         Authentication auth = getAuthentication();
@@ -90,5 +92,10 @@ public class UserService {
 
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+
+    public User getUser() {
+        return (User)getAuthentication().getPrincipal();
     }
 }

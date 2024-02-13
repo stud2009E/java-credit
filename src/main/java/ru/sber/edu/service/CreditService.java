@@ -3,17 +3,28 @@ package ru.sber.edu.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.entity.CreditOffer;
+import ru.sber.edu.entity.CreditOfferStatus;
+import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.repository.BankRepository;
+import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.CreditRepository;
+
 import java.util.Optional;
 
 @Service
 public class CreditService {
+
+    @Autowired
+    private CreditOfferRepository creditOfferRepository;
 
     @Autowired
     private CreditRepository creditRepository;
@@ -22,7 +33,10 @@ public class CreditService {
     private BankRepository bankRepository;
 
     @Autowired
-    BankService bankService;
+    private BankService bankService;
+
+    @Autowired
+    private UserService userService;
 
     public Page<Credit> findByBankId(Long bankId, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
@@ -53,11 +67,32 @@ public class CreditService {
         return creditRepository.saveAndFlush(credit);
     }
 
-    public Bank findBankById(Long bankId) throws NullPointerException{
+    public Optional<Bank> findBankById(Long bankId){
         return bankService.findById(bankId);
     }
 
     public Page<Credit> findAll(Pageable pageable){
         return creditRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public CreditOffer createCreditOffer(Credit credit){
+        Optional<Credit> creditOptional = findById(credit.getCreditId());
+
+        if (creditOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find credit");
+        }
+        Optional<Bank> bankOptional = findBankById(credit.getBankId());
+        if (bankOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
+        }
+
+        User user = userService.getUser();
+        CreditOffer creditOffer = new CreditOffer();
+        creditOffer.setCredit(credit);
+        creditOffer.setUser(user);
+        creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REQUEST));
+
+        return creditOfferRepository.saveAndFlush(creditOffer);
     }
 }

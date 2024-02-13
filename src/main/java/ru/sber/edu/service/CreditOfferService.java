@@ -31,7 +31,7 @@ public class CreditOfferService {
     public List<CreditOffer> findAllByBank(Bank bank){
 
 
-        //List<CreditOffer> offers = creditOfferRepository.findAllByBank(bank);
+        List<CreditOffer> offers = creditOfferRepository.findAllByCreditBank(bank);
         /*List<CreditOffer> offers = em.createQuery("SELECT co FROM credit_offer co " +
                 //"JOIN bank AS b ON b.bank_id = co.credit.bank_id " +
                         "WHERE bank_id = :bankId ", CreditOffer.class)

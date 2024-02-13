@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface CreditOfferRepository extends JpaRepository<CreditOffer, CreditOffer> {
     @EntityGraph(value = "credit_offer-entity-graph")
-   List<CreditOffer> findAllByBank(Bank bank);
+   List<CreditOffer> findAllByCreditBank(Bank bank);
 }

@@ -14,11 +14,9 @@
     <div class="row g-3">
         <h4 class="mb-3">Credit</h4>
 
-        <div class="col-12">
-            <input type="hidden" id="creditId" class="form-control" name="creditId" th:value="*{creditId}" readonly/>
-            <input type="hidden" class="form-control" name="bankId" id="bankId" required th:value="*{bankId}" readonly/>
-        </div>
-
+        <input type="hidden" id="creditId" class="form-control" name="creditId" th:value="*{creditId}" readonly/>
+        <input type="hidden" class="form-control" name="bank.bankId" id="bankId" required th:value="*{bank.bankId}"
+               readonly/>
 
         <div class="col-12">
             <label for="name" class="form-label">Name</label>
@@ -44,7 +42,8 @@
 
         <div class="col-12">
             <label for="dateFrom" class="form-label">Date from</label>
-            <input type="date" class="form-control" name="dateFrom" id="dateFrom" required th:readonly="${mode != 'edit'}"
+            <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
+                   th:readonly="${mode != 'edit'}"
                    th:value="*{dateFrom}"/>
             <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
         </div>

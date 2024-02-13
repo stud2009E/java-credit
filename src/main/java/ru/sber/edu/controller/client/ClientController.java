@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 
@@ -42,9 +43,13 @@ public class ClientController {
 
     @PostMapping(value = "/request")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String creditRequest(Credit credit){
-
-        creditService.createCreditOffer(credit);
+    public String creditRequest(Credit credit, Model model){
+        try{
+            creditService.createCreditOffer(credit);
+        }catch (CreditBaseException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/client/creditShow";
+        }
 
         return "redirect:/";
     }

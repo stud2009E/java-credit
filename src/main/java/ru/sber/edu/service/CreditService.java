@@ -14,10 +14,12 @@ import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.CreditOfferStatus;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.repository.BankRepository;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.CreditRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -91,19 +93,21 @@ public class CreditService {
         Optional<Credit> creditOptional = findById(credit.getCreditId());
 
         if (creditOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find credit");
-        }
-        Optional<Bank> bankOptional = findBankById(credit.getBank().getBankId());
-        if (bankOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
+            throw new CreditBaseException("Unable to find credit!");
         }
 
         User user = userService.getUser();
+        List<CreditOffer> existedOffer = creditOfferRepository.findByUserAndCredit(user, creditOptional.get());
+
+        if (!existedOffer.isEmpty()){
+            throw new CreditBaseException("Request for credit exist!");
+        }
+
         CreditOffer creditOffer = new CreditOffer();
-        creditOffer.setCredit(credit);
+        creditOffer.setCredit(creditOptional.get());
         creditOffer.setUser(user);
         creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REQUEST));
 
-        return creditOfferRepository.saveAndFlush(creditOffer);
+        return creditOfferRepository.save(creditOffer);
     }
 }

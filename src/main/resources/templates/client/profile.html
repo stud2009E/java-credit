@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: webjar(title='Profile')}">
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
+
+    <main class="container">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-md-6 col-lg-8">
+                Profile
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</div>
+</body>
+</html>

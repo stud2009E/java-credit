@@ -1,7 +1,6 @@
 package ru.sber.edu.controller.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
@@ -18,7 +16,6 @@ import ru.sber.edu.service.UserService;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/credit")
 public class ClientController {
 
     @Autowired
@@ -27,7 +24,7 @@ public class ClientController {
     @Autowired
     private CreditService creditService;
 
-    @GetMapping(value = "/{creditId}")
+    @GetMapping(value = "/credit/{creditId}")
     public String credit(@PathVariable(name = "creditId") Long creditId, Model model){
 
         Optional<Credit> optional = creditService.findById(creditId);
@@ -41,7 +38,8 @@ public class ClientController {
         return "/client/creditShow";
     }
 
-    @PostMapping(value = "/request")
+
+    @PostMapping(value = "/credit/request")
     @PreAuthorize("hasAuthority('CLIENT')")
     public String creditRequest(Credit credit, Model model){
         try{
@@ -53,4 +51,35 @@ public class ClientController {
 
         return "redirect:/";
     }
+
+    @GetMapping(value = "/profile")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String profile(Model model){
+
+        return "/client/profile";
+    }
+
+
+    @GetMapping(value = "/favorites")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String favorites(Model model){
+
+        return "/client/favorites";
+    }
+
+
+    @GetMapping(value = "/my/requests")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String myRequests(Model model){
+
+        return "/client/myRequests";
+    }
+
+    @GetMapping(value = "/my/credits")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String myCredits(Model model){
+
+        return "/client/myCredits";
+    }
+
 }

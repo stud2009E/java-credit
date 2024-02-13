@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.sber.edu.entity.Bank;
+import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.projection.ClientOfBank;
 
 @Repository
@@ -19,5 +20,4 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
                     , nativeQuery = true
                     )
     Page<ClientOfBank> findClientsByBankId(@Param("bankId") Long bankId, Pageable pageable);
-
 }

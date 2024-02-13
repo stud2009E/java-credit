@@ -11,15 +11,16 @@ import ru.sber.edu.entity.auth.User;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(BankUser.class)
 public class BankUser {
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -22,16 +22,16 @@ import ru.sber.edu.entity.auth.User;
 public class CreditOffer {
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "credit_id")
     private Credit credit;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_name")
     private CreditOfferStatus creditOfferStatus;
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>creditForm</title>
@@ -8,44 +9,79 @@
 <form th:fragment="creditForm (action, credit, mode)"
       th:object="${credit}"
       th:action="${action}"
-      method="POST"
-      id="creditForm">
-    <fieldset>
-        <legend>Credit data</legend>
-        <label for="creditId">Id: </label>
-        <input id="creditId" type="number" name="creditId" th:value="${credit.creditId}" readonly></input>
-        <br/>
+      method="POST">
 
-        <label for="name" class="form-label">Name: </label>
-        <input id="name" class="form-control" type="text" name="name" th:value="*{name}" th:readonly="${mode != 'edit'}"></input>
-        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
-        <br/>
+    <div class="row g-3">
+        <h4 class="mb-3">Credit</h4>
 
-        <label for="bankId" class="form-label" th:hidden="true">bankId: </label>
-        <input id="bankId" class="form-control" type="text" name="bankId" th:value="${credit.getBank().getBankId()}" th:hidden="true"></input>
-        <br/>
+        <div class="col-12">
+            <input type="hidden" id="creditId" class="form-control" name="creditId" th:value="*{creditId}" readonly/>
+            <input type="hidden" class="form-control" name="bankId" id="bankId" required th:value="*{bankId}" readonly/>
+        </div>
 
-        <label for="maxSum">Max sum: </label>
-        <input id="maxSum" type="number" name="maxSum" th:value="*{maxSum}" th:readonly="${mode != 'edit'}"></input>
-        <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
-        <br/>
 
-        <label for="rate" class="form-label">Rate: </label>
-        <input id="rate" type="number" step="0.01" name="rate" th:value="*{rate}" th:readonly="${mode != 'edit'}"></input>
-        <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
-        <br/>
+        <div class="col-12">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" id="name" required th:value="*{name}"/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+        </div>
 
-        <label for="dateFrom" class="form-label">Date from: </label>
-        <input id="dateFrom" class="form-control" type="date" name="dateFrom" th:value="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"th:readonly="${mode != 'edit'}"></input>
-        <br/>
+        <div class="col-12">
+            <label for="maxSum" class="form-label">Maximum</label>
+            <input type="number" class="form-control" name="maxSum" id="maxSum" required th:readonly="${mode != 'edit'}"
+                   th:value="*{maxSum}"/>
+            <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
+        </div>
 
-        <label for="dateTo" class="form-label">Date to: </label>
-        <input id="dateTo" class="form-control" type="date" name="dateTo" th:value="${#temporals.format(credit.dateTo, 'yyyy-MM-dd')}" th:readonly="${mode != 'edit'}"></input>
-        <br/>
 
-    </fieldset>
-    <input th:if="${mode != 'edit'}" type="submit" value="Edit"/>
-    <input th:if="${mode == 'edit'}" type="submit" value="Save"/>
+        <div class="col-12">
+            <label for="rate" class="form-label">Rate</label>
+            <input type="number" class="form-control" name="rate" id="rate" required th:readonly="${mode != 'edit'}"
+                   th:value="*{rate}"/>
+            <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
+        </div>
+
+
+        <div class="col-12">
+            <label for="dateFrom" class="form-label">Date from</label>
+            <input type="date" class="form-control" name="dateFrom" id="dateFrom" required th:readonly="${mode != 'edit'}"
+                   th:value="*{dateFrom}"/>
+            <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
+        </div>
+
+
+        <div class="col-12">
+            <label for="dateTo" class="form-label">Date to</label>
+            <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode != 'edit'}"
+                   th:value="*{dateTo}"/>
+            <span th:if="${#fields.hasErrors('dateTo')}" th:errors="*{dateTo}" class="text-danger"></span>
+        </div>
+
+
+        <th:block sec:authorize="hasAuthority('BANK')">
+            <input class="btn btn-primary" th:if="${mode != 'edit'}" type="submit" value="Edit"/>
+            <input class="btn btn-primary" th:if="${mode == 'edit'}" type="submit" value="Save"/>
+        </th:block>
+
+        <th:block sec:authorize="hasAuthority('CLIENT')">
+            <input class="btn btn-success" type="submit" value="Request"/>
+        </th:block>
+
+
+        <th:block sec:authorize="isAuthenticated() == false">
+            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#requestInfo"
+                    aria-expanded="false" aria-controls="requestInfo">
+                Make a loan request!
+            </button>
+            <div class="collapse" id="requestInfo">
+                <div class="card card-body text-center">
+                    <h3> In order to apply for a loan you must register and log in!!!</h3>
+                </div>
+            </div>
+        </th:block>
+
+    </div>
+
 </form>
 </body>
 </html>

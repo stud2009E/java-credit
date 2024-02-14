@@ -30,7 +30,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void saveClient(RegisterForm form) {
+    public void create(RegisterForm form) {
         User user = userFromForm(form);
         User savedUser = userRepository.save(user);
 
@@ -39,6 +39,11 @@ public class UserService {
         auth.setRole(new Role(Role.RoleType.CLIENT));
 
         authRepository.save(auth);
+    }
+
+    @Transactional
+    public void update(User user) {
+        userRepository.save(user);
     }
 
 

@@ -1,9 +1,11 @@
 package ru.sber.edu.controller.client;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
+import ru.sber.edu.ui.DisplayMode;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,8 +97,48 @@ public class ClientController {
     @GetMapping(value = "/profile")
     @PreAuthorize("hasAuthority('CLIENT')")
     public String profile(Model model) {
+        User user = userService.getUser();
+        model.addAttribute("user", user);
+        model.addAttribute("mode", DisplayMode.DISPLAY.toString());
+        model.addAttribute("isLogged", userService.isLogged());
 
         return "/client/profile";
+    }
+
+    @GetMapping(value = "/profile/edit")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String profileEdit(Model model) {
+        User user = userService.getUser();
+
+        model.addAttribute("user", user);
+        model.addAttribute("mode", DisplayMode.EDIT.toString());
+        model.addAttribute("isLogged", userService.isLogged());
+
+        return "/client/profile";
+    }
+
+    @PostMapping(value = "/profile/edit")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public String profileSave(@Valid User user, Errors errors, Model model) {
+        User currentUser = userService.getUser();
+
+        currentUser.setPhone(user.getPhone());
+        currentUser.setEmail(user.getEmail());
+
+        if (errors.hasFieldErrors("phone") || errors.hasFieldErrors("email")) {
+            user.setUsername(currentUser.getUsername());
+            user.setFirstName(currentUser.getFirstName());
+            user.setLastName(currentUser.getLastName());
+
+            model.addAttribute("mode", DisplayMode.EDIT.toString());
+            model.addAttribute("isLogged", userService.isLogged());
+
+            return "/client/profile";
+        }
+
+        userService.update(currentUser);
+
+        return "redirect:/profile";
     }
 
 

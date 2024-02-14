@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@PreAuthorize("hasAuthority('CLIENT')")
 public class ClientController {
 
     @Autowired
@@ -49,7 +50,6 @@ public class ClientController {
 
 
     @PostMapping(value = "/credit/request")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String creditRequest(Credit credit, Model model) {
         try {
             creditService.createCreditOffer(credit);
@@ -62,7 +62,6 @@ public class ClientController {
     }
 
     @PostMapping(value = "/favorites/add")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String addToFavorites(Credit credit, Model model) {
         Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
         User user = userService.getUser();
@@ -78,7 +77,6 @@ public class ClientController {
     }
 
     @PostMapping(value = "/favorites/remove")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String removeFromFavorites(Credit credit, Model model) {
         Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
         User user = userService.getUser();
@@ -94,8 +92,18 @@ public class ClientController {
     }
 
 
+    @GetMapping(value = "/favorites")
+    public String favorites(Model model) {
+        User user = userService.getUser();
+        List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user);
+
+
+
+        return "/client/favorites";
+    }
+
+
     @GetMapping(value = "/profile")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String profile(Model model) {
         User user = userService.getUser();
         model.addAttribute("user", user);
@@ -105,8 +113,8 @@ public class ClientController {
         return "/client/profile";
     }
 
+
     @GetMapping(value = "/profile/edit")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String profileEdit(Model model) {
         User user = userService.getUser();
 
@@ -117,8 +125,8 @@ public class ClientController {
         return "/client/profile";
     }
 
+
     @PostMapping(value = "/profile/edit")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String profileSave(@Valid User user, Errors errors, Model model) {
         User currentUser = userService.getUser();
 
@@ -142,26 +150,16 @@ public class ClientController {
     }
 
 
-    @GetMapping(value = "/favorites")
-    @PreAuthorize("hasAuthority('CLIENT')")
-    public String favorites(Model model) {
-
-        return "/client/favorites";
-    }
-
-
     @GetMapping(value = "/my/requests")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String myRequests(Model model) {
 
         return "/client/myRequests";
     }
 
+
     @GetMapping(value = "/my/credits")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public String myCredits(Model model) {
 
         return "/client/myCredits";
     }
-
 }

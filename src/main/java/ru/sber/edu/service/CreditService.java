@@ -121,4 +121,8 @@ public class CreditService {
 
         return creditOptional;
     }
+
+    public List<FavoriteCredit> findFavoriteCredit(User user){
+        return creditFavoriteRepository.findByUser(user);
+    }
 }

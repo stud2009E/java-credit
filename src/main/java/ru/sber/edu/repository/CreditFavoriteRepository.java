@@ -13,4 +13,5 @@ public interface CreditFavoriteRepository extends JpaRepository<FavoriteCredit, 
 
     List<FavoriteCredit> findByUserAndCredit(User user, Credit credit);
 
+    List<FavoriteCredit> findByUser(User user);
 }

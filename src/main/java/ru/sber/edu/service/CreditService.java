@@ -118,4 +118,8 @@ public class CreditService {
     public List<FavoriteCredit> findFavoriteCredit(User user, Credit credit){
         return creditFavoriteRepository.findByUserAndCredit(user, credit);
     }
+
+    public List<FavoriteCredit> findFavoriteCredit(User user){
+        return creditFavoriteRepository.findByUser(user);
+    }
 }

@@ -192,7 +192,7 @@ public class BankController {
         TableUtil util = new TableUtil(CreditOffersDTO.getColumns(), credits);
         util.fill(model);
 
-        return "creditOffers";
+        return "bank/creditOffers";
 
     }
 
@@ -217,20 +217,8 @@ public class BankController {
 
         model.addAttribute("mode", mode);
 
-        return "creditOffer";
+        return "bank/creditOffer";
     }
-/*
-    @PostMapping(value = "/creditOffer/credit/{creditId}/user/{userId}")
-    public String creditOffer(@Valid CreditOffer creditOffer, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            return "creditOffer";
-        }
-
-        creditOfferService.save(creditOffer);
-
-        return "redirect:/bank/creditOffers";
-    }
- */
 
     @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}/approve")
     public String approve(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,

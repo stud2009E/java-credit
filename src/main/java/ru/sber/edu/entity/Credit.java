@@ -19,15 +19,16 @@ import java.util.List;
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-public class Credit implements UiColumnList{
+public class Credit implements UiColumnList
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long creditId;
+    public Long creditId;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "bank_id")
-    private Bank bank;
+    public Bank bank;
 
     @NotBlank
     private String name;
@@ -56,4 +57,5 @@ public class Credit implements UiColumnList{
             new TableColumn("dateFrom", "From", UiFieldType.DATE),
             new TableColumn("dateTo", "To", UiFieldType.DATE));
     }
+
 }

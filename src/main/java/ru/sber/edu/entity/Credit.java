@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-public class Credit implements UiColumnList{
+public class Credit implements UiColumnList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

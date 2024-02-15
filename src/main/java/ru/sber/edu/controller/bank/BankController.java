@@ -3,6 +3,9 @@ package ru.sber.edu.controller.bank;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,13 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
+import ru.sber.edu.entity.CreditOfferStatus;
 import ru.sber.edu.projection.ClientOfBank;
+import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.service.BankService;
 import ru.sber.edu.service.CreditOfferService;
 import ru.sber.edu.service.CreditService;
-import ru.sber.edu.service.UserService;
+import ru.sber.edu.ui.table.TableUtil;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +37,7 @@ public class BankController {
     private BankService bankService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private CreditOfferService creditOfferService;
-
 
     @GetMapping(value = "/credit/all")
     public String credits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -77,7 +79,6 @@ public class BankController {
         }
     }
 
-
     @GetMapping(value = "/credit/{creditId}")
     public String showCredit(@PathVariable("creditId") Long creditId, Model model) {
 
@@ -89,14 +90,12 @@ public class BankController {
         return "creditShow";
     }
 
-
     @PostMapping(value = "/credit/edit")
     public String editCredit(Credit credit, Model model) {
         model.addAttribute("credit", credit);
 
         return "redirect:/bank/credit/edit/" + credit.getCreditId();
     }
-
 
     @GetMapping(value = "/credit/edit/{creditId}")
     public String creditEdit(@PathVariable("creditId") Long creditId, Model model) {
@@ -107,7 +106,6 @@ public class BankController {
 
         return "creditEdit";
     }
-
 
     @PostMapping(value = "/credit/edit/{creditId}")
     public String saveCredit(@Valid Credit credit, Errors errors, Model model) {
@@ -178,13 +176,46 @@ public class BankController {
     @GetMapping(value = "/creditOffers")
     public String creditOffer(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                              @RequestParam(defaultValue = "user_id") String sortBy,
+                              @RequestParam(defaultValue = "credit.creditId") String sortBy,
                               @RequestParam(defaultValue = "acs") String order,
                               Model model) {
 
-        Bank bank = bankService.getMyBank();
-        List<CreditOffer> offers = creditOfferService.findAllByBank(bank);
+        Sort sorting = Sort.by(sortBy);
+        sorting = order.equals("acs") ? sorting.ascending() : sorting.descending();
+        Pageable pageable = PageRequest.of(--pageNumber, pageSize, sorting );
 
-        return "/";
+        Bank bank = bankService.getMyBank();
+        Page<CreditOffersDTO> credits = creditOfferService.findAllByBank(bank, pageable);
+
+        TableUtil util = new TableUtil(CreditOffersDTO.getColumns(), credits);
+        util.fill(model);
+
+        return "creditOffers";
+
+    }
+
+    @GetMapping(value = "/creditOffer/{creditId}/{userId}")
+    public String creditOffer(@PathVariable("creditId") Long creditId,
+                              @PathVariable("userId") Long userId,
+                              Model model) {
+
+        Optional<CreditOffer> creditOfferOptional = creditOfferService.findById(creditId, userId);
+
+        List<CreditOfferStatus.StatusType> statusList = Arrays.stream(CreditOfferStatus.StatusType.values()).toList();
+
+        model.addAttribute("statusList",statusList);
+
+
+        creditOfferOptional.ifPresent(creditOffer -> model.addAttribute("creditOffer", creditOffer));
+
+        return "creditOffer";
+    }
+
+    @PostMapping(value = "/creditOffer/{creditId}/{userId}")
+    public String creditOffer(@Valid CreditOffer creditOffer, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            return "creditOffer";
+        }
+        return "redirect:/bank/creditOffers";
     }
 }

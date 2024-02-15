@@ -18,7 +18,7 @@ public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "bank_id")
-    private Long bankId;
+    public Long bankId;
 
     private String name;
 

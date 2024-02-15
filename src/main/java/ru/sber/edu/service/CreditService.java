@@ -105,8 +105,6 @@ public class CreditService {
 
         return creditOfferRepository.save(creditOffer);
     }
-
-
     public FavoriteCredit addFavoriteCredit(FavoriteCredit favoriteCredit){
         return creditFavoriteRepository.save(favoriteCredit);
     }

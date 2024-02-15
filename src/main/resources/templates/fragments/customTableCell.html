@@ -8,8 +8,11 @@
     <td th:fragment="cells(field, row, header)">
 
         <!-- ru/sber/edu/entity/Credit.java     -->
-        <th:block if="${field} == 'credit--NameLinkToCard'">
+        <th:block th:if="${field} == 'credit--NameLinkToCard'">
             <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+        <th:block th:if="${field} == 'creditOffer--LinkToCreditOffer'">
+            <a th:href="'/bank/creditOffer/' + ${row.get('creditId')}+'/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>
         </th:block>
 
 

@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime changeDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<Auth> authorities;
 

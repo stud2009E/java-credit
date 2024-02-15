@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface BankUserRepository extends JpaRepository<BankUser, BankUser> {
 
-    List<Bank> findBankByUser(User user);
+    List<BankUser> findBankByUser(User user);
 }

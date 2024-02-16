@@ -19,9 +19,11 @@ import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.service.BankService;
 import ru.sber.edu.service.CreditOfferService;
 import ru.sber.edu.service.CreditService;
+import ru.sber.edu.ui.DisplayMode;
 import ru.sber.edu.ui.table.TableUtil;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -191,11 +193,11 @@ public class BankController {
         TableUtil util = new TableUtil(CreditOffersDTO.getColumns(), credits);
         util.fill(model);
 
-        return "creditOffers";
+        return "bank/creditOffers";
 
     }
 
-    @GetMapping(value = "/creditOffer/{creditId}/{userId}")
+    @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}")
     public String creditOffer(@PathVariable("creditId") Long creditId,
                               @PathVariable("userId") Long userId,
                               Model model) {
@@ -206,17 +208,48 @@ public class BankController {
 
         model.addAttribute("statusList",statusList);
 
-
         creditOfferOptional.ifPresent(creditOffer -> model.addAttribute("creditOffer", creditOffer));
 
-        return "creditOffer";
+        String mode = DisplayMode.DISPLAY.toString();
+
+        if (creditOfferOptional.get().getCreditOfferStatus().statusName == CreditOfferStatus.StatusType.REQUEST){
+            mode = DisplayMode.EDIT.toString();
+        }
+
+        model.addAttribute("mode", mode);
+
+        return "bank/creditOffer";
     }
 
-    @PostMapping(value = "/creditOffer/{creditId}/{userId}")
-    public String creditOffer(@Valid CreditOffer creditOffer, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            return "creditOffer";
-        }
-        return "redirect:/bank/creditOffers";
+    @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}/approve")
+    public String approve(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
+                              Model model) {
+
+        Optional<CreditOffer> creditOfferOptional = creditOfferService.findById(creditId, userId);
+
+        CreditOffer creditOffer = creditOfferOptional.get();
+
+        creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.APPROVE));
+
+        creditOfferService.save(creditOffer);
+
+        return "redirect:/bank/creditOffer/credit/" + creditOffer.getCredit().getCreditId() +
+                "/user/" + creditOffer.getUser().getUserId();
+    }
+
+    @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}/reject")
+    public String reject(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
+                          Model model) {
+
+        Optional<CreditOffer> creditOfferOptional = creditOfferService.findById(creditId, userId);
+
+        CreditOffer creditOffer = creditOfferOptional.get();
+
+        creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REJECT));
+
+        creditOfferService.save(creditOffer);
+
+        return "redirect:/bank/creditOffer/credit/" + creditOffer.getCredit().getCreditId() +
+                "/user/" + creditOffer.getUser().getUserId();
     }
 }

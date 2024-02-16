@@ -16,6 +16,10 @@ import java.util.Optional;
 public interface CreditRepository extends JpaRepository<Credit, Long> {
     Page<Credit> findByBank(Bank bank, Pageable pageable);
     Page<Credit> findByBankAndNameContainingIgnoreCase(Bank bank, String name, Pageable pageable);
+    Optional<Credit> findByCreditIdAndBank(Long creditId, Bank bank);
+
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = "bank")
+    Page<Credit> findAll(Pageable pageable);
 
     Optional<Credit> findByCreditIdAndBank(Long creditId, Bank bank);
 

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.sber.edu.ui.table.TableColumn;
 import ru.sber.edu.ui.table.UiColumn;

@@ -52,6 +52,8 @@ public class BankService {
          if (bankByUser.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
          }
+         BankUser bankUser = bankByUser.get(0);
+         return bankUser.getBank();
 
          return bankByUser.get(0).getBank();
     }

@@ -12,7 +12,7 @@
             <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
         </th:block>
         <th:block th:if="${field} == 'creditOffer--LinkToCreditOffer'">
-            <a th:href="'/bank/creditOffer/' + ${row.get('creditId')}+'/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>
+            <a th:href="'/bank/creditOffer/credit/' + ${row.get('creditId')}+'/user/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>
         </th:block>
 
 

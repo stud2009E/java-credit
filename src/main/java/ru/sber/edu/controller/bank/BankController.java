@@ -99,7 +99,8 @@ public class BankController {
 
     @GetMapping(value = "/credit/edit/{creditId}")
     public String creditEdit(@PathVariable("creditId") Long creditId, Model model) {
-        Optional<Credit> creditOptional = creditService.findById(creditId);
+        //Optional<Credit> creditOptional = creditService.findById(creditId);
+        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditId, bankService.getMyBank());
 
         creditOptional.ifPresent(credit -> model.addAttribute("credit", credit));
         model.addAttribute("mode", "edit");
@@ -114,11 +115,11 @@ public class BankController {
             return "creditEdit";
         }
 
+        credit.setBank(bankService.getMyBank());
         credit = creditService.saveCredit(credit);
 
         return "redirect:/bank/credit/" + credit.getCreditId();
     }
-
 
     @GetMapping(value = "/credit/create")
     public String creditCreate(Model model) {

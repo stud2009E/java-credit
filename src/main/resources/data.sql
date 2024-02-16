@@ -106,8 +106,8 @@ on conflict do nothing;
 
 INSERT INTO public.bank_user
 (user_id, bank_id)
-VALUES(2, 1),
-       (3, 1)
+VALUES(4, 1),
+       (5, 1)
 on conflict do nothing;
 
 INSERT INTO public.credit_offer_status

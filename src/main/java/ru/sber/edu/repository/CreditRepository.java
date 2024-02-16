@@ -10,11 +10,13 @@ import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CreditRepository extends JpaRepository<Credit, Long> {
     Page<Credit> findByBank(Bank bank, Pageable pageable);
-    //List<Credit> findByBankId(Long bankId);
     Page<Credit> findByBankAndNameContainingIgnoreCase(Bank bank, String name, Pageable pageable);
+
+    Optional<Credit> findByCreditIdAndBank(Long creditId, Bank bank);
 
 }

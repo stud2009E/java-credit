@@ -47,13 +47,13 @@ public class BankService {
 
     public Bank getMyBank(){
          User user = userService.getUser();
-         List<Bank> bankByUser = bankUserRepository.findBankByUser(user);
+         List<BankUser> bankByUser = bankUserRepository.findBankByUser(user);
 
          if (bankByUser.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
          }
 
-         return bankByUser.get(0);
+         return bankByUser.get(0).getBank();
     }
 
 }

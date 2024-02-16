@@ -15,6 +15,8 @@
 
             <form method="POST" th:action="@{/creditOffer}" id="creditOffer" th:object="${creditOffer}">
 
+                <h3>User data</h3>
+
                 <div class="row g-3">
 
                     <div class="col-sm-6">
@@ -41,6 +43,8 @@
                                th:value="*{user.email}" readonly>
                     </div>
 
+                    <h3>Credit data</h3>
+
                     <div class="col-12">
                         <label for="creditName" class="form-label">Credit name</label>
                         <input type="text" class="form-control" name="creditName" id="creditName" required
@@ -55,25 +59,26 @@
 
                     <div class="col-6">
                         <label for="rate" class="form-label">Rate</label>
-                        <input type="number" class="form-control" name="rate" id="rate" required
+                        <input type="number" class="form-control" name="rate" id="rate"
                                th:value="*{credit.rate}" readonly>
                     </div>
 
                     <div class="col-6">
-                        <select class="form-select">
-                            <option th:each="status : ${statusList}" th:value="${status}" th:text="${status}"></option>
-                        </select>
+                        <label for="status" class="form-label">Status</label>
+                        <input type="text" class="form-control" name="status" id="status"
+                               th:value="*{creditOfferStatus.statusName}" readonly>
                     </div>
-                    <div class="col-12 row ">
-                        <a href="/approve/1" class="nav-link active col-5" th:text="Save"></a>
-                        <a href="/reject/1" class="nav-link active col-5" th:text="Reject"></a>
+
+                    <div th:if="${mode} == 'EDIT'" class="col-12 row">
+                        <a th:href="'/bank/creditOffer/credit/'+|*{credit.creditId}|+'/user/'+|*{user.userId}|+'/approve'"
+                           class="btn btn-success col" th:text="Approve"></a>
+                        <a th:href="'/bank/creditOffer/credit/'+|*{credit.creditId}|+'/user/'+|*{user.userId}|+'/reject'"
+                           class="btn btn-danger col" th:text="Reject"></a>
                     </div>
-                </div>
             </form>
         </div>
     </div>
 </main>
-
 
 <div class="container" th:insert="~{fragments/footer :: footer}"></div>
 </body>

@@ -73,11 +73,6 @@ public class CreditService {
     }
 
 
-    public Optional<Bank> findBankById(Long bankId) {
-        return bankService.findById(bankId);
-    }
-
-
     public Page<Credit> findAll(Pageable pageable) {
         return creditRepository.findAll(pageable);
     }
@@ -115,5 +110,15 @@ public class CreditService {
 
     public List<FavoriteCredit> findFavoriteCredit(User user, Credit credit){
         return creditFavoriteRepository.findByUserAndCredit(user, credit);
+    }
+
+    public Optional<Credit> findByIdAndBank(Long creditId, Bank bank){
+        Optional<Credit> creditOptional = creditRepository.findByCreditIdAndBank(creditId, bank);
+
+        if (creditOptional.isEmpty()){
+            throw new CreditBaseException("Unable to find credit!");
+        }
+
+        return creditOptional;
     }
 }

@@ -8,6 +8,7 @@ import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.ID.CreditOfferID;
@@ -20,6 +21,11 @@ public class CreditOfferService {
     @Autowired
     private CreditOfferRepository creditOfferRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CreditService creditService;
 
     public Page<CreditOffersDTO> findAllByBank(Bank bank, Pageable pageable){
 
@@ -43,5 +49,15 @@ public class CreditOfferService {
                     "and userId= " + userId);
         }
         return creditOffer;
+    }
+
+    public void save(CreditOffer creditOffer){
+
+        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
+        if (creditOptional.isEmpty()) {
+            throw new CreditBaseException("Unable to find credit!");
+        }
+
+        creditOfferRepository.saveAndFlush(creditOffer);
     }
 }

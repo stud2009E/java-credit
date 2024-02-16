@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import ru.sber.edu.entity.auth.User;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public class Bank {
 
     private String name;
 
-    @OneToMany
+    @OneToMany()
     @JoinColumn(name = "bank_id")
-    private List<BankUser> users;
+    public List<BankUser> users;
 
     @OneToMany
     @JoinColumn(name = "bank_id")

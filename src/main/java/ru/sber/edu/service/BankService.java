@@ -11,12 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.BankUser;
 import ru.sber.edu.entity.auth.User;
-import ru.sber.edu.projection.ClientOfBank;
 import ru.sber.edu.repository.BankRepository;
 import ru.sber.edu.repository.BankUserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BankService {
@@ -29,21 +27,6 @@ public class BankService {
 
     @Autowired
     private UserService userService;
-
-    public Optional<Bank> findById(Long bankId){
-        return bankRepository.findById(bankId);
-    }
-
-    public Page<ClientOfBank> findClientsByBankId(Long bankId, int pageNumber,int pageSize,
-                                                  String sortedBy, String order) throws NullPointerException{
-
-        Sort sorting = Sort.by(sortedBy);
-        Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
-
-        Page<ClientOfBank> page = bankRepository.findClientsByBankId(bankId,paging);
-
-        return page;
-    }
 
     public Bank getMyBank(){
          User user = userService.getUser();

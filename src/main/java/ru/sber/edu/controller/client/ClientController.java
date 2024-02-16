@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.FavoriteCredit;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBankException;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
@@ -32,16 +33,17 @@ public class ClientController {
     @GetMapping(value = "/credit/{creditId}")
     public String credit(@PathVariable(name = "creditId") Long creditId, Model model) {
 
-        Optional<Credit> optionalCredit = creditService.findById(creditId);
+        try {
+            Credit credit = creditService.findById(creditId);
 
-        if (optionalCredit.isEmpty()) {
-            model.addAttribute("errorMessage", "This loan does not exist");
-        } else {
             User user = userService.getUser();
-            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, credit);
 
             model.addAttribute("isFavorite", !favorites.isEmpty());
-            model.addAttribute("credit", optionalCredit.get());
+            model.addAttribute("credit", credit);
+
+        }catch (CreditBankException e){
+            model.addAttribute("errorMessage", "This loan does not exist");
         }
 
         return "/client/creditShow";
@@ -64,14 +66,16 @@ public class ClientController {
     @PostMapping(value = "/favorites/add")
     @PreAuthorize("hasAuthority('CLIENT')")
     public String addToFavorites(Credit credit, Model model) {
-        Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
         User user = userService.getUser();
 
-        if (optionalCredit.isPresent()) {
-            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+        try{
+            creditService.findById(credit.getCreditId());
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, credit);
             if (favorites.isEmpty()) {
-                creditService.addFavoriteCredit(new FavoriteCredit(user, optionalCredit.get()));
+                creditService.addFavoriteCredit(new FavoriteCredit(user, credit));
             }
+        }catch (CreditBaseException ignored){
+
         }
 
         return "redirect:/credit/" + credit.getCreditId();
@@ -80,14 +84,16 @@ public class ClientController {
     @PostMapping(value = "/favorites/remove")
     @PreAuthorize("hasAuthority('CLIENT')")
     public String removeFromFavorites(Credit credit, Model model) {
-        Optional<Credit> optionalCredit = creditService.findById(credit.getCreditId());
-        User user = userService.getUser();
 
-        if (optionalCredit.isPresent()) {
-            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, optionalCredit.get());
+        try {
+            creditService.findById(credit.getCreditId());
+            User user = userService.getUser();
+            List<FavoriteCredit> favorites = creditService.findFavoriteCredit(user, credit);
             if (!favorites.isEmpty()) {
-                creditService.removeFavoriteCredit(new FavoriteCredit(user, optionalCredit.get()));
+                creditService.removeFavoriteCredit(new FavoriteCredit(user, credit));
             }
+        }catch (CreditBaseException ignored){
+
         }
 
         return "redirect:/credit/" + credit.getCreditId();

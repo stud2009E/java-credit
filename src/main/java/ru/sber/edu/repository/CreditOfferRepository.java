@@ -11,6 +11,7 @@ import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.projection.ClientOfBankDTO;
 import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.repository.ID.CreditOfferID;
 
@@ -31,8 +32,16 @@ public interface CreditOfferRepository extends JpaRepository<CreditOffer, Credit
     )
     Page<CreditOffersDTO> findAllCreditOffersByBankId(@Param("bankId") Long bankId, Pageable pageable);
 
-    @EntityGraph(value = "credit_offer-entity-graph")
-    List<CreditOffer> findAllByCreditBank(Bank bank);
+    @Query(value = "SELECT new ru.sber.edu.projection.ClientOfBankDTO( " +
+            "co.user.userId, " +
+            "co.user.firstName, " +
+            "co.user.lastName, " +
+            "co.user.phone, " +
+            "co.user.email) " +
+            "FROM CreditOffer co " +
+            "WHERE co.credit.bank = :bank"
+    )
+    Page<ClientOfBankDTO> findClientsOfBank(Bank bank, Pageable pageable);
 
     List<CreditOffer> findByUserAndCredit(User user, Credit credit);
 }

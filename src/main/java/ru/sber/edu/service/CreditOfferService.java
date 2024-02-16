@@ -2,13 +2,17 @@ package ru.sber.edu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBankException;
 import ru.sber.edu.exception.CreditBaseException;
+import ru.sber.edu.projection.ClientOfBankDTO;
 import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.ID.CreditOfferID;
@@ -20,9 +24,6 @@ public class CreditOfferService {
 
     @Autowired
     private CreditOfferRepository creditOfferRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CreditService creditService;
@@ -44,7 +45,7 @@ public class CreditOfferService {
         Optional<CreditOffer> creditOffer = creditOfferRepository.findById(creditOfferRepositoryID);
 
         if (creditOffer.isEmpty()){
-            throw new NullPointerException("There are no credit offer by " +
+            throw new CreditBankException("There are no credit offer by " +
                     "creditId= " + creditId +
                     "and userId= " + userId);
         }
@@ -53,11 +54,19 @@ public class CreditOfferService {
 
     public void save(CreditOffer creditOffer){
 
-        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
-        if (creditOptional.isEmpty()) {
-            throw new CreditBaseException("Unable to find credit!");
-        }
+        creditService.findByIdAndBank(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
 
         creditOfferRepository.saveAndFlush(creditOffer);
     }
+
+    public Page<ClientOfBankDTO> findClientsOfBank(Bank bank, int pageNumber, int pageSize, String sortedBy, String order){
+
+        Sort sorting = Sort.by(sortedBy);
+        Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
+
+
+        return creditOfferRepository.findClientsOfBank(bank, paging);
+    }
+
+
 }

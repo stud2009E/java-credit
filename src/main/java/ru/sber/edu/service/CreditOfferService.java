@@ -53,7 +53,7 @@ public class CreditOfferService {
 
     public void save(CreditOffer creditOffer){
 
-        Optional<Credit> creditOptional = creditService.findByIdAndBankId(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
+        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
         if (creditOptional.isEmpty()) {
             throw new CreditBaseException("Unable to find credit!");
         }

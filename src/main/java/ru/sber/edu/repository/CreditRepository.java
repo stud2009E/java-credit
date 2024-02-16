@@ -20,7 +20,4 @@ public interface CreditRepository extends JpaRepository<Credit, Long> {
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = "bank")
     Page<Credit> findAll(Pageable pageable);
-
-    Optional<Credit> findByCreditIdAndBank(Long creditId, Bank bank);
-
 }

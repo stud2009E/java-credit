@@ -54,8 +54,6 @@ public class BankService {
          }
          BankUser bankUser = bankByUser.get(0);
          return bankUser.getBank();
-
-         return bankByUser.get(0).getBank();
     }
 
 }

@@ -103,4 +103,21 @@ public class UserService {
     public User getUser() {
         return (User)getAuthentication().getPrincipal();
     }
+
+    public boolean isBankUser(){
+        return hasRole(Role.RoleType.BANK);
+    }
+
+    public boolean isClientUser(){
+        return hasRole(Role.RoleType.CLIENT);
+    }
+
+    public boolean hasRole(Role.RoleType roleType){
+        if (!isLogged()) {
+            return false;
+        }
+        User user = getUser();
+        return user.getAuthorities().stream().anyMatch(auth -> auth.getRole().getRoleName() == roleType);
+    }
+
 }

@@ -35,7 +35,6 @@
                 <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
             </div>
 
-
             <div class="col-12">
                 <label for="rate" class="form-label">Rate</label>
                 <input type="number" class="form-control" name="rate" id="rate" required th:readonly="${mode != 'edit'}"
@@ -45,13 +44,27 @@
 
 
             <div class="col-12">
+                <label for="rate" class="form-label">Rate</label>
+                <input type="number" class="form-control" name="rate" id="rate" required th:readonly="${mode != 'edit'}"
+                       th:value="*{rate}"/>
+                <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
+
+            <div class="col-12">
+                <label for="dateFrom" class="form-label">Date from</label>
+                <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
+                       th:readonly="${mode != 'edit'}"
+                       th:value="*{dateFrom}"/>
+                <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
+
+            </div>
+
+            <div class="col-12">
                 <label for="dateFrom" class="form-label">Date from</label>
                 <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
                        th:readonly="${mode != 'edit'}"
                        th:value="*{dateFrom}"/>
                 <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
             </div>
-
 
             <div class="col-12">
                 <label for="dateTo" class="form-label">Date to</label>

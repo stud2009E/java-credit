@@ -24,13 +24,13 @@
             <div class="col-12">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" name="name" id="name" required th:value="*{name}"
-                       th:readonly="${mode != 'edit'}"/>
+                       th:readonly="${mode == 'DISPLAY'}"/>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
             </div>
 
             <div class="col-12">
                 <label for="maxSum" class="form-label">Maximum</label>
-                <input type="number" class="form-control" name="maxSum" id="maxSum" required th:readonly="${mode != 'edit'}"
+                <input type="number" class="form-control" name="maxSum" step="0.01" id="maxSum" required th:readonly="${mode == 'DISPLAY'}"
                        th:value="*{maxSum}"/>
                 <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
             </div>
@@ -38,7 +38,7 @@
 
             <div class="col-12">
                 <label for="rate" class="form-label">Rate</label>
-                <input type="number" class="form-control" name="rate" id="rate" required th:readonly="${mode != 'edit'}"
+                <input type="number" class="form-control" name="rate" step="0.01" id="rate" required th:readonly="${mode == 'DISPLAY'}"
                        th:value="*{rate}"/>
                 <span th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}" class="text-danger"></span>
             </div>
@@ -47,7 +47,7 @@
             <div class="col-12">
                 <label for="dateFrom" class="form-label">Date from</label>
                 <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
-                       th:readonly="${mode != 'edit'}"
+                       th:readonly="${mode == 'DISPLAY'}"
                        th:value="*{dateFrom}"/>
                 <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
             </div>
@@ -55,15 +55,16 @@
 
             <div class="col-12">
                 <label for="dateTo" class="form-label">Date to</label>
-                <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode != 'edit'}"
+                <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode == 'DISPLAY'}"
                        th:value="*{dateTo}"/>
                 <span th:if="${#fields.hasErrors('dateTo')}" th:errors="*{dateTo}" class="text-danger"></span>
             </div>
 
 
             <th:block sec:authorize="hasAuthority('BANK')">
-                <input class="btn btn-primary" th:if="${mode != 'edit'}" type="submit" value="Edit"/>
-                <input class="btn btn-primary" th:if="${mode == 'edit'}" type="submit" value="Save"/>
+                <input class="btn btn-primary" th:if="${mode == 'DISPLAY'}" type="submit" value="Edit"/>
+                <input class="btn btn-primary" th:if="${mode == 'EDIT'}" type="submit" value="Save"/>
+                <input class="btn btn-primary" th:if="${mode == 'CREATE'}" type="submit" value="Create"/>
             </th:block>
 
             <th:block sec:authorize="hasAuthority('CLIENT')">

@@ -111,6 +111,7 @@ public class BankController {
         try {
             Credit credit = creditService.findByIdAndBank(creditId, bankService.getMyBank());
             model.addAttribute("credit", credit);
+            model.addAttribute("mode", DisplayMode.DISPLAY.toString());
             model.addAttribute("action", "/bank/credit/edit");
 
         }catch (CreditBankException e){
@@ -146,7 +147,7 @@ public class BankController {
         try {
             Credit credit = creditService.findByIdAndBank(creditId, bankService.getMyBank());
             model.addAttribute("credit", credit);
-            model.addAttribute("mode", "edit");
+            model.addAttribute("mode", DisplayMode.EDIT.toString());
         }catch (CreditBankException e){
             model.addAttribute("errorMessage", e.getMessage());
         }
@@ -164,7 +165,7 @@ public class BankController {
     @PostMapping(value = "/credit/edit/{creditId}")
     public String saveCredit(@Valid Credit credit, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            model.addAttribute("mode", "edit");
+            model.addAttribute("mode", DisplayMode.EDIT.toString());
             return "bank/creditEdit";
         }
 
@@ -188,6 +189,7 @@ public class BankController {
         credit.setDateFrom(LocalDate.now());
         credit.setDateTo(LocalDate.now());
 
+        model.addAttribute("mode", DisplayMode.CREATE.toString());
         model.addAttribute("credit", credit);
 
         return "bank/creditCreate";

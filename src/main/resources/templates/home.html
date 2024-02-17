@@ -28,6 +28,12 @@
         </div>
     </div>
 
+
+    <th:block th:if="${pageable != null and page != null}">
+        <div th:replace="~{fragments/paging :: paging(${pageable}, ${page}) }"></div>
+    </th:block>
+
+
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 </div>
 </body>

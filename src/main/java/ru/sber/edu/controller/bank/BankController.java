@@ -276,8 +276,8 @@ public class BankController {
         Bank bank = bankService.getMyBank();
         Page<CreditOffersDTO> credits = creditOfferService.findAllByBank(bank, pageable);
 
-        TableUtil<CreditOffersDTO> util = new TableUtil<>(CreditOffersDTO.getColumns(), model);
-        util.fillTableData(credits);
+        TableUtil<CreditOffersDTO> util = new TableUtil<>(credits, CreditOffersDTO.getColumns());
+        util.addTableDataToModel(model);
 
         return "bank/creditOffers";
 

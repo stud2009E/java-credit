@@ -15,8 +15,8 @@ import java.util.Map;
 @AllArgsConstructor
 public class TableUtil <T>{
 
+    private Page<T> page;
     private List<UiColumn> headers;
-    private Model model;
 
     private Map<String, Object> convertUsingReflection(Object object) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<>();
@@ -42,13 +42,13 @@ public class TableUtil <T>{
         ).toList();
     }
 
-    public void fillTableData(Page<T> page) {
+    public void addTableDataToModel(Model model) {
         model.addAttribute("headers", headers);
         model.addAttribute("rows", transformData(page));
     }
 
-    public void fillPageableData(Pageable pageable) {
-        model.addAttribute("pageNumber", pageable.getPageNumber());
-        model.addAttribute("pageSize", pageable.getPageSize());
+    public void addPagingDataToModel(Model model) {
+        model.addAttribute("pageable", page.getPageable());
+        model.addAttribute("page", page);
     }
 }

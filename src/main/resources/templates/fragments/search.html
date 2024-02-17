@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div th:fragment="search (searchValue)" th:with="action=${action} ?: '/search', placeholder=${placeholder} ?: Search...">
+<div th:fragment="search (searchValue)" th:with="action=${action} ?: '/search', placeholder=${placeholder} ?: 'Search...'">
 
     <form method="get" th:action="@{${action}}" class="pb-3">
         <div class="row">

@@ -27,15 +27,16 @@ public class HomeController {
     private BankService bankService;
 
     @GetMapping(value = "/")
-    public String home(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-                       @RequestParam(value = "size", defaultValue = "10") int pageSize,
+    public String home(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+                       @RequestParam(value = "size", required = false, defaultValue = "10") int pageSize,
                        Model model) {
 
         if (!userService.isBankUser()){
             Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
 
-            TableUtil<Credit> util = new TableUtil<>(Credit.getColumns(), model);
-            util.fillTableData(creditService.findAll(pageable));
+            TableUtil<Credit> util = new TableUtil<>(creditService.findAll(pageable), Credit.getColumns());
+            util.addTableDataToModel(model);
+            util.addPagingDataToModel(model);
         }else {
             model.addAttribute("bank", bankService.getMyBank());
         }
@@ -45,23 +46,23 @@ public class HomeController {
 
 
     @GetMapping(path = {"/search"})
-    public String searchCredit(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                               @RequestParam(value = "value") String value,
+    public String searchCredit(@RequestParam(value = "value", required = false) String value,
+                                @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+                               @RequestParam(value = "size", required = false, defaultValue = "10") int pageSize,
                                Model model) {
 
-        if (!value.isEmpty()) {
+        if (value != null && !value.isEmpty()) {
             Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
 
-            TableUtil<Credit> util = new TableUtil<>(Credit.getColumns(), model);
-            util.fillTableData(creditService.findByNameContainingIgnoreCase(value, pageable));
-            util.fillPageableData(pageable);
+            TableUtil<Credit> util = new TableUtil<>(creditService.findByNameContainingIgnoreCase(value, pageable), Credit.getColumns());
+            util.addTableDataToModel(model);
+            util.addPagingDataToModel(model);
 
             model.addAttribute("searchValue", value);
 
             return "home";
         } else {
-            return "redirect:/";
+            return "redirect:?page=" + pageNumber + "&size=" + pageSize;
         }
     }
 }

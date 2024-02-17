@@ -118,9 +118,9 @@ VALUES('REQUEST'),
 on conflict do nothing;
 
 INSERT INTO public.credit_offer
-(user_id, credit_id, status_name)
-VALUES(2, 1, 'REQUEST'),
-       (2, 11, 'REQUEST'),
-       (3, 21, 'REQUEST'),
-       (3, 31, 'REQUEST')
+(credit_offer_id, user_id, credit_id, status_name)
+VALUES(1, 2, 1, 'REQUEST'),
+       (2, 2, 11, 'REQUEST'),
+       (3, 3, 21, 'REQUEST'),
+       (4, 3, 31, 'REQUEST')
 on conflict do nothing;

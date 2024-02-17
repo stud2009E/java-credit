@@ -39,11 +39,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id")
     private List<Auth> authorities;
 
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private List<CreditOffer> creditOffers ;
-
     @Email
     @NotBlank
     private String email;
@@ -68,9 +63,4 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean enabled;
-
-    @Override
-    public Collection<Auth> getAuthorities() {
-        return authorities;
-    }
 }

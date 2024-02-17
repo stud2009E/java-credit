@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.BankUser;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.projection.ClientOfBank;
 import ru.sber.edu.repository.BankRepository;
 import ru.sber.edu.repository.BankUserRepository;
@@ -47,13 +48,20 @@ public class BankService {
 
     public Bank getMyBank(){
          User user = userService.getUser();
-         List<BankUser> bankByUser = bankUserRepository.findBankByUser(user);
+         Optional<BankUser> bankByUser = bankUserRepository.findById(user.getUserId());
 
          if (bankByUser.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find bank");
+            throw new CreditBaseException("Unable to find bank");
          }
-         BankUser bankUser = bankByUser.get(0);
-         return bankUser.getBank();
+
+         Optional<Bank> optionalBank = bankRepository.findById(bankByUser.get().getBankId());
+
+         if (optionalBank.isEmpty()){
+             throw new CreditBaseException("Unable to find bank");
+         }
+
+
+         return optionalBank.get();
     }
 
 }

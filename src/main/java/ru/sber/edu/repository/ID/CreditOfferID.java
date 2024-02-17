@@ -12,6 +12,6 @@ import ru.sber.edu.entity.auth.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreditOfferID {
-    public Credit credit;
-    public User user;
+    public Long creditId;
+    public Long userId;
 }

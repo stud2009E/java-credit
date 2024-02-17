@@ -41,7 +41,7 @@ public class CreditService {
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBank(bank, paging);
+        return creditRepository.findByBankId(bank.getBankId(), paging);
     }
 
 
@@ -50,7 +50,7 @@ public class CreditService {
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        return creditRepository.findByBankAndNameContainingIgnoreCase(bank, name, paging);
+        return creditRepository.findByBankIdAndNameContainingIgnoreCase(bank.getBankId(), name, paging);
     }
 
 
@@ -58,7 +58,7 @@ public class CreditService {
         Bank bank = new Bank();
         bank.setBankId(bankId);
 
-        credit.setBank(bank);
+        credit.setBankId(bankId);
         return creditRepository.saveAndFlush(credit);
     }
 
@@ -112,13 +112,8 @@ public class CreditService {
         return creditFavoriteRepository.findByUserAndCredit(user, credit);
     }
 
-    public Optional<Credit> findByIdAndBank(Long creditId, Bank bank){
-        Optional<Credit> creditOptional = creditRepository.findByCreditIdAndBank(creditId, bank);
 
-        if (creditOptional.isEmpty()){
-            throw new CreditBaseException("Unable to find credit!");
-        }
-
-        return creditOptional;
+    public Optional<Credit> findByCreditIdAndBankId(Long creditId, Long bankId) {
+        return creditRepository.findByCreditIdAndBankId(creditId, bankId);
     }
 }

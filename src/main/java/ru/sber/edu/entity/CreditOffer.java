@@ -10,7 +10,6 @@ import ru.sber.edu.repository.ID.CreditOfferID;
 @Table(name = "credit_offer")
 @Data
 @NoArgsConstructor
-@IdClass(CreditOfferID.class)
 @NamedEntityGraph(
         name = "credit_offer-entity-graph",
         attributeNodes = {
@@ -18,16 +17,19 @@ import ru.sber.edu.repository.ID.CreditOfferID;
                 @NamedAttributeNode("user"),
                 @NamedAttributeNode("creditOfferStatus"), },
         subgraphs = { @NamedSubgraph(name = "subgraph-bank",
-                                     attributeNodes = {@NamedAttributeNode(value = "bank")}) }
+                                     attributeNodes = {@NamedAttributeNode(value = "bankId")}) }
 )
 public class CreditOffer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "credit_offer_id")
+    private Long creditOfferId;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "credit_id")
     private Credit credit;
 
-    @Id
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;

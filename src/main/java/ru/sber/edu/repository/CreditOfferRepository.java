@@ -17,7 +17,7 @@ import ru.sber.edu.repository.ID.CreditOfferID;
 import java.util.List;
 
 @Repository
-public interface CreditOfferRepository extends JpaRepository<CreditOffer, CreditOfferID> {
+public interface CreditOfferRepository extends JpaRepository<CreditOffer, Long> {
     @EntityGraph(value = "credit_offer-entity-graph")
     @Query(value = "SELECT new ru.sber.edu.projection.CreditOffersDTO(" +
             "co.credit.creditId, " +
@@ -27,12 +27,12 @@ public interface CreditOfferRepository extends JpaRepository<CreditOffer, Credit
             "co.user.lastName, " +
             "co.creditOfferStatus.statusName) " +
             "FROM CreditOffer co " +
-            "WHERE co.credit.bank.bankId = :bankId"
+            "WHERE co.credit.bankId = :bankId"
     )
     Page<CreditOffersDTO> findAllCreditOffersByBankId(@Param("bankId") Long bankId, Pageable pageable);
 
     @EntityGraph(value = "credit_offer-entity-graph")
-    List<CreditOffer> findAllByCreditBank(Bank bank);
+    List<CreditOffer> findAllByCreditBankId(Long bankId);
 
     List<CreditOffer> findByUserAndCredit(User user, Credit credit);
 }

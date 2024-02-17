@@ -13,6 +13,7 @@ import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.ID.CreditOfferID;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,20 +41,20 @@ public class CreditOfferService {
         User user = new User();
         user.setUserId(userId);
 
-        CreditOfferID creditOfferRepositoryID = new CreditOfferID(credit, user);
-        Optional<CreditOffer> creditOffer = creditOfferRepository.findById(creditOfferRepositoryID);
+        CreditOfferID creditOfferRepositoryID = new CreditOfferID(creditId, userId);
+        List<CreditOffer> creditOffer = creditOfferRepository.findByUserAndCredit(user, credit);
 
         if (creditOffer.isEmpty()){
             throw new NullPointerException("There are no credit offer by " +
                     "creditId= " + creditId +
                     "and userId= " + userId);
         }
-        return creditOffer;
+        return Optional.of(creditOffer.get(0));
     }
 
     public void save(CreditOffer creditOffer){
 
-        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditOffer.getCredit().getCreditId(), creditOffer.getCredit().getBank());
+        Optional<Credit> creditOptional = creditService.findById(creditOffer.getCredit().getCreditId());
         if (creditOptional.isEmpty()) {
             throw new CreditBaseException("Unable to find credit!");
         }

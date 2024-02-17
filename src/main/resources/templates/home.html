@@ -8,10 +8,17 @@
 
 <div class="container">
     <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
-    <table th:replace="~{fragments/table :: table}"></table>
+
+    <th:block sec:authorize="isAuthenticated() == false">
+        <table th:replace="~{fragments/table :: table}"></table>
+    </th:block>
+
+    <th:block sec:authorize="hasAuthority('CLIENT')">
+        <table th:replace="~{fragments/table :: table}"></table>
+    </th:block>
 
     <div class="row g-4 align-items-center justify-content-center">
-        <div class="col-md-6 col-lg-8">
+        <div class="col-md-6 col-lg-8 text-center">
 
             <th:block sec:authorize="hasAuthority('BANK')">
                 <h2 th:if="${bank}" th:text="${bank.name}"></h2>

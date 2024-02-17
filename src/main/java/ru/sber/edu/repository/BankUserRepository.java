@@ -9,7 +9,5 @@ import ru.sber.edu.entity.auth.User;
 import java.util.List;
 
 @Repository
-public interface BankUserRepository extends JpaRepository<BankUser, BankUser> {
-
-    List<BankUser> findBankByUser(User user);
+public interface BankUserRepository extends JpaRepository<BankUser, Long> {
 }

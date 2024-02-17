@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-public class Credit implements UiColumnList {
+public class Credit {
 
     @Id
     @GeneratedValue(generator = "sequence-generator")
@@ -36,9 +36,8 @@ public class Credit implements UiColumnList {
             })
     private Long creditId;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "bank_id")
-    private Bank bank;
+    @Column(name = "bank_id")
+    private Long bankId;
 
     @NotBlank
     private String name;
@@ -56,7 +55,6 @@ public class Credit implements UiColumnList {
     @NotNull
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
-
 
     public static List<UiColumn> getColumns() {
         return Arrays.asList(

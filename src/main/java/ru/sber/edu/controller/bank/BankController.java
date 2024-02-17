@@ -23,7 +23,6 @@ import ru.sber.edu.ui.DisplayMode;
 import ru.sber.edu.ui.table.TableUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -102,7 +101,7 @@ public class BankController {
     @GetMapping(value = "/credit/edit/{creditId}")
     public String creditEdit(@PathVariable("creditId") Long creditId, Model model) {
         //Optional<Credit> creditOptional = creditService.findById(creditId);
-        Optional<Credit> creditOptional = creditService.findByIdAndBank(creditId, bankService.getMyBank());
+        Optional<Credit> creditOptional = creditService.findByCreditIdAndBankId(creditId, bankService.getMyBank().getBankId());
 
         creditOptional.ifPresent(credit -> model.addAttribute("credit", credit));
         model.addAttribute("mode", "edit");
@@ -117,7 +116,7 @@ public class BankController {
             return "creditEdit";
         }
 
-        credit.setBank(bankService.getMyBank());
+        credit.setBankId(bankService.getMyBank().getBankId());
         credit = creditService.saveCredit(credit);
 
         return "redirect:/bank/credit/" + credit.getCreditId();
@@ -128,7 +127,7 @@ public class BankController {
         Credit credit = new Credit();
         Bank bank = bankService.getMyBank();
 
-        credit.setBank(bank);
+        credit.setBankId(bank.getBankId());
         credit.setDateFrom(LocalDate.now());
         credit.setDateTo(LocalDate.now());
 

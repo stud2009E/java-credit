@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import ru.sber.edu.entity.auth.User;
 
 import java.util.List;
@@ -19,15 +18,18 @@ public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "bank_id")
-    public Long bankId;
+    private Long bankId;
 
     private String name;
 
-    @OneToMany()
-    @JoinColumn(name = "bank_id")
-    public List<BankUser> users;
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_id")
     private List<Credit> credits;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "bank_user",
+            joinColumns = @JoinColumn(name = "bank_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false, unique = true)
+    )
+    private List<User> bankUsers;
 }

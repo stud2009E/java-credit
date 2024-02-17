@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sber.edu.entity.Credit;
-import ru.sber.edu.entity.auth.Role;
-import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.service.BankService;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
@@ -34,7 +32,6 @@ public class HomeController {
                        @RequestParam(defaultValue = "creditId") String sortBy,
                        @RequestParam(defaultValue = "acs") String order,
                        Model model) {
-
 
         if (!userService.isBankUser()){
             Sort sorting = Sort.by(sortBy);

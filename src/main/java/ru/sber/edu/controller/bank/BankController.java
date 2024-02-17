@@ -40,8 +40,17 @@ public class BankController {
     @Autowired
     private CreditOfferService creditOfferService;
 
+    /**
+     * Отображение списка кредитов Банка
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param order
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/credit/all")
-    public String credits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+    public String showCredits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
                           @RequestParam(defaultValue = "creditId") String sortBy,
                           @RequestParam(defaultValue = "acs") String order,
@@ -58,8 +67,18 @@ public class BankController {
         return "bank/credits";
     }
 
+    /**
+     * Поиск кредита по имени
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param order
+     * @param name
+     * @param model
+     * @return
+     */
     @GetMapping(path = {"credit/search"})
-    public String search(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+    public String searchCredit(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                          @RequestParam(value = "size", defaultValue = "10") int pageSize,
                          @RequestParam(defaultValue = "creditId") String sortBy,
                          @RequestParam(defaultValue = "asc") String order,
@@ -68,7 +87,7 @@ public class BankController {
 
         if (!name.isEmpty()) {
             Bank bank = bankService.getMyBank();
-            Page<Credit> credits = creditService.findByNameAndBankId(name, bank, pageNumber, pageSize, sortBy, order);
+            Page<Credit> credits = creditService.findByNameAndBank(name, bank, pageNumber, pageSize, sortBy, order);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("sortBy", sortBy);
             model.addAttribute("order", order);
@@ -80,6 +99,12 @@ public class BankController {
         }
     }
 
+    /**
+     * Просмотр кредита
+     * @param creditId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/credit/{creditId}")
     public String showCredit(@PathVariable("creditId") Long creditId, Model model) {
 
@@ -95,6 +120,12 @@ public class BankController {
 
     }
 
+    /**
+     * Переход на изменение кредита
+     * @param credit
+     * @param model
+     * @return
+     */
     @PostMapping(value = "/credit/edit")
     public String editCredit(Credit credit, Model model) {
 
@@ -103,6 +134,12 @@ public class BankController {
         return "redirect:/bank/credit/edit/" + credit.getCreditId();
     }
 
+    /**
+     * Изменение кредита
+     * @param creditId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/credit/edit/{creditId}")
     public String creditEdit(@PathVariable("creditId") Long creditId, Model model) {
 
@@ -117,6 +154,13 @@ public class BankController {
         return "bank/creditEdit";
     }
 
+    /**
+     * Сохранение изменений к кредите
+     * @param credit
+     * @param errors
+     * @param model
+     * @return
+     */
     @PostMapping(value = "/credit/edit/{creditId}")
     public String saveCredit(@Valid Credit credit, Errors errors, Model model) {
         if (errors.hasErrors()) {
@@ -130,8 +174,13 @@ public class BankController {
         return "redirect:/bank/credit/" + credit.getCreditId();
     }
 
+    /**
+     * Создание нового кредита
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/credit/create")
-    public String creditCreate(Model model) {
+    public String createCredit(Model model) {
         Credit credit = new Credit();
         Bank bank = bankService.getMyBank();
 
@@ -144,6 +193,13 @@ public class BankController {
         return "bank/creditCreate";
     }
 
+    /**
+     * Сохранение создания кредита
+     * @param credit
+     * @param errors
+     * @param model
+     * @return
+     */
     @PostMapping(value = "/credit/create")
     public String saveCreate(@Valid Credit credit, Errors errors, Model model) {
 
@@ -156,26 +212,34 @@ public class BankController {
         return "redirect:/bank/credit/" + newCredit.getCreditId();
     }
 
+    /**
+     * Профиль банка
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/profile")
-    public String profile(Model model) {
+    public String bankProfile(Model model) {
         Bank bank = bankService.getMyBank();
 
         model.addAttribute("bank", bank);
         return "bank/bankProfile";
     }
 
+    /**
+     * Вывод списка клиентов банка(пользователи взявшие кредит)
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param order
+     * @param model
+     * @return
+     */
     @GetMapping(value = "client/all")
-    public String clients(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+    public String bankClients(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
                           @RequestParam(defaultValue = "user.userId") String sortBy,
                           @RequestParam(defaultValue = "acs") String order,
                           Model model) {
-        /*Bank bank = bankService.getMyBank();
-
-         */
-
-        //Page<ClientOfBank> clients = bankService.findClientsByBankId(bank.getBankId(), pageNumber, pageSize, sortBy, order);
-
 
         Page<ClientOfBankDTO> clients = creditOfferService.findClientsOfBank(bankService.getMyBank(), pageNumber, pageSize, sortBy, order);
 
@@ -187,6 +251,15 @@ public class BankController {
         return "bank/clients";
     }
 
+    /**
+     * Вывод списка заявок на кредит
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param order
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/creditOffers")
     public String creditOffer(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -208,6 +281,13 @@ public class BankController {
 
     }
 
+    /**
+     * Просмотр заявки на кредит
+     * @param creditId
+     * @param userId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}")
     public String creditOffer(@PathVariable("creditId") Long creditId,
                               @PathVariable("userId") Long userId,
@@ -232,8 +312,15 @@ public class BankController {
         return "bank/creditOffer";
     }
 
+    /**
+     * Ободрение заявки на кредит
+     * @param creditId
+     * @param userId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}/approve")
-    public String approve(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
+    public String approveCreditOffer(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
                               Model model) {
 
         Optional<CreditOffer> creditOfferOptional = creditOfferService.findById(creditId, userId);
@@ -248,8 +335,15 @@ public class BankController {
                 "/user/" + creditOffer.getUser().getUserId();
     }
 
+    /**
+     * Отклонение заявки на кредит
+     * @param creditId
+     * @param userId
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/creditOffer/credit/{creditId}/user/{userId}/reject")
-    public String reject(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
+    public String rejectCreditOffer(@PathVariable("creditId") Long creditId, @PathVariable("userId") Long userId,
                           Model model) {
 
         Optional<CreditOffer> creditOfferOptional = creditOfferService.findById(creditId, userId);

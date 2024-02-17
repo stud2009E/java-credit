@@ -46,7 +46,7 @@ public class CreditService {
     }
 
 
-    public Page<Credit> findByNameAndBankId(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+    public Page<Credit> findByNameAndBank(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());

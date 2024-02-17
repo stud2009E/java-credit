@@ -39,7 +39,8 @@ public interface CreditOfferRepository extends JpaRepository<CreditOffer, Credit
             "co.user.phone, " +
             "co.user.email) " +
             "FROM CreditOffer co " +
-            "WHERE co.credit.bank = :bank"
+            "WHERE co.credit.bank = :bank " +
+            "AND co.creditOfferStatus.statusName = 'APPROVE'"
     )
     Page<ClientOfBankDTO> findClientsOfBank(Bank bank, Pageable pageable);
 

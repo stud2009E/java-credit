@@ -58,6 +58,28 @@ public class BankController {
         return "bank/credits";
     }
 
+    @GetMapping(path = {"credit/search"})
+    public String search(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                         @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                         @RequestParam(defaultValue = "creditId") String sortBy,
+                         @RequestParam(defaultValue = "asc") String order,
+                         @RequestParam() String name,
+                         Model model) {
+
+        if (!name.isEmpty()) {
+            Bank bank = bankService.getMyBank();
+            Page<Credit> credits = creditService.findByNameAndBankId(name, bank, pageNumber, pageSize, sortBy, order);
+            model.addAttribute("pageSize", pageSize);
+            model.addAttribute("sortBy", sortBy);
+            model.addAttribute("order", order);
+            model.addAttribute("credits", credits);
+
+            return "bank/credits";
+        } else {
+            return "redirect:/bank/credit/all";
+        }
+    }
+
     @GetMapping(value = "/credit/{creditId}")
     public String showCredit(@PathVariable("creditId") Long creditId, Model model) {
 

@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.sber.edu.entity.CreditOffer;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Entity

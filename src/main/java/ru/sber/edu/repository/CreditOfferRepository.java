@@ -7,12 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.projection.CreditOffersDTO;
-import ru.sber.edu.repository.ID.CreditOfferID;
 
 import java.util.List;
 

@@ -10,9 +10,7 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.sber.edu.ui.table.TableColumn;
 import ru.sber.edu.ui.table.UiColumn;
-import ru.sber.edu.ui.table.UiColumnList;
 import ru.sber.edu.ui.table.UiFieldType;
-
 
 import java.time.LocalDate;
 import java.util.Arrays;

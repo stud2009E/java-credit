@@ -3,8 +3,8 @@ package ru.sber.edu.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import ru.sber.edu.entity.auth.User;
-import ru.sber.edu.repository.ID.CreditOfferID;
 
 @Entity
 @Table(name = "credit_offer")
@@ -22,7 +22,15 @@ import ru.sber.edu.repository.ID.CreditOfferID;
 public class CreditOffer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "credit-offer-generator")
+    @GenericGenerator(
+            name = "credit-offer-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "credit_offer_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "70"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "credit_offer_id")
     private Long creditOfferId;
 

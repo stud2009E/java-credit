@@ -41,9 +41,7 @@ public class BankService {
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
 
-        Page<ClientOfBank> page = bankRepository.findClientsByBankId(bankId,paging);
-
-        return page;
+        return bankRepository.findClientsByBankId(bankId,paging);
     }
 
     public Bank getMyBank(){

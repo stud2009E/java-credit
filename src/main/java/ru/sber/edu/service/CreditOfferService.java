@@ -11,7 +11,6 @@ import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.repository.CreditOfferRepository;
-import ru.sber.edu.repository.ID.CreditOfferID;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +40,6 @@ public class CreditOfferService {
         User user = new User();
         user.setUserId(userId);
 
-        CreditOfferID creditOfferRepositoryID = new CreditOfferID(creditId, userId);
         List<CreditOffer> creditOffer = creditOfferRepository.findByUserAndCredit(user, credit);
 
         if (creditOffer.isEmpty()){

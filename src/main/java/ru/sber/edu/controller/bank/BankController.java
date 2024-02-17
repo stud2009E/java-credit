@@ -260,7 +260,7 @@ public class BankController {
      * @param model
      * @return
      */
-    @GetMapping(value = "/creditOffers")
+    @GetMapping(value = "/creditOffer/all")
     public String creditOffer(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
                               @RequestParam(defaultValue = "credit.creditId") String sortBy,
@@ -330,9 +330,7 @@ public class BankController {
         creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.APPROVE));
 
         creditOfferService.save(creditOffer);
-
-        return "redirect:/bank/creditOffer/credit/" + creditOffer.getCredit().getCreditId() +
-                "/user/" + creditOffer.getUser().getUserId();
+        return "redirect:/bank/creditOffer/all";
     }
 
     /**
@@ -353,8 +351,6 @@ public class BankController {
         creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REJECT));
 
         creditOfferService.save(creditOffer);
-
-        return "redirect:/bank/creditOffer/credit/" + creditOffer.getCredit().getCreditId() +
-                "/user/" + creditOffer.getUser().getUserId();
+        return "redirect:/bank/creditOffer/all";
     }
 }

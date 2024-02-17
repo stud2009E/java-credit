@@ -7,7 +7,8 @@
 <body>
 <h1>Credit</h1>
 <div class="container" th:object="${credit}">
-    <form th:replace="~{fragments/creditForm :: creditForm(action=${action}, credit = ${credit}, mode = ${mode})}"></form>
+    <form th:replace="~{fragments/creditForm :: creditForm(action=${action}, credit = ${credit}, mode = ${mode},
+    errorMessage = ${errorMessage})}"></form>
 </div>
 </body>
 </html>

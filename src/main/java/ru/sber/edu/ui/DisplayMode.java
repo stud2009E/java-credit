@@ -4,5 +4,7 @@ public enum DisplayMode {
 
     EDIT,
 
-    DISPLAY
+    DISPLAY,
+
+    CREATE
 }

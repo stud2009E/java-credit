@@ -23,7 +23,8 @@
 
             <div class="col-12">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" name="name" id="name" required th:value="*{name}"/>
+                <input type="text" class="form-control" name="name" id="name" required th:value="*{name}"
+                       th:readonly="${mode != 'edit'}"/>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
             </div>
 

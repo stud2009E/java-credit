@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: webjar(title='Credit view')}">
     <meta charset="UTF-8">
     <title>Credit</title>
 </head>
 <body>
-<h1>Credit</h1>
 <div class="container" th:object="${credit}">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
     <form th:replace="~{fragments/creditForm :: creditForm(action=${action}, credit = ${credit}, mode = ${mode}
     ,errorMessage = ${errorMessage})}"></form>
 </div>

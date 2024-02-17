@@ -35,7 +35,6 @@
                 <span th:if="${#fields.hasErrors('maxSum')}" th:errors="*{maxSum}" class="text-danger"></span>
             </div>
 
-
             <div class="col-12">
                 <label for="rate" class="form-label">Rate</label>
                 <input type="number" class="form-control" name="rate" step="0.01" id="rate" required th:readonly="${mode == 'DISPLAY'}"
@@ -54,12 +53,34 @@
 
 
             <div class="col-12">
+                <label for="dateFrom" class="form-label">Date from</label>
+                <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
+                       th:readonly="${mode != 'edit'}"
+                       th:value="*{dateFrom}"/>
+                <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
+
+            <div class="col-12">
                 <label for="dateTo" class="form-label">Date to</label>
                 <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode == 'DISPLAY'}"
                        th:value="*{dateTo}"/>
                 <span th:if="${#fields.hasErrors('dateTo')}" th:errors="*{dateTo}" class="text-danger"></span>
+
             </div>
 
+            <div class="col-12">
+                <label for="dateFrom" class="form-label">Date from</label>
+                <input type="date" class="form-control" name="dateFrom" id="dateFrom" required
+                       th:readonly="${mode != 'edit'}"
+                       th:value="*{dateFrom}"/>
+                <span th:if="${#fields.hasErrors('dateFrom')}" th:errors="*{dateFrom}" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label for="dateTo" class="form-label">Date to</label>
+                <input type="date" class="form-control" name="dateTo" id="dateTo" required th:readonly="${mode != 'edit'}"
+                       th:value="*{dateTo}"/>
+                <span th:if="${#fields.hasErrors('dateTo')}" th:errors="*{dateTo}" class="text-danger"></span>
+            </div>
 
             <th:block sec:authorize="hasAuthority('BANK')">
                 <input class="btn btn-primary" th:if="${mode == 'DISPLAY'}" type="submit" value="Edit"/>
@@ -69,8 +90,12 @@
 
             <th:block sec:authorize="hasAuthority('CLIENT')">
                 <input class="btn btn-success" type="submit" value="Request"/>
+
             </th:block>
 
+            <th:block sec:authorize="hasAuthority('CLIENT')">
+                <input class="btn btn-success" type="submit" value="Request"/>
+            </th:block>
 
             <th:block sec:authorize="isAuthenticated() == false">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#requestInfo"

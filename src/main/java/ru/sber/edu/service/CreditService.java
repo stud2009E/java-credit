@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sber.edu.entity.*;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.exception.CreditBankException;
 import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.repository.CreditFavoriteRepository;
 import ru.sber.edu.repository.CreditOfferRepository;
@@ -45,7 +46,7 @@ public class CreditService {
     }
 
 
-    public Page<Credit> findByNameAndBankId(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
+    public Page<Credit> findByNameAndBank(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
 
         Sort sorting = Sort.by(sortedBy);
         Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
@@ -53,18 +54,20 @@ public class CreditService {
         return creditRepository.findByBankIdAndNameContainingIgnoreCase(bank.getBankId(), name, paging);
     }
 
-
-    public Credit createCredit(Credit credit, Long bankId) {
-        Bank bank = new Bank();
-        bank.setBankId(bankId);
-
-        credit.setBankId(bankId);
+    public Credit createCredit(Credit credit, Bank bank) {
+        credit.setBankId(bank.getBankId());
         return creditRepository.saveAndFlush(credit);
     }
 
 
-    public Optional<Credit> findById(Long creditId) {
-        return creditRepository.findById(creditId);
+    public Credit findById(Long creditId) throws CreditBankException {
+        Optional<Credit> creditOptional = creditRepository.findById(creditId);
+
+        if (creditOptional.isEmpty()){
+            throw new CreditBankException("Credit " + creditId + " does not exist");
+        }
+
+        return creditOptional.get();
     }
 
 
@@ -80,26 +83,24 @@ public class CreditService {
 
     @Transactional
     public CreditOffer createCreditOffer(Credit credit) {
-        Optional<Credit> creditOptional = findById(credit.getCreditId());
-
-        if (creditOptional.isEmpty()) {
-            throw new CreditBaseException("Unable to find credit!");
-        }
+        credit = findById(credit.getCreditId());
 
         User user = userService.getUser();
-        List<CreditOffer> existedOffer = creditOfferRepository.findByUserAndCredit(user, creditOptional.get());
+        List<CreditOffer> existedOffer = creditOfferRepository.findByUserAndCredit(user, credit);
 
         if (!existedOffer.isEmpty()){
             throw new CreditBaseException("Request for credit exist!");
         }
 
         CreditOffer creditOffer = new CreditOffer();
-        creditOffer.setCredit(creditOptional.get());
+        creditOffer.setCredit(credit);
         creditOffer.setUser(user);
         creditOffer.setCreditOfferStatus(new CreditOfferStatus(CreditOfferStatus.StatusType.REQUEST));
 
         return creditOfferRepository.save(creditOffer);
     }
+
+
     public FavoriteCredit addFavoriteCredit(FavoriteCredit favoriteCredit){
         return creditFavoriteRepository.save(favoriteCredit);
     }
@@ -108,12 +109,19 @@ public class CreditService {
         creditFavoriteRepository.delete(favoriteCredit);
     }
 
+
     public List<FavoriteCredit> findFavoriteCredit(User user, Credit credit){
         return creditFavoriteRepository.findByUserAndCredit(user, credit);
     }
 
 
-    public Optional<Credit> findByCreditIdAndBankId(Long creditId, Long bankId) {
-        return creditRepository.findByCreditIdAndBankId(creditId, bankId);
+    public Credit findByCreditIdAndBankId(Long creditId, Long bankId) {
+        Optional<Credit> creditOptional = creditRepository.findByCreditIdAndBankId(creditId, bankId);
+
+        if (creditOptional.isEmpty()){
+            throw new CreditBankException("Credit does not belongs to bank");
+        }
+
+        return creditOptional.get();
     }
 }

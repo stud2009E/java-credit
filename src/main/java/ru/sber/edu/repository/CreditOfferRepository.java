@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.CreditOffer;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.projection.ClientOfBankDTO;
 import ru.sber.edu.projection.CreditOffersDTO;
 
 import java.util.List;
@@ -29,8 +30,23 @@ public interface CreditOfferRepository extends JpaRepository<CreditOffer, Long> 
     )
     Page<CreditOffersDTO> findAllCreditOffersByBankId(@Param("bankId") Long bankId, Pageable pageable);
 
+
     @EntityGraph(value = "credit_offer-entity-graph")
     List<CreditOffer> findAllByCreditBankId(Long bankId);
 
+
     List<CreditOffer> findByUserAndCredit(User user, Credit credit);
+
+
+    @Query(value = "SELECT new ru.sber.edu.projection.ClientOfBankDTO( " +
+            "co.user.userId, " +
+            "co.user.firstName, " +
+            "co.user.lastName, " +
+            "co.user.phone, " +
+            "co.user.email) " +
+            "FROM CreditOffer co " +
+            "WHERE co.credit.bankId = :bankId " +
+            "AND co.creditOfferStatus.statusName = 'APPROVE'"
+    )
+    Page<ClientOfBankDTO> findClientsOfBank(@Param("bankId") Long bankId, Pageable pageable);
 }

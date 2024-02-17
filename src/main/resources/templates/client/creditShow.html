@@ -13,10 +13,6 @@
         <div class="row g-4 align-items-center justify-content-center">
             <div class="col-md-6 col-lg-8">
 
-                <div th:if="${errorMessage}" class="alert alert-danger">
-                    <span th:text="${errorMessage}">errorMessage</span>
-                </div>
-
                 <div class="row">
                     <h3 class="col text-start">Credit</h3>
 
@@ -38,7 +34,7 @@
 
 
                 <th:block th:if="${credit}" th:object="${credit}">
-                    <form th:replace="~{fragments/creditForm :: creditForm(action='/credit/request', credit=${credit}, mode=${mode})}"></form>
+                    <form th:replace="~{fragments/creditForm :: creditForm(action='/credit/request', credit=${credit}, mode=${mode}, errorMessage=${errorMessage})}"></form>
                 </th:block>
             </div>
         </div>

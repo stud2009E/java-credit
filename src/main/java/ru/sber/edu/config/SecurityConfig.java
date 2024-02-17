@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/logout", "/register", "/login", "/login-error", "/", "/webjars/**").permitAll()
+                        .requestMatchers("/logout", "/register", "/login", "/search", "/login-error", "/", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login")
                         .failureUrl("/login-error"))

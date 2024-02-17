@@ -9,6 +9,8 @@
 <div class="container">
     <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
 
+    <div th:replace="~{fragments/search :: search(searchValue=${searchValue}) }"></div>
+
     <th:block sec:authorize="isAuthenticated() == false">
         <table th:replace="~{fragments/table :: table}"></table>
     </th:block>

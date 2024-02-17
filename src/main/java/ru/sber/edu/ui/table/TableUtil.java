@@ -3,6 +3,7 @@ package ru.sber.edu.ui.table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 
 import java.lang.reflect.Field;
@@ -12,10 +13,10 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class TableUtil {
+public class TableUtil <T>{
 
     private List<UiColumn> headers;
-    private Page<?> page;
+    private Model model;
 
     private Map<String, Object> convertUsingReflection(Object object) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<>();
@@ -29,7 +30,7 @@ public class TableUtil {
         return map;
     }
 
-    private <T> List<Map<String,Object>> transformData(Page<T> page){
+    private List<Map<String,Object>> transformData(Page<T> page){
         return page.stream().map(
                 obj -> {
                     try {
@@ -41,8 +42,13 @@ public class TableUtil {
         ).toList();
     }
 
-    public void fill(Model model) {
+    public void fillTableData(Page<T> page) {
         model.addAttribute("headers", headers);
         model.addAttribute("rows", transformData(page));
+    }
+
+    public void fillPageableData(Pageable pageable) {
+        model.addAttribute("pageNumber", pageable.getPageNumber());
+        model.addAttribute("pageSize", pageable.getPageSize());
     }
 }

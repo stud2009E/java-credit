@@ -271,15 +271,13 @@ public class BankController {
                               @RequestParam(defaultValue = "acs") String order,
                               Model model) {
 
-        Sort sorting = Sort.by(sortBy);
-        sorting = order.equals("acs") ? sorting.ascending() : sorting.descending();
-        Pageable pageable = PageRequest.of(--pageNumber, pageSize, sorting );
+        Pageable pageable = PageRequest.of(--pageNumber, pageSize );
 
         Bank bank = bankService.getMyBank();
         Page<CreditOffersDTO> credits = creditOfferService.findAllByBank(bank, pageable);
 
-        TableUtil util = new TableUtil(CreditOffersDTO.getColumns(), credits);
-        util.fill(model);
+        TableUtil<CreditOffersDTO> util = new TableUtil<>(CreditOffersDTO.getColumns(), model);
+        util.fillTableData(credits);
 
         return "bank/creditOffers";
 

@@ -28,22 +28,40 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String home(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-                       @RequestParam(value = "size", defaultValue = "20") int pageSize,
-                       @RequestParam(defaultValue = "creditId") String sortBy,
-                       @RequestParam(defaultValue = "acs") String order,
+                       @RequestParam(value = "size", defaultValue = "10") int pageSize,
                        Model model) {
 
         if (!userService.isBankUser()){
-            Sort sorting = Sort.by(sortBy);
-            sorting = order.equals("acs") ? sorting.ascending() : sorting.descending();
-            Pageable pageable = PageRequest.of(--pageNumber, pageSize, sorting);
+            Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
 
-            TableUtil util = new TableUtil(Credit.getColumns(), creditService.findAll(pageable));
-            util.fill(model);
+            TableUtil<Credit> util = new TableUtil<>(Credit.getColumns(), model);
+            util.fillTableData(creditService.findAll(pageable));
         }else {
             model.addAttribute("bank", bankService.getMyBank());
         }
 
         return "home";
+    }
+
+
+    @GetMapping(path = {"/search"})
+    public String searchCredit(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                               @RequestParam(value = "value") String value,
+                               Model model) {
+
+        if (!value.isEmpty()) {
+            Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
+
+            TableUtil<Credit> util = new TableUtil<>(Credit.getColumns(), model);
+            util.fillTableData(creditService.findByNameContainingIgnoreCase(value, pageable));
+            util.fillPageableData(pageable);
+
+            model.addAttribute("searchValue", value);
+
+            return "home";
+        } else {
+            return "redirect:/";
+        }
     }
 }

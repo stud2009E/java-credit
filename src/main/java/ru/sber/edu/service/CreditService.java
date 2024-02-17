@@ -124,4 +124,9 @@ public class CreditService {
 
         return creditOptional.get();
     }
+
+
+    public Page<Credit> findByNameContainingIgnoreCase(String name, Pageable pageable){
+        return creditRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
 }

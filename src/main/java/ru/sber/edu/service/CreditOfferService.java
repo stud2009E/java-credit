@@ -50,9 +50,9 @@ public class CreditOfferService {
         return Optional.of(creditOffer.get(0));
     }
 
-    public void save(CreditOffer creditOffer){
+    public CreditOffer save(CreditOffer creditOffer){
         creditService.findById(creditOffer.getCredit().getCreditId());
-        creditOfferRepository.saveAndFlush(creditOffer);
+        return creditOfferRepository.saveAndFlush(creditOffer);
     }
 
     public Page<ClientOfBankDTO> findClientsOfBank(Bank bank, int pageNumber, int pageSize, String sortedBy, String order){

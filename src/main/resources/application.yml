@@ -25,7 +25,7 @@ logging:
   file:
     name: logs/application-debug.log
   level:
-    root: warning
+    root: WARN
     org:
       springframework:
         security: DEBUG

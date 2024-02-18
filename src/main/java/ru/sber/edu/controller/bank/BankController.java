@@ -209,7 +209,7 @@ public class BankController {
             return "bank/creditCreate";
         }
 
-        Credit newCredit = creditService.createCredit(credit, bankService.getMyBank());
+        Credit newCredit = creditService.createCredit(credit);
 
         return "redirect:/bank/credit/" + newCredit.getCreditId();
     }

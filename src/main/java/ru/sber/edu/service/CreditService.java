@@ -1,5 +1,6 @@
 package ru.sber.edu.service;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Data
 public class CreditService {
 
     @Autowired
@@ -46,8 +48,8 @@ public class CreditService {
         return creditRepository.findByBankIdAndNameContainingIgnoreCase(bankService.getMyBank().getBankId(), name, paging);
     }
 
-    public Credit createCredit(Credit credit, Bank bank) {
-        credit.setBankId(bank.getBankId());
+    public Credit createCredit(Credit credit) {
+        credit.setBankId(bankService.getMyBank().getBankId());
         return creditRepository.saveAndFlush(credit);
     }
 

@@ -47,7 +47,7 @@ public class HomeController {
 
     @GetMapping(path = {"/search"})
     public String searchCredit(@RequestParam(value = "value", required = false) String value,
-                                @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+                               @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
                                @RequestParam(value = "size", required = false, defaultValue = "10") int pageSize,
                                Model model) {
 

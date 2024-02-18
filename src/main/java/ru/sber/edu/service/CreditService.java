@@ -114,6 +114,10 @@ public class CreditService {
         return creditFavoriteRepository.findByUserAndCredit(user, credit);
     }
 
+    public Page<FavoriteCredit> findFavoriteCreditByUser(User user, Pageable pageable){
+        return creditFavoriteRepository.findByUser(user, pageable);
+    }
+
 
     public Credit findByCreditIdAndBankId(Long creditId, Long bankId) {
         Optional<Credit> creditOptional = creditRepository.findByCreditIdAndBankId(creditId, bankId);

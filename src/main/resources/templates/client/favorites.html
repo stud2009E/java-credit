@@ -11,8 +11,11 @@
 
     <main class="container">
         <div class="row g-4 align-items-center justify-content-center">
-            <div class="col-md-6 col-lg-8">
-                Favorites
+            <div class="col-12 col-lg-8">
+                <h4 class="pb-2" th:text="Favorites"></h4>
+                <th:block sec:authorize="hasAuthority('CLIENT')">
+                    <table th:replace="~{fragments/table :: table}"></table>
+                </th:block>
             </div>
         </div>
     </main>

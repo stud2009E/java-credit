@@ -1,14 +1,19 @@
 package ru.sber.edu.controller.client;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.sber.edu.entity.Credit;
 import ru.sber.edu.entity.FavoriteCredit;
 import ru.sber.edu.entity.auth.User;
@@ -17,9 +22,9 @@ import ru.sber.edu.exception.CreditBaseException;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 import ru.sber.edu.ui.DisplayMode;
+import ru.sber.edu.ui.table.TableUtil;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ClientController {
@@ -93,7 +98,7 @@ public class ClientController {
 
     @PostMapping(value = "/favorites/remove")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String removeFromFavorites(Credit credit, Model model) {
+    public String removeFromFavorites(@RequestHeader("Referer") String referer, Credit credit, Model model) {
 
         try {
             Credit savedCredit = creditService.findById(credit.getCreditId());
@@ -102,8 +107,10 @@ public class ClientController {
             if (!favorites.isEmpty()) {
                 creditService.removeFavoriteCredit(new FavoriteCredit(user, savedCredit));
             }
-        }catch (CreditBaseException ignored){
+        }catch (CreditBaseException ignored){}
 
+        if (referer.contains("favorites")){
+            return "redirect:/favorites";
         }
 
         return "redirect:/credit/" + credit.getCreditId();
@@ -160,7 +167,16 @@ public class ClientController {
 
     @GetMapping(value = "/favorites")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String favorites(Model model) {
+    public String favorites(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+                            @RequestParam(value = "size", required = false, defaultValue = "10") int pageSize,
+                            Model model) {
+        User user = userService.getUser();
+
+        Pageable pageable = PageRequest.of(--pageNumber, pageSize);
+        Page<FavoriteCredit> credits = creditService.findFavoriteCreditByUser(user, pageable);
+
+        TableUtil<FavoriteCredit> util = new TableUtil<>(credits, FavoriteCredit.getColumns());
+        util.addTableDataToModel(model, FavoriteCredit::getCredit);
 
         return "/client/favorites";
     }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>search</title>
+</head>
+<body>
+
+<div th:fragment="paging (pageable, page, action, searchValue)" >
+
+    <nav aria-label="Page navigation" th:if="${page.getTotalPages()} gt 1">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${page.getNumber()} eq 0 ? 'disabled'">
+                <th:block th:if="${searchValue} != '' and ${searchValue} != null">
+                    <a class="page-link"
+                       th:href="@{${action}(
+                            page=${page.getNumber() lt 2 ? 1 : page.getNumber()}, size=${pageable.getPageSize()},  value=${searchValue}
+                       )}"
+                    >Previous</a>
+                </th:block>
+
+                <th:block th:if="${searchValue} == '' or ${searchValue} == null">
+                    <a class="page-link"
+                       th:href="@{${action}(
+                            page=${page.getNumber() lt 2 ? 1 : page.getNumber()}, size=${pageable.getPageSize()}
+                       )}"
+                    >Previous</a>
+                </th:block>
+            </li>
+
+            <li class="page-item">
+                <span class="page-link" th:text="${page.getNumber()} + 1"></span>
+            </li>
+
+            <li class="page-item" th:classappend="${page.getNumber() + 1 eq page.getTotalPages()} ? 'disabled'">
+                <th:block th:if="${searchValue} != '' and ${searchValue} != null">
+                    <a class="page-link"
+                       th:href="@{${action}(
+                        page=${page.getNumber() + 2}, size=${pageable.getPageSize()}, value=${searchValue}
+                   )}"
+                    >Next</a>
+                </th:block>
+
+                <th:block th:if="${searchValue} == '' or ${searchValue} == null">
+                    <a class="page-link"
+                       th:href="@{${action}(
+                        page=${page.getNumber() + 2}, size=${pageable.getPageSize()}
+                   )}"
+                    >Next</a>
+                </th:block>
+
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+</body>
+</html>

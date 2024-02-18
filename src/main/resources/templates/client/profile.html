@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: webjar(title='Profile')}">
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
+
+    <main class="container">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-md-6 col-lg-8">
+                <div th:if="${isLogged} == false" class="alert alert-danger">
+                    <span>Please, login!</span>
+                </div>
+
+                <form method="post" th:action="@{/profile/edit}"  th:if="${isLogged} == true" id="registerForm" th:object="${user}">
+                    <div class="row g-3">
+                        <h4 class="mb-3">Login</h4>
+
+                        <div class="col-12">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" disabled th:value="*{username}">
+                        </div>
+
+                        <h4 class="mb-3">Personal</h4>
+
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label">First name</label>
+                            <input type="text" class="form-control" name="firstName" id="firstName" disabled th:value="*{firstName}">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">First name</label>
+                            <input type="text" class="form-control" name="lastName" id="lastName" disabled th:value="*{lastName}">
+                        </div>
+
+                        <div class="col-12">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="phone" th:disabled="${mode} == 'DISPLAY'" th:value="*{phone}">
+                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" th:disabled="${mode} == 'DISPLAY'" th:value="*{email}">
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                        </div>
+
+                        <div th:if="${mode} == 'DISPLAY'" class="col-12">
+                            <a th:href="@{/profile/edit}" class="btn btn-success col-12">Edit</a>
+                        </div>
+
+                        <div th:if="${mode} == 'EDIT'" class="col-12">
+                            <input type="submit" class="btn btn-success col-12" value="Save"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</div>
+</body>
+</html>

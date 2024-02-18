@@ -30,7 +30,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void saveClient(RegisterForm form) {
+    public void create(RegisterForm form) {
         User user = userFromForm(form);
         User savedUser = userRepository.save(user);
 
@@ -39,6 +39,11 @@ public class UserService {
         auth.setRole(new Role(Role.RoleType.CLIENT));
 
         authRepository.save(auth);
+    }
+
+    @Transactional
+    public void update(User user) {
+        userRepository.save(user);
     }
 
 
@@ -63,7 +68,7 @@ public class UserService {
         return user;
     }
 
-    public void checkClientData(RegisterForm form, Errors errors) {
+    public void checkRegisterData(RegisterForm form, Errors errors) {
         if (!form.getPassword().equals(form.getConfirm())) {
             errors.rejectValue("confirm", "confirm", "Password fields are not equal");
         }
@@ -78,9 +83,11 @@ public class UserService {
         }
     }
 
+
     public Collection<? extends GrantedAuthority> getRole() {
         return getAuthentication().getAuthorities();
     }
+
 
     public boolean isLogged() {
         Authentication auth = getAuthentication();
@@ -91,4 +98,26 @@ public class UserService {
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+
+    public User getUser() {
+        return (User)getAuthentication().getPrincipal();
+    }
+
+    public boolean isBankUser(){
+        return hasRole(Role.RoleType.BANK);
+    }
+
+    public boolean isClientUser(){
+        return hasRole(Role.RoleType.CLIENT);
+    }
+
+    public boolean hasRole(Role.RoleType roleType){
+        if (!isLogged()) {
+            return false;
+        }
+        User user = getUser();
+        return user.getAuthorities().stream().anyMatch(auth -> auth.getRole().getRoleName() == roleType);
+    }
+
 }

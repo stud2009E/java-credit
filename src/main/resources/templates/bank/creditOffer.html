@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head :: webjar(title='Credit offer')}">
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<div class="container" th:insert="~{fragments/header :: header(headerTitle='Credit me')}"></div>
+
+<main class="container">
+    <div class="row g-4 align-items-center justify-content-center">
+        <div class="col-md-6 col-lg-8">
+
+            <h2>Credit offer</h2>
+
+            <form method="POST" th:action="@{/creditOffer}" id="creditOffer" th:object="${creditOffer}">
+
+                <h3>User data</h3>
+
+                <div class="row g-3">
+
+                    <div class="col-sm-6">
+                        <label for="firstName" class="form-label">First name</label>
+                        <input type="text" class="form-control" name="firstName" id="firstName" required
+                               th:value="*{user.firstName}" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="lastName" class="form-label">Last name</label>
+                        <input type="text" class="form-control" name="lastName" id="lastName" required
+                               th:value="*{user.lastName}" readonly>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="phone" id="phone" required
+                               th:value="*{user.phone}" readonly>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" required
+                               th:value="*{user.email}" readonly>
+                    </div>
+
+                    <h3>Credit data</h3>
+
+                    <div class="col-12">
+                        <label for="creditName" class="form-label">Credit name</label>
+                        <input type="text" class="form-control" name="creditName" id="creditName" required
+                               th:value="*{credit.name}" readonly>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="maxSum" class="form-label">Sum</label>
+                        <input type="number" class="form-control" name="maxSum" id="maxSum" required
+                               th:value="*{credit.maxSum}" readonly>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="rate" class="form-label">Rate</label>
+                        <input type="number" class="form-control" name="rate" id="rate"
+                               th:value="*{credit.rate}" readonly>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="status" class="form-label">Status</label>
+                        <input type="text" class="form-control" name="status" id="status"
+                               th:value="*{creditOfferStatus.statusName}" readonly>
+                    </div>
+
+                    <div th:if="${mode} == 'EDIT'" class="col-12 row">
+                        <a th:href="'/bank/creditOffer/credit/'+|*{credit.creditId}|+'/user/'+|*{user.userId}|+'/approve'"
+                           class="btn btn-success col" th:text="Approve"></a>
+                        <a th:href="'/bank/creditOffer/credit/'+|*{credit.creditId}|+'/user/'+|*{user.userId}|+'/reject'"
+                           class="btn btn-danger col" th:text="Reject"></a>
+                    </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div class="container" th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

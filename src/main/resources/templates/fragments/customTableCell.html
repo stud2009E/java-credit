@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <td th:fragment="cells(field, row, header)">
+
+        <!-- ru/sber/edu/entity/Credit.java     -->
+        <th:block th:if="${field} == 'credit--NameLinkToCard'">
+            <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+
+
+        <!-- ru/sber/edu/entity/Credit.java     -->
+        <th:block th:if="${field} == 'credit--NameLinkToBankCard'">
+            <a th:href="'/bank/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+
+        <!-- ru/sber/edu/entity/CreditOffer.java     -->
+        <th:block th:if="${field} == 'creditOffer--LinkToCreditOffer'">
+            <a th:href="'/bank/creditOffer/credit/' + ${row.get('creditId')}+'/user/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>
+        </th:block>
+
+
+        <!-- ru/sber/edu/entity/FavoriteCredit.java     -->
+        <th:block th:if="${field} == 'favoriteCredit-NameLinkToCredit'">
+            <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+        <th:block th:if="${field} == 'favoriteCredit-delete-favorite'">
+            <form method="post" th:action="@{/favorites/remove}">
+                <input type="hidden" name="creditId" th:value="${row.get('creditId')}"/>
+                <input type="submit" class="btn btn btn-danger" value="Remove from favorites"/>
+            </form>
+        </th:block>
+
+
+        <!-- ru/sber/edu/entity/CreditOffer.java     -->
+        <th:block th:if="${field} == 'creditOffer-NameLinkToCredit'">
+            <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('creditName')}">Link</a>
+        </th:block>
+        <th:block th:if="${field} == 'creditOffer-StatusName'">
+            <div class="text-end">
+                <button disabled class="btn btn-warning" th:if="${row.get('statusName').toString()} == 'REQUEST'" th:text="${row.get('statusName')}"></button>
+                <button disabled class="btn btn-danger" th:if="${row.get('statusName').toString()} == 'REJECT'" th:text="${row.get('statusName')}"></button>
+                <button disabled class="btn btn-success" th:if="${row.get('statusName').toString()} == 'APPROVE'" th:text="${row.get('statusName')}"></button>
+            </div>
+        </th:block>
+
+
+
+    </td>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: webjar(title='My requests')}">
+    <meta charset="UTF-8">
+    <title>My requests</title>
+</head>
+<body>
+
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
+
+    <main class="container">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-12 col-lg-8">
+                <h4 class="pb-2">My requests</h4>
+                <th:block sec:authorize="hasAuthority('CLIENT')">
+                    <table th:replace="~{fragments/table :: table}"></table>
+                </th:block>
+
+                <th:block th:if="${pageable != null and page != null}">
+                    <div th:replace="~{fragments/paging :: paging(pageable=${pageable}, page=${page}, action='/my/requests',searchValue='' ) }"></div>
+                </th:block>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</div>
+</body>
+</html>

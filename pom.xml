@@ -25,6 +25,7 @@
         <jquery.version>3.6.1</jquery.version>
         <thymeleaf.extras.java8time>3.0.4.RELEASE</thymeleaf.extras.java8time>
         <thymeleaf.extras.springsecurity6>3.1.2.RELEASE</thymeleaf.extras.springsecurity6>
+        <springdoc.openapi.ui>2.3.0</springdoc.openapi.ui>
     </properties>
 
     <dependencies>
@@ -113,6 +114,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.openapi.ui}</version>
         </dependency>
 
     </dependencies>

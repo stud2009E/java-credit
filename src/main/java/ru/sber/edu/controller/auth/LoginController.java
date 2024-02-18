@@ -31,6 +31,10 @@ public class LoginController {
 
     @GetMapping("/login-error")
     public String loginError(HttpServletRequest request, Model model){
+        if (userService.isLogged()){
+            return "redirect:/";
+        }
+
         model.addAttribute("isLogged", userService.isLogged());
 
         HttpSession session = request.getSession(false);

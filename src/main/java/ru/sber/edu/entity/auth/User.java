@@ -5,23 +5,32 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long userId;
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "user_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "70"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            })
+    private Long userId;
 
     @Column(name = "user_name", unique = true)
     private String username;
@@ -34,7 +43,7 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime changeDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private List<Auth> authorities;
 
@@ -62,9 +71,4 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean enabled;
-
-    @Override
-    public Collection<Auth> getAuthorities() {
-        return authorities;
-    }
 }

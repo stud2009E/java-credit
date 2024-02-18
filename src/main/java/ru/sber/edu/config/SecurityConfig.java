@@ -3,6 +3,7 @@ package ru.sber.edu.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import ru.sber.edu.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     @Autowired
     private UserRepository userRepo;
@@ -38,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/logout", "/register", "/login", "/login-error", "/", "/webjars/**").permitAll()
+                        .requestMatchers("/logout", "/register", "/login", "/search", "/login-error", "/", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login")
                         .failureUrl("/login-error"))

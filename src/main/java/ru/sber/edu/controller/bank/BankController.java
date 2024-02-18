@@ -158,7 +158,7 @@ public class BankController {
     }
 
     /**
-     * Сохранение изменений к кредите
+     * Сохранение изменений кредита
      * @param credit
      * @param errors
      * @param model
@@ -201,11 +201,10 @@ public class BankController {
      * Сохранение создания кредита
      * @param credit
      * @param errors
-     * @param model
      * @return
      */
     @PostMapping(value = "/credit/create")
-    public String saveCreate(@Valid Credit credit, Errors errors, Model model) {
+    public String saveCreate(@Valid Credit credit, Errors errors) {
 
         if (errors.hasErrors()) {
             return "bank/creditCreate";

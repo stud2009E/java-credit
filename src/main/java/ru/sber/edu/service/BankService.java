@@ -1,5 +1,6 @@
 package ru.sber.edu.service;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.edu.entity.Bank;
@@ -11,6 +12,7 @@ import ru.sber.edu.repository.BankUserRepository;
 
 import java.util.Optional;
 
+@Data
 @Service
 public class BankService {
 

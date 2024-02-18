@@ -12,6 +12,7 @@
             <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
         </th:block>
 
+
         <!-- ru/sber/edu/entity/CreditOffer.java     -->
         <th:block th:if="${field} == 'creditOffer--LinkToCreditOffer'">
             <a th:href="'/bank/creditOffer/credit/' + ${row.get('creditId')}+'/user/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>
@@ -28,6 +29,21 @@
                 <input type="submit" class="btn btn btn-danger" value="Remove from favorites"/>
             </form>
         </th:block>
+
+
+        <!-- ru/sber/edu/entity/CreditOffer.java     -->
+        <th:block th:if="${field} == 'creditOffer-NameLinkToCredit'">
+            <a th:href="'/credit/' + ${row.get('creditId')}" th:text="${row.get('creditName')}">Link</a>
+        </th:block>
+        <th:block th:if="${field} == 'creditOffer-StatusName'">
+            <div class="text-end">
+                <button disabled class="btn btn-warning" th:if="${row.get('statusName').toString()} == 'REQUEST'" th:text="${row.get('statusName')}"></button>
+                <button disabled class="btn btn-danger" th:if="${row.get('statusName').toString()} == 'REJECT'" th:text="${row.get('statusName')}"></button>
+                <button disabled class="btn btn-success" th:if="${row.get('statusName').toString()} == 'APPROVE'" th:text="${row.get('statusName')}"></button>
+            </div>
+        </th:block>
+
+
 
     </td>
 </body>

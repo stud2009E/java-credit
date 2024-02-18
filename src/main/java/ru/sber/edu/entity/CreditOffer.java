@@ -5,6 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import ru.sber.edu.entity.auth.User;
+import ru.sber.edu.ui.table.TableColumn;
+import ru.sber.edu.ui.table.UiColumn;
+import ru.sber.edu.ui.table.UiFieldType;
+
+import java.util.List;
 
 @Entity
 @Table(name = "credit_offer")
@@ -15,9 +20,9 @@ import ru.sber.edu.entity.auth.User;
         attributeNodes = {
                 @NamedAttributeNode(value = "credit", subgraph = "subgraph-bank"),
                 @NamedAttributeNode("user"),
-                @NamedAttributeNode("creditOfferStatus"), },
-        subgraphs = { @NamedSubgraph(name = "subgraph-bank",
-                                     attributeNodes = {@NamedAttributeNode(value = "bankId")}) }
+                @NamedAttributeNode("creditOfferStatus"),},
+        subgraphs = {@NamedSubgraph(name = "subgraph-bank",
+                attributeNodes = {@NamedAttributeNode(value = "bankId")})}
 )
 public class CreditOffer {
 
@@ -45,4 +50,12 @@ public class CreditOffer {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_name")
     private CreditOfferStatus creditOfferStatus;
+
+    public static List<UiColumn> getClientColumns() {
+        return List.of(
+                new TableColumn("creditId", "Id"),
+                new TableColumn("creditOffer-NameLinkToCredit", "Name", UiFieldType.CUSTOM),
+                new TableColumn("creditOffer-StatusName", "Status", UiFieldType.CUSTOM)
+        );
+    }
 }

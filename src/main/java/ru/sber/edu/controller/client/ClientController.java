@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.entity.CreditOffer;
+import ru.sber.edu.entity.CreditOfferStatus;
 import ru.sber.edu.entity.FavoriteCredit;
 import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.exception.CreditBankException;
 import ru.sber.edu.exception.CreditBaseException;
+import ru.sber.edu.projection.CreditOffersDTO;
 import ru.sber.edu.service.CreditService;
 import ru.sber.edu.service.UserService;
 import ru.sber.edu.ui.DisplayMode;
@@ -184,7 +187,24 @@ public class ClientController {
 
     @GetMapping(value = "/my/requests")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public String myRequests(Model model) {
+    public String myRequests(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+                             @RequestParam(value = "size", required = false, defaultValue = "5") int pageSize,
+                             Model model) {
+
+        User user = userService.getUser();
+
+        Pageable pageable = PageRequest.of(--pageNumber, pageSize);
+        Page<CreditOffer> creditOffers = creditService.findCreditOfferByUser(user, pageable);
+
+        TableUtil<CreditOffer> util = new TableUtil<>(creditOffers, CreditOffer.getClientColumns());
+        util.addTableDataToModel(model, creditOffer -> {
+            Credit credit = creditOffer.getCredit();
+            CreditOfferStatus.StatusType statusType = creditOffer.getCreditOfferStatus().getStatusName();
+
+            return new CreditOffersDTO(credit.getCreditId(), credit.getName(), 0L, "", "", statusType);
+        });
+        util.addPagingDataToModel(model);
+        model.addAttribute("action", "/my/requests");
 
         return "/client/myRequests";
     }

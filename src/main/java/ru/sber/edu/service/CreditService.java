@@ -100,6 +100,10 @@ public class CreditService {
         return creditOfferRepository.save(creditOffer);
     }
 
+    public Page<CreditOffer> findCreditOfferByUser(User user, Pageable pageable){
+        return creditOfferRepository.findByUser(user, pageable);
+    }
+
 
     public FavoriteCredit addFavoriteCredit(FavoriteCredit favoriteCredit){
         return creditFavoriteRepository.save(favoriteCredit);

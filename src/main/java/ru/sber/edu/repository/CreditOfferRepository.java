@@ -37,6 +37,8 @@ public interface CreditOfferRepository extends JpaRepository<CreditOffer, Long> 
 
     List<CreditOffer> findByUserAndCredit(User user, Credit credit);
 
+    Page<CreditOffer> findByUser(User user, Pageable pageable);
+
 
     @Query(value = "SELECT new ru.sber.edu.projection.ClientOfBankDTO( " +
             "co.user.userId, " +

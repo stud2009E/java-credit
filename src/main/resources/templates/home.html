@@ -9,9 +9,10 @@
 <div class="container">
     <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
 
-    <div th:replace="~{fragments/search :: search(searchValue=${searchValue}, action='/search') }"></div>
 
     <th:block sec:authorize="hasAuthority('CLIENT') or isAuthenticated() == false">
+        <div th:replace="~{fragments/search :: search(searchValue=${searchValue}, action='/search') }"></div>
+
         <table th:replace="~{fragments/table :: table}"></table>
 
         <th:block th:if="${pageable != null and page != null}">

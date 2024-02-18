@@ -204,7 +204,6 @@ public class ClientController {
             return new CreditOffersDTO(credit.getCreditId(), credit.getName(), 0L, "", "", statusType);
         });
         util.addPagingDataToModel(model);
-        model.addAttribute("action", "/my/requests");
 
         return "/client/myRequests";
     }

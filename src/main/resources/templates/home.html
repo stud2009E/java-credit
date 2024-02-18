@@ -9,7 +9,7 @@
 <div class="container">
     <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
 
-    <div th:replace="~{fragments/search :: search(searchValue=${searchValue}) }"></div>
+    <div th:replace="~{fragments/search :: search(searchValue=${searchValue}, action='/search') }"></div>
 
     <th:block sec:authorize="isAuthenticated() == false">
         <table th:replace="~{fragments/table :: table}"></table>
@@ -30,7 +30,7 @@
 
 
     <th:block th:if="${pageable != null and page != null}">
-        <div th:replace="~{fragments/paging :: paging(${pageable}, ${page}) }"></div>
+        <div th:replace="~{fragments/paging :: paging(pageable=${pageable}, page=${page}, action='/search', searchValue=${searchValue} ) }"></div>
     </th:block>
 
 

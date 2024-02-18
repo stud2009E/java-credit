@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<div th:fragment="paging (pageable, page)" th:with="searchValue=${searchValue} ?: '', action=${action} ?: '/search'" >
+<div th:fragment="paging (pageable, page, action, searchValue)" >
 
     <nav aria-label="Page navigation" th:if="${page.getTotalPages()} gt 1">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${page.getNumber()} eq 0 ? 'disabled'">
-                <th:block th:if="${searchValue} != ''">
+                <th:block th:if="${searchValue} != '' and ${searchValue} != null">
                     <a class="page-link"
                        th:href="@{${action}(
                             page=${page.getNumber() lt 2 ? 1 : page.getNumber()}, size=${pageable.getPageSize()},  value=${searchValue}
@@ -19,7 +19,7 @@
                     >Previous</a>
                 </th:block>
 
-                <th:block th:if="${searchValue} == ''">
+                <th:block th:if="${searchValue} == '' or ${searchValue} == null">
                     <a class="page-link"
                        th:href="@{${action}(
                             page=${page.getNumber() lt 2 ? 1 : page.getNumber()}, size=${pageable.getPageSize()}
@@ -33,7 +33,7 @@
             </li>
 
             <li class="page-item" th:classappend="${page.getNumber() + 1 eq page.getTotalPages()} ? 'disabled'">
-                <th:block th:if="${searchValue} != ''">
+                <th:block th:if="${searchValue} != '' and ${searchValue} != null">
                     <a class="page-link"
                        th:href="@{${action}(
                         page=${page.getNumber() + 2}, size=${pageable.getPageSize()}, value=${searchValue}
@@ -41,7 +41,7 @@
                     >Next</a>
                 </th:block>
 
-                <th:block th:if="${searchValue} == ''">
+                <th:block th:if="${searchValue} == '' or ${searchValue} == null">
                     <a class="page-link"
                        th:href="@{${action}(
                         page=${page.getNumber() + 2}, size=${pageable.getPageSize()}

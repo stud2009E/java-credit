@@ -18,7 +18,7 @@
                 </th:block>
 
                 <th:block th:if="${pageable != null and page != null}">
-                    <div th:replace="~{fragments/paging :: paging(${pageable}, ${page}) }"></div>
+                    <div th:replace="~{fragments/paging :: paging(pageable=${pageable}, page=${page}, action='/my/requests',searchValue='' ) }"></div>
                 </th:block>
             </div>
         </div>

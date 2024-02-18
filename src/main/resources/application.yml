@@ -22,7 +22,10 @@ server:
       enabled: false
 
 logging:
+  file:
+    name: logs/application-debug.log
   level:
+    root: warning
     org:
       springframework:
         security: DEBUG

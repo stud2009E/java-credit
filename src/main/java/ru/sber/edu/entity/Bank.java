@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.sber.edu.entity.auth.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bank {
+public class Bank implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

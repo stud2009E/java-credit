@@ -9,6 +9,7 @@ import ru.sber.edu.ui.table.TableColumn;
 import ru.sber.edu.ui.table.UiColumn;
 import ru.sber.edu.ui.table.UiFieldType;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ import java.util.List;
         subgraphs = {@NamedSubgraph(name = "subgraph-bank",
                 attributeNodes = {@NamedAttributeNode(value = "bankId")})}
 )
-public class CreditOffer {
+public class CreditOffer implements Serializable {
 
     @Id
     @GeneratedValue(generator = "credit-offer-generator")

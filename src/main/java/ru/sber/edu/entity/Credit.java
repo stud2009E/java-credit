@@ -12,6 +12,7 @@ import ru.sber.edu.ui.table.TableColumn;
 import ru.sber.edu.ui.table.UiColumn;
 import ru.sber.edu.ui.table.UiFieldType;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 @Table(name = "credit")
 @Data
 @NoArgsConstructor
-public class Credit {
+public class Credit implements Serializable {
 
     @Id
     @GeneratedValue(generator = "sequence-generator")

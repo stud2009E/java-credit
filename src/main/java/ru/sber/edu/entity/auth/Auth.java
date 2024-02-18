@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "authorities")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Auth implements GrantedAuthority {
+public class Auth implements GrantedAuthority, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "auth_id")

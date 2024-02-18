@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "credit_offer_status")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditOfferStatus {
+public class CreditOfferStatus implements Serializable {
 
     @Id
     @Column(name = "status_name")

@@ -112,7 +112,7 @@ public class BankRestController {
      */
     @PostMapping(value = "/credit/create")
     public Credit saveCreate(@Validated(Credit.class) @RequestBody Credit credit) {
-        return creditService.createCredit(credit, bankService.getMyBank());
+        return creditService.createCredit(credit);
     }
 
     /**

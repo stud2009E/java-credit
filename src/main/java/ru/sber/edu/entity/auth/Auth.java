@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
@@ -16,7 +17,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Auth implements GrantedAuthority, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "auth_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "70"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "auth_id")
     private long authId;
 

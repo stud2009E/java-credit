@@ -1,60 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: webjar(title='Home')}">
     <meta charset="UTF-8">
-    <title>All credit offers</title>
+    <title>Home page</title>
 </head>
 <body>
-  <h1>All credit offers</h1>
-  <form method="get" th:action="@{search}">
-  <input name="name" placeholder="Find by name" size="50" th:value="${name}" type="text">
-      <button class="btn btn-info" type="submit">Search</button>
-      <button class="btn btn-info" type="submit">Reset</button>
-  </form>
 
-  <fieldset>
-      <legend>List of credit offers</legend>
-      <table border="1">
-          <thead>
-          <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Sum</th>
-              <th scope="col">Rate</th>
-              <th scope="col">From</th>
-              <th scope="col">To</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="credit: ${credits}">
-              <td th:text="${credit.creditId}"></td>
-              <td>
-                  <a th:href="@{'/bank/credit/' + ${credit.creditId}}"th:text="${credit.name}"></a>
-              </td>
-              <td th:text="${credit.maxSum}"></td>
-              <td th:text="${credit.rate}"></td>
-              <td th:text="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></td>
-              <td th:text="${#temporals.format(credit.dateFrom, 'yyyy-MM-dd')}"></td>
-          </tr>
-          </tbody>
-      </table>
+<div class="container">
+    <header th:replace="~{fragments/header :: header(headerTitle='Credit me')}"></header>
 
-      <nav aria-label="Page navigation" th:if="${credits.totalPages - 1 gt 0}">
-          <ul class="pagination justify-content-end">
-              <li class="page-item" th:classappend="${credits.number eq 0} ? 'disabled'">
-                  <a class="page-link" tabindex="-1" aria-disabled="true" th:href="
-            @{/bank/credit/all
-            (page=${credits.number lt 2 ? 1 : credits.number}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Previous</a>
-              </li>
+    <div th:replace="~{fragments/search :: search(searchValue=${searchValue}, action=${searchAction}) }"></div>
 
-              <li class="page-item" th:classappend="${credits.number + 1 eq credits.totalPages} ? 'disabled'">
-                  <a class="page-link" th:href="@{/bank/credit/all
-            (page=${credits.number + 2}, size=${pageSize}, sortBy=${sortBy}, order=${order})}">Next</a>
-              </li>
+    <th:block sec:authorize="isAuthenticated() == false">
+        <table th:replace="~{fragments/table :: table}"></table>
+    </th:block>
 
-          </ul>
-      </nav>
+    <th:block sec:authorize="hasAuthority('BANK')">
+        <table th:replace="~{fragments/table :: table}"></table>
+    </th:block>
 
-    </fieldset>
+    <div class="row g-4 align-items-center justify-content-center">
+        <div class="col-md-6 col-lg-8 text-center">
+
+            <th:block sec:authorize="hasAuthority('BANK')">
+                <h2 th:if="${bank}" th:text="${bank.name}"></h2>
+            </th:block>
+        </div>
+    </div>
+
+
+    <th:block th:if="${pageable != null and page != null}">
+        <div th:replace="~{fragments/paging :: paging(pageable=${pageable}, page=${page}, action=${pageAction}, searchValue=${searchValue} ) }"></div>
+    </th:block>
+
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</div>
 </body>
 </html>

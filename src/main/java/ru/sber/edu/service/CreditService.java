@@ -37,21 +37,13 @@ public class CreditService {
     private UserService userService;
 
 
-    public Page<Credit> findByBank(Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
-
-        Sort sorting = Sort.by(sortedBy);
-        Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
-
-        return creditRepository.findByBankId(bank.getBankId(), paging);
+    public Page<Credit> findByMyBank(Pageable paging) throws NullPointerException {
+        return creditRepository.findByBankId(bankService.getMyBank().getBankId(), paging);
     }
 
 
-    public Page<Credit> findByNameAndBank(String name, Bank bank, int pageNumber, int pageSize, String sortedBy, String order) throws NullPointerException {
-
-        Sort sorting = Sort.by(sortedBy);
-        Pageable paging = PageRequest.of(--pageNumber, pageSize, order.equals("acs") ? sorting.ascending() : sorting.descending());
-
-        return creditRepository.findByBankIdAndNameContainingIgnoreCase(bank.getBankId(), name, paging);
+    public Page<Credit> findByNameAndMyBank(String name, Pageable paging) throws NullPointerException {
+        return creditRepository.findByBankIdAndNameContainingIgnoreCase(bankService.getMyBank().getBankId(), name, paging);
     }
 
     public Credit createCredit(Credit credit, Bank bank) {

@@ -75,8 +75,4 @@ public class Credit implements Serializable {
                 new TableColumn("dateTo", "To", UiFieldType.DATE));
     }
 
-
-    public static List<String> getColumns(){
-        return Arrays.asList("creditId", "bankId", "name", "maxSum", "rate", "dateFrom", "dateTo");
-    }
 }

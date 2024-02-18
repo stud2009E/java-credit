@@ -63,4 +63,15 @@ public class Credit {
             new TableColumn("dateFrom", "From", UiFieldType.DATE),
             new TableColumn("dateTo", "To", UiFieldType.DATE));
     }
+
+    public static List<UiColumn> getBankColumns() {
+        return Arrays.asList(
+                new TableColumn("creditId", "Credit"),
+                new TableColumn("credit--NameLinkToBankCard", "Name", UiFieldType.CUSTOM),
+                new TableColumn("maxSum", "Maximum"),
+                new TableColumn("rate", "Rate"),
+                new TableColumn("dateFrom", "From", UiFieldType.DATE),
+                new TableColumn("dateTo", "To", UiFieldType.DATE));
+    }
+
 }

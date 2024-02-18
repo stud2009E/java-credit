@@ -46,25 +46,22 @@ public class BankController {
      * Отображение списка кредитов Банка
      * @param pageNumber
      * @param pageSize
-     * @param sortBy
-     * @param order
      * @param model
      * @return
      */
     @GetMapping(value = "/credit/all")
     public String showCredits(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                          @RequestParam(defaultValue = "creditId") String sortBy,
-                          @RequestParam(defaultValue = "acs") String order,
                           Model model) {
 
-        Bank bank = bankService.getMyBank();
-        Page<Credit> credits = creditService.findByBank(bank, pageNumber, pageSize, sortBy, order);
+        Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
 
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("order", order);
-        model.addAttribute("credits", credits);
+        TableUtil<Credit> util = new TableUtil<>(creditService.findByMyBank(pageable), Credit.getBankColumns());
+        util.addTableDataToModel(model);
+        util.addPagingDataToModel(model);
+
+        model.addAttribute("pageAction","/bank/credit/all");
+        model.addAttribute("searchAction","/bank/credit/search");
 
         return "bank/credits";
     }
@@ -73,30 +70,32 @@ public class BankController {
      * Поиск кредита по имени
      * @param pageNumber
      * @param pageSize
-     * @param sortBy
-     * @param order
-     * @param name
+     * @param value
      * @param model
      * @return
      */
-    @GetMapping(path = {"credit/search"})
+    @GetMapping(path = {"/credit/search"})
     public String searchCredit(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-                         @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                         @RequestParam(defaultValue = "creditId") String sortBy,
-                         @RequestParam(defaultValue = "asc") String order,
-                         @RequestParam() String name,
+                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                               @RequestParam(value = "value", required = false) String value,
                          Model model) {
 
-        if (!name.isEmpty()) {
-            Bank bank = bankService.getMyBank();
-            Page<Credit> credits = creditService.findByNameAndBank(name, bank, pageNumber, pageSize, sortBy, order);
-            model.addAttribute("pageSize", pageSize);
-            model.addAttribute("sortBy", sortBy);
-            model.addAttribute("order", order);
-            model.addAttribute("credits", credits);
+        model.addAttribute("pageAction","/bank/credit/all");
+        model.addAttribute("searchAction","/bank/credit/search");
+
+        if (!value.isEmpty()) {
+
+            Pageable pageable = PageRequest.of(--pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "creditId"));
+
+            TableUtil<Credit> util = new TableUtil<>(creditService.findByNameAndMyBank(value, pageable), Credit.getBankColumns());
+            util.addTableDataToModel(model);
+            util.addPagingDataToModel(model);
+
+            model.addAttribute("searchValue", value);
 
             return "bank/credits";
         } else {
+
             return "redirect:/bank/credit/all";
         }
     }

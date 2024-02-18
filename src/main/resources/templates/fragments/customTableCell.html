@@ -13,6 +13,11 @@
         </th:block>
 
 
+        <!-- ru/sber/edu/entity/Credit.java     -->
+        <th:block th:if="${field} == 'credit--NameLinkToBankCard'">
+            <a th:href="'/bank/credit/' + ${row.get('creditId')}" th:text="${row.get('name')}">Link</a>
+        </th:block>
+
         <!-- ru/sber/edu/entity/CreditOffer.java     -->
         <th:block th:if="${field} == 'creditOffer--LinkToCreditOffer'">
             <a th:href="'/bank/creditOffer/credit/' + ${row.get('creditId')}+'/user/'+${row.get('userId')}" th:text="${row.get('creditName')}">Link</a>

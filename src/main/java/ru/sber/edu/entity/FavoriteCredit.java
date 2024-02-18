@@ -9,6 +9,7 @@ import ru.sber.edu.ui.table.TableColumn;
 import ru.sber.edu.ui.table.UiColumn;
 import ru.sber.edu.ui.table.UiFieldType;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @IdClass(FavoriteCredit.class)
-public class FavoriteCredit {
+public class FavoriteCredit implements Serializable {
 
     @Id
     @ManyToOne(cascade = CascadeType.MERGE)

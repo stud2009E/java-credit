@@ -8,12 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "bank_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankUser {
+public class BankUser implements Serializable {
 
     @Id
     @Column(name = "user_id")

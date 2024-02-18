@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.data.domain.*;
 import ru.sber.edu.entity.Bank;
 import ru.sber.edu.entity.Credit;
+import ru.sber.edu.entity.FavoriteCredit;
+import ru.sber.edu.entity.auth.User;
 import ru.sber.edu.repository.CreditFavoriteRepository;
 import ru.sber.edu.repository.CreditOfferRepository;
 import ru.sber.edu.repository.CreditRepository;
@@ -71,6 +73,49 @@ public class CreditServiceTest {
         Page<Credit> creditsTest = creditService.findByMyBank(pageable);
 
         Assertions.assertEquals(credits, creditsTest);
+    }
+
+    @Test
+    public void findByNameAndMyBankTest(){
+
+        Bank bank = new Bank();
+        bank.setBankId(1L);
+
+        Credit credit = new Credit();
+        credit.setBankId(bank.getBankId());
+        credit.setName("Credit name");
+
+        Page<Credit> credits = new PageImpl<>(List.of(credit)) ;
+
+        Pageable pageable = PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "creditId"));
+
+        when(bankService.getMyBank()).thenReturn(bank);
+        when(creditRepository.findByBankIdAndNameContainingIgnoreCase(bank.getBankId(), credit.getName(), pageable)).thenReturn(credits);
+
+        Page<Credit> creditsTest = creditService.findByNameAndMyBank(credit.getName(), pageable);
+
+        Assertions.assertEquals(credits, creditsTest);
+    }
+
+    @Test
+    public void findFavoriteCreditByUserTest(){
+
+        User user = new User();
+
+        Bank bank = new Bank();
+        bank.setBankId(1L);
+
+        FavoriteCredit favoriteCredit = new FavoriteCredit();
+
+        Page<FavoriteCredit> favoriteCredits = new PageImpl<>(List.of(favoriteCredit));
+
+        Pageable pageable = PageRequest.of(1, 10);
+        when(creditFavoriteRepository.findByUser(user, pageable)).thenReturn(favoriteCredits);
+
+        Page<FavoriteCredit> favoriteCreditsTest = creditService.findFavoriteCreditByUser(user, pageable);
+
+        Assertions.assertEquals(favoriteCredits, favoriteCreditsTest);
 
     }
+
 }
